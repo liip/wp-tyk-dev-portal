@@ -134,8 +134,6 @@ if (!is_admin()) {
 	$plugin->register_hooks();
 	$plugin->register_actions();
 	$plugin->register_filters();
-	$user = wp_get_current_user();
-	$plugin->register_user_with_tyk(get_current_user_id());
 }
 
 /**

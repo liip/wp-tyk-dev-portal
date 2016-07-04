@@ -32,7 +32,7 @@ class Tyk_Portal_User
 		if (is_null($user_id)) {
 			$user_id = get_current_user_id();
 		}
-		$this->user = get_user_by('id', $user_id);
+		$this->user = get_userdata($user_id);
 	}
 
 	/**
