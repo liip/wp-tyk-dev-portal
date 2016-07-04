@@ -2,56 +2,80 @@
 /**
  * Plugin Name: Tyk Developer Portal
  * Description: Plugin to use your WordPress as a developer portal for Tyk.io
- * Author: Team Abmoss <be-dev@liip.ch>
+ * Author: Liip <be-dev@liip.ch>
  * Version: 1.0.0
  * Date: 04.07.2016
  */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-if ( ! class_exists( 'Tyk_API', false ) ) {
+require_once dirname(__FILE__) . '/portal_user.php';
+//require_once dirname(__FILE__) . '/api_manager.php';
+require_once dirname(__FILE__) . '/tyk_api.php';
+
+class Tyk_Dev_Portal
+{
 	/**
-	 * Class to handle interaction with Tyk API
+	 * Name of this plugin
+	 * @var string
 	 */
-	class Tyk_API
-	{
-		/**
-		 * Send a post request to Tyk API
-		 * 
-		 * @param string $path Path to endpoint
-		 * @param array $body
-		 *
-		 * @throws Exception When API sends invalid response
-		 * @throws Exception When API reports a NOT OK status
-		 * 
-		 * @return array
-		 */
-		public function post($path, $body) {
-			$url = sprintf('%s/%s', 
-				TYK_API_ENDPOINT, 
-				$path
-				);
+	const PLUGIN_NAME = 'Tyk Developer Portal';
 
-			$api_response = wp_remote_post($url, array(
-				'headers' => array(
-					'Authorization' => TYK_API_KEY,
-				),
-				'body' => json_encode($body),
-				));
+	/**
+	 * Hook that is fired when this plugin is activated
+	 * 
+	 * @return void
+	 */
+	public static function on_activate() {
+		self::create_developer_role();
+	}
 
-			// parse and analyse response		
-			$response = json_decode(wp_remote_retrieve_body($api_response));
-			if (is_object($response) && isset($response->Status) && isset($response->Message)) {
-				if ($response->Status == 'OK') {
-					return $response->Message;
-				}
-				else {
-					throw new Exception($response->Message);
-				}
-			}
-			else {
-				throw new Exception('Received invalid response from API');
-			}
+	/**
+	 * Create a role "developer"
+	 * 
+	 * @return void
+	 */
+	private static function create_developer_role() {
+		$role_name = 'developer';
+		$result = add_role(
+			$role_name,
+			__('Developer')
+			);
+		if ($result === false) {
+			trigger_error(sprintf('Could not create role "%s" for plugin %s',
+				$role_name,
+				self::PLUGIN_NAME
+			));
 		}
 	}
 }
+
+register_activation_hook( __FILE__, array('Tyk_Dev_Portal', 'on_activate') );
+
+/**
+ * Hook into wordpress "onregister" of a user and register the
+ * user as a tyk developer if the user has the "developer" role
+ * 
+ * @param  integer $user_id
+ */
+function register_user_with_tyk($user_id) {
+	$user = new Portal_User($user_id);
+	if ($user->is_developer() && !$user->has_tyk_id()) {
+		$user->register_with_tyk();
+	}
+}
+add_action('user_register', 'register_user_with_tyk', 10, 1);
+
+
+/**
+ * Event-hook when "register for api" form is submitted:
+ * register the user for a token for the corresponding tyk API
+ */
+function get_tyk_token() {
+	if (isset($_POST['api'])) {
+		$apiManager = new API_Manager();
+		$user = new Portal_User();
+		$apiManager->registerForAPI($user, $_POST['api']);
+	}
+}
+add_action('admin_post_get_token', 'get_tyk_token');
