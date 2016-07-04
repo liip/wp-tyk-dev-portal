@@ -4,13 +4,17 @@
  * Not an actual user abstraction, but gathers common functionality regarding
  * developer portal users
  */
-class Portal_User 
+class Tyk_Portal_User 
 {
 	/**
 	 * The name of the key in wordpress user meta data where tyk user id is stored
-	 * @const string
 	 */
 	const META_TYK_USER_ID_KEY = 'tyk_user_id';
+
+	/**
+	 * Name of the developer role this plugin creates
+	 */
+	const DEVELOPER_ROLE_NAME = 'developer';
 
 	/**
 	 * The actual wordpress user object
@@ -28,7 +32,7 @@ class Portal_User
 		if (is_null($user_id)) {
 			$user_id = get_current_user_id();
 		}
-		$this->user = get_userdata($user_id);
+		$this->user = get_user_by('id', $user_id);
 	}
 
 	/**
@@ -37,7 +41,7 @@ class Portal_User
 	 * @return boolean
 	 */
 	public function is_developer() {
-		return $this->user->exists() && in_array('developer', $this->user->roles);
+		return $this->user->exists() && in_array(self::DEVELOPER_ROLE_NAME, $this->user->roles);
 	}
 
 	/**
@@ -75,11 +79,11 @@ class Portal_User
 	 */
 	public function register_with_tyk() {
 		try {
-			$tyk = new Tyk();
-			$userID = $tyk->post('/portal/developers', array(
+			$tyk = new Tyk_API();
+			$user_id = $tyk->post('/portal/developers', array(
 				'email' => $this->user->user_email,
 				));
-			$this->set_tyk_id($userID);
+			$this->set_tyk_id($user_id);
 		}
 		catch (Exception $e) {
 			trigger_error(sprintf('Could not register user for API: %s', $e->getMessage()), E_USER_WARNING);
