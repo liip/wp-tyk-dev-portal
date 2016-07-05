@@ -1,4 +1,9 @@
 <?php
+/**
+ * Tyk portal user
+ *
+ * @package Tyk_Dev_Portal\Tyk_User
+ */
 
 /**
  * Not an actual user abstraction, but gathers common functionality regarding
