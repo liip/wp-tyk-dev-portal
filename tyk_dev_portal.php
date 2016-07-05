@@ -60,15 +60,6 @@ class Tyk_Dev_Portal
 	}
 
 	/**
-	 * Register any content filters
-	 * 
-	 * @return void
-	 */
-	public function register_filters() {
-		add_filter('page_template', array($this, 'dashboard_page_template'));
-	}
-
-	/**
 	 * Register a user as a developer with Tyk
 	 * 
 	 * @param integer $user_id
@@ -123,18 +114,6 @@ class Tyk_Dev_Portal
 	}
 
 	/**
-	 * Automatically set page template for dashboard page
-	 * 
-	 * @return string|void
-	 */
-	public function dashboard_page_template() {
-		if (is_page(self::DASHBOARD_SLUG)) {
-			$page_template = TYK_DEV_PORTAL_PLUGIN_PATH . '/page_dashboard.php';
-			return $page_template;
-		}
-	}
-
-	/**
 	 * Create a role "developer"
 	 * 
 	 * @return void
@@ -174,5 +153,4 @@ if (!is_admin()) {
 	$plugin = new Tyk_Dev_Portal();
 	$plugin->register_hooks();
 	$plugin->register_actions();
-	// $plugin->register_filters();
 }
