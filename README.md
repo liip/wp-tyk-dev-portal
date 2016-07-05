@@ -1,8 +1,6 @@
 # How to activate
 
 1. *ProfilePress Lite* plugin aktivieren
-	* ProfilePress Einstellungen:
-		* Redirections / Login: 
 2. *Tyk Developer Portal* plugin aktivieren
 3. *Einstellungen > Allgemein*
 	* *Standardrolle eines neuen Benutzers* = "Entwickler"
@@ -15,7 +13,9 @@
 ```
 `<key>` erhält man unter *Tyk Dashboard > Users > [User] > Edit > Tyk Dashboard API Access Credentials*.
 Wobei `[User]` ein dedizierter User für diesen Zugang sein sollte (z.B. *Dev Portal Dashboard Manager*).
-
+5. ProfilePress Einstellungen:
+		* Redirections / Login: Dashboard
+		* Redirections / Logout: Log In
 
 ## Anderes
 
