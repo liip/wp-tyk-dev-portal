@@ -34,23 +34,18 @@ class Tyk_API_Manager
 	 * 
 	 * @param Portal_User $user
 	 * @param string $policy
-	 * @return [type]
+	 * @return string The key
 	 */
 	public function registerForAPI(Tyk_Portal_User $user, $policy) {
-		try {
-			$tyk = new Tyk_API();
-			$key = $tyk->post('/portal/requests', array(
-				'by_user' => $user->get_tyk_id(),
-				'for_plan' => $policy,
-				// it's possible to have key requests approved manually
-				'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
-				// this is a bit absurd
-				'date_created' => date('c')
-				));
-			// @todo show key
-		}
-		catch (Exception $e) {
-			// @todo show error in form?
-		}
+		$tyk = new Tyk_API();
+		$key = $tyk->post('/portal/requests', array(
+			'by_user' => $user->get_tyk_id(),
+			'for_plan' => $policy,
+			// it's possible to have key requests approved manually
+			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
+			// this is a bit absurd
+			'date_created' => date('c')
+			));
+		return $key;
 	}
 }

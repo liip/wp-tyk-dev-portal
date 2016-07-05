@@ -5,6 +5,7 @@
  * Author: Liip <be-dev@liip.ch>
  * Version: 1.0.0
  * Date: 04.07.2016
+ * Text Domain: tyk-dev-portal
  */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
@@ -29,6 +30,11 @@ class Tyk_Dev_Portal
 	const DASHBOARD_SLUG = 'dev-dashboard';
 
 	/**
+	 * This plugins text domain
+	 */
+	const TEXT_DOMAIN = 'tyk-dev-portal';
+
+	/**
 	 * Register any hooks
 	 * 
 	 * @return void
@@ -48,6 +54,9 @@ class Tyk_Dev_Portal
 	 	 * user as a tyk developer if the user has the "developer" role
 		 */
 		add_action('user_register', array($this, 'register_user_with_tyk'), 10, 1);
+
+		// Process ajax get_token action
+		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
 	}
 
 	/**
@@ -83,6 +92,37 @@ class Tyk_Dev_Portal
 	}
 
 	/**
+	 * Ajax event-hook when "register for api" form is submitted:
+	 * Request a user-token for the corresponding tyk API
+	 *
+	 * @return void Sends output to output buffer
+	 */
+	public function register_for_api() {
+		$response = array();
+		// @todo check if this is a valid api
+		if (isset($_POST['api'])) {
+			try {
+				$apiManager = new Tyk_API_Manager();
+				$user = new Tyk_Portal_User();
+				$key = $apiManager->registerForAPI($user, $_POST['api']);
+				// build a nice little message
+				$message = sprintf('<p>%s</p><p>%s</p>',
+					sprintf(__('Your token for this API is: %s', Tyk_Dev_Portal::TEXT_DOMAIN), $key),
+					__('We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN)
+					);
+				wp_send_json_success(array(
+					'message' => $message,
+					'key' => $key
+					));
+			}
+			catch (Exception $e) {
+				wp_send_json_error($e->getMessage());
+			}
+		}
+		wp_send_json_error('Invalid request');
+	}
+
+	/**
 	 * Automatically set page template for dashboard page
 	 * 
 	 * @return string|void
@@ -100,7 +140,7 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	private function create_developer_role() {
-		$result = add_role(self::DEVELOPER_ROLE_NAME, __('Developer'));
+		$result = add_role(self::DEVELOPER_ROLE_NAME, __('Developer', self::TEXT_DOMAIN));
 		if ($result === false) {
 			trigger_error(sprintf('Could not create role "%s" for plugin %s',
 				self::DEVELOPER_ROLE_NAME,
@@ -134,19 +174,5 @@ if (!is_admin()) {
 	$plugin = new Tyk_Dev_Portal();
 	$plugin->register_hooks();
 	$plugin->register_actions();
-	$plugin->register_filters();
+	// $plugin->register_filters();
 }
-
-/**
- * Event-hook when "register for api" form is submitted:
- * register the user for a token for the corresponding tyk API
- */
-function get_tyk_token() {
-	if (isset($_POST['api'])) {
-		$apiManager = new Tyk_API_Manager();
-		$user = new Tyk_Portal_User();
-		$response = $apiManager->registerForAPI($user, $_POST['api']);
-		print_r($response);
-	}
-}
-add_action('admin_post_get_token', 'get_tyk_token');
