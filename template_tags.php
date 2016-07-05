@@ -7,9 +7,9 @@
  * @return string
  */
 function tyk_dev_portal_api_subscribe_form($class = '') {
-	return printf('<form action="%s" class="%s" method="post">
+	return printf('<form action="%s" class="%s" method="post" id="tyk-api-subscribe-form">
 		<input type="hidden" name="action" value="get_token">',
-		esc_url(admin_url('admin-post.php')),
+		esc_url(admin_url('admin-ajax.php')),
 		$class
 		);
 }
@@ -28,7 +28,7 @@ function tyk_dev_portal_api_select($class = '') {
 			$api->name
 			);
 	}
-	return printf('<select name="api" id="api-select" class="%s">%s</select>',
+	return printf('<select name="api" id="tyk-api-select" class="%s">%s</select>',
 		$class,
 		join("\n", $opts)
 		);
