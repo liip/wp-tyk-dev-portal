@@ -33,7 +33,10 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_hooks() {
-		register_activation_hook(__FILE__, array($this, 'on_activate'));
+		// in backend: register activation hook for this plugin
+		if (!is_admin()) {
+			register_activation_hook(__FILE__, array($this, 'on_activate'));
+		}
 	}
 
 	/**
