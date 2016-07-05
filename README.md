@@ -15,3 +15,9 @@
 ```
 `<key>` erhält man unter *Tyk Dashboard > Users > [User] > Edit > Tyk Dashboard API Access Credentials*.
 Wobei `[User]` ein dedizierter User für diesen Zugang sein sollte (z.B. *Dev Portal Dashboard Manager*).
+
+
+## Anderes
+
+1. *ODPCH temporär* theme aktivieren
+2. Die automatisch erstellte Seite "Dashboard" bearbeiten und Template auf *Developer Dashboard* setzen
