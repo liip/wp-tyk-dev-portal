@@ -11,9 +11,10 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('TYK_DEV_PORTAL_PLUGIN_PATH', dirname( __FILE__ ));
 
-require_once dirname(__FILE__) . '/portal_user.php';
-//require_once dirname(__FILE__) . '/api_manager.php';
-require_once dirname(__FILE__) . '/tyk_api.php';
+require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/portal_user.php';
+require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/api_manager.php';
+require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/tyk_api.php';
+require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/template_tags.php';
 
 class Tyk_Dev_Portal
 {
@@ -33,7 +34,7 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_hooks() {
-		register_activation_hook( __FILE__, array($this, 'on_activate') );
+		register_activation_hook(__FILE__, array($this, 'on_activate'));
 	}
 
 	/**
@@ -142,9 +143,10 @@ if (!is_admin()) {
  */
 function get_tyk_token() {
 	if (isset($_POST['api'])) {
-		$apiManager = new API_Manager();
-		$user = new Portal_User();
-		$apiManager->registerForAPI($user, $_POST['api']);
+		$apiManager = new Tyk_API_Manager();
+		$user = new Tyk_Portal_User();
+		$response = $apiManager->registerForAPI($user, $_POST['api']);
+		print_r($response);
 	}
 }
 add_action('admin_post_get_token', 'get_tyk_token');
