@@ -96,7 +96,7 @@ class Tyk_Dev_Portal
 			try {
 				$apiManager = new Tyk_API_Manager();
 				$user = new Tyk_Portal_User();
-				$key = $apiManager->registerForAPI($user, $_POST['api']);
+				$key = $apiManager->register_for_api($user, $_POST['api']);
 				// build a nice little message
 				$message = sprintf('<p>%s</p><p>%s</p>',
 					sprintf(__('Your token for this API is: %s', Tyk_Dev_Portal::TEXT_DOMAIN), $key),

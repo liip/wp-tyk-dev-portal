@@ -36,7 +36,7 @@ class Tyk_API_Manager
 	 * @param string $policy
 	 * @return string The key
 	 */
-	public function registerForAPI(Tyk_Portal_User $user, $policy) {
+	public function register_for_api(Tyk_Portal_User $user, $policy) {
 		$tyk = new Tyk_API();
 		$key = $tyk->post('/portal/requests', array(
 			'by_user' => $user->get_tyk_id(),
