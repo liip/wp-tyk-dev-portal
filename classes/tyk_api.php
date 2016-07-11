@@ -70,6 +70,35 @@ class Tyk_API
 	}
 
 	/**
+	 * Send a put request to Tyk API
+	 * 
+	 * @param string $path
+	 * @param string $location
+	 *
+	 * @throws Exception When API sends invalid response
+	 * 
+	 * @return array
+	 */
+	public function put($path, $location) {
+		$base_url = $this->get_url_for_path($path);
+		$url = $base_url . '/' . $location;
+
+		$api_response = wp_remote_request($url, array(
+			'method' => 'PUT',
+			'headers' => array(
+				'Authorization' => TYK_API_KEY,
+			)));
+
+		$response = $this->parse_response($api_response);
+		if (is_object($response)) {
+			return $response;
+		}
+		else {
+			throw new Exception('Received invalid response from API');
+		}	
+	}
+
+	/**
 	 * Parse and analyse response
 	 * 
 	 * @param mixed $api_response
