@@ -1,6 +1,6 @@
 <?php
 
-class TykPortalUserTest extends WP_UnitTestCase {
+class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 	// test the check if a user is a developer
 	function testIsDeveloperCheck() {
 		// create a new user with developer role
@@ -25,19 +25,6 @@ class TykPortalUserTest extends WP_UnitTestCase {
 		// it's hard to check if the id is valid, but let's make sure 
 		// it's not empty and is at leaast 5 chars long
 		$this->assertNotEmpty($tyk_id);
-		$this->assertTrue(strlen($tyk_id) > 5)
-	}
-
-	/**
-	 * Create a test wordpress user
-	 * @return integer User ID
-	 */
-	private function createTestUser() {
-		return wp_insert_user(array(
-			'user_login' => 'test_developer',
-			'user_pass' => '123456789',
-			'user_email' => 'unittest@example.org',
-			'role' => 'developer',
-			));
+		$this->assertTrue(strlen($tyk_id) > 5);
 	}
 }
