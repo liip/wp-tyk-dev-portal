@@ -43,7 +43,7 @@ class Tyk_API_Manager
 			'for_plan' => $policy,
 			// it's possible to have key requests approved manually
 			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
-			// this is a bit absurd
+			// this is a bit absurd but tyk api doesn't set this by itself
 			'date_created' => date('c')
 			));
 		return $key;
