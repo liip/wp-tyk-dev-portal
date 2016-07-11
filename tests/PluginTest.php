@@ -1,6 +1,8 @@
 <?php
 
-class TykDevPortalPluginTest extends WP_UnitTestCase {
+require_once 'TykDevPortalTestcase.php';
+
+class TykDevPortalPluginTest extends Tyk_Dev_Portal_Testcase {
 	// test if developer role can be created
 	function testRoleCreation() {
 		$plugin = new Tyk_Dev_Portal();
