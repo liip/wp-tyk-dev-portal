@@ -10,7 +10,7 @@ class TykAPIManagerTest extends Tyk_Dev_Portal_Testcase {
 		$this->assertGreaterThanOrEqual(1, $user_id);
 		$user = new Tyk_Portal_User($user_id);
 		$apiManager = new Tyk_API_Manager();
-		$key = $apiManager->register_for_api($user, '570f7e5a63ebb40001000090');
+		$key = $apiManager->register_for_api($user, TYK_TEST_API_POLICY);
 
 		// it's hard to check if the key is valid, but let's make sure 
 		// it's not empty and is at leaast 5 chars long
