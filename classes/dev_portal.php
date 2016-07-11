@@ -28,6 +28,11 @@ class Tyk_Dev_Portal
 	const TEXT_DOMAIN = 'tyk-dev-portal';
 
 	/**
+	 * Name of the role for developers this plugin will create
+	 */
+	const DEVELOPER_ROLE_NAME = 'developer';
+
+	/**
 	 * Register any hooks
 	 * 
 	 * @return void
@@ -114,7 +119,7 @@ class Tyk_Dev_Portal
 	 * 
 	 * @return void
 	 */
-	private function create_developer_role() {
+	public function create_developer_role() {
 		$result = add_role(self::DEVELOPER_ROLE_NAME, __('Developer', self::TEXT_DOMAIN));
 		if ($result === false) {
 			trigger_error(sprintf('Could not create role "%s" for plugin %s',
@@ -129,7 +134,7 @@ class Tyk_Dev_Portal
 	 * 
 	 * @return void
 	 */
-	private function create_dashboard_page() {
+	public function create_dashboard_page() {
 		// @todo check if the page already exists
 		$page = array(
 			'post_title' => 'Developer Dashboard',
