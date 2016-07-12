@@ -11,21 +11,36 @@
 class Tyk_API_Manager 
 {
 	/**
+	 * Name of tag that a policy must have on tyk api
+	 * so users may register for it freely
+	 */
+	const POLICY_TAG = 'allow_registration';
+
+	/**
 	 * Get available APIs defined on Tyk
 	 * 
 	 * @return array
 	 */
 	public static function available_apis() {
 		$tyk = new Tyk_API();
-		$response = $tyk->get('/apis');
+		// available apis are actually available policies/plans that allow access
+		// to certain apis under certain restrictions
+		$response = $tyk->get('/portal/policies');
 		// a generator would be nice here but alas, php 5.4 is still very common
 		$active_apis = array();
-		foreach ($response->apis as $api) {
-			// only return active apis
-			if ($api->api_definition->active) {
-				$active_apis[] = $api->api_definition;
+		if (is_object($response) && isset($response->Data)) {
+			foreach ($response->Data as $policy) {
+				// only return active apis
+				if ($policy->active && !$policy->is_inactive) {
+					if (isset($policy->tags) && is_array($policy->tags) && in_array(self::POLICY_TAG, $policy->tags))
+					$active_apis[] = array(
+						'id' => $policy->_id,
+						'name' => $policy->name,
+						);
+				}
 			}
 		}
+
 		return $active_apis;
 	}
 

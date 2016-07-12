@@ -24,8 +24,8 @@ function tyk_dev_portal_api_select($class = '') {
 	$opts = array();
 	foreach (Tyk_API_Manager::available_apis() as $api) {
 		$opts[] = sprintf('<option value="%s">%s</option>', 
-			$api->id, 
-			$api->name
+			$api['id'], 
+			$api['name']
 			);
 	}
 	return printf('<select name="api" id="tyk-api-select" class="%s">%s</select>',
