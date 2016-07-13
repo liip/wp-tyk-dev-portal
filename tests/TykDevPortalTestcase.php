@@ -2,6 +2,12 @@
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Base class for tyk portal plugin test cases
+ *
+ * @see https://github.com/10up/wp_mock Maybe expand tests later on
+ * @see https://wordpress.stackexchange.com/questions/164121/testing-hooks-callback
+ */
 abstract class Tyk_Dev_Portal_Testcase extends WP_UnitTestCase {
 	/**
 	 * Create a new user, registered with Tyk and ready for testing
@@ -36,6 +42,7 @@ abstract class Tyk_Dev_Portal_Testcase extends WP_UnitTestCase {
 
 	/**
 	 * Get access to a protected method of a class
+	 * 
 	 * @param string $class
 	 * @param string $method
 	 * @return ReflectionMethod
