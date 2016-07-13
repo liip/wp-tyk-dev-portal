@@ -53,8 +53,11 @@ class Tyk_API_Manager
 	 */
 	public function register_for_api(Tyk_Portal_User $user, $policy) {
 		$key_request = $this->make_key_request($user, $policy);
-		if (is_string($key_request)) {
+		if (TYK_AUTO_APPROVE_KEY_REQUESTS && is_string($key_request)) {
 			return $this->approve_key_request($key_request);
+		}
+		else {
+			return $key_request;
 		}
 	}
 

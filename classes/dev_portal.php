@@ -97,11 +97,24 @@ class Tyk_Dev_Portal
 				$apiManager = new Tyk_API_Manager();
 				$user = new Tyk_Portal_User();
 				$key = $apiManager->register_for_api($user, $_POST['api']);
-				// build a nice little message
-				$message = sprintf('<p>%s</p><p>%s</p>',
-					sprintf(__('Your token for this API is: %s', Tyk_Dev_Portal::TEXT_DOMAIN), $key),
-					__('We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN)
-					);
+
+				// when keys are approved automatically
+				if (TYK_AUTO_APPROVE_KEY_REQUESTS) {
+					$message = sprintf('<div class="alert alert-info"><p>%s</p><p>%s</p></div>',
+						sprintf(__('Your token for this API is: %s', Tyk_Dev_Portal::TEXT_DOMAIN), $key),
+						__('We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN)
+						);
+				}
+				// when keys await manual approval
+				else {
+					$message = sprintf('<div class="alert alert-warning">%s</div>',
+						sprintf(
+							__('Your key request is pending review. You will receive an Email when your request is processed. Your request id is %s. This is not your access token. Please refer to the request ID when contacting us by Email.', 
+								Tyk_Dev_Portal::TEXT_DOMAIN),
+							$key)
+						);
+				}
+
 				wp_send_json_success(array(
 					'message' => $message,
 					'key' => $key
