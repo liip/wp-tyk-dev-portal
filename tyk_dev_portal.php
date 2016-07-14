@@ -21,3 +21,13 @@ require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/template_tags.php';
 $plugin = new Tyk_Dev_Portal();
 $plugin->register_hooks();
 $plugin->register_actions();
+
+/**
+ * Get url to this plugin's dir
+ *
+ * @param string $path Path to the plugin file you want the url for
+ * @return string
+ */
+function tyk_dev_portal_plugin_url($path) {
+	return plugin_dir_url(__FILE__) . $path;
+}

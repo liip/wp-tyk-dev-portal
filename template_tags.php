@@ -1,35 +1,20 @@
 <?php
 
 /**
- * Get the form tag for the api subscription form
+ * Get the developer dashboard page
+ * Prints directly to output
  * 
- * @param string $class An optional class to add to the form tag
- * @return string
+ * @return void
  */
-function tyk_dev_portal_api_subscribe_form($class = '') {
-	return printf('<form action="%s" class="%s" method="post" id="tyk-api-subscribe-form">
-		<input type="hidden" name="action" value="get_token">',
-		esc_url(admin_url('admin-ajax.php')),
-		$class
-		);
-}
+function tyk_dev_portal_dashboard() {
 
-/**
- * Get <select> pulldown for api subscription
- *
- * @param string $class An optional class to add to the select tag
- * @return string
- */
-function tyk_dev_portal_api_select($class = '') {
-	$opts = array();
-	foreach (Tyk_API_Manager::available_apis() as $api) {
-		$opts[] = sprintf('<option value="%s">%s</option>', 
-			$api['id'], 
-			$api['name']
-			);
-	}
-	return printf('<select name="api" id="tyk-api-select" class="%s">%s</select>',
-		$class,
-		join("\n", $opts)
+	// enqueue dashboard script and pass params
+	wp_enqueue_script('dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery'), 1, true);
+	$params = array(
+		'actionUrl' => esc_url(admin_url('admin-ajax.php')),
+		'generalErrorMessage' => __('An error occurred. Please try again.')
 		);
+	wp_localize_script('dashboard', 'scriptParams', $params);
+
+	include_once TYK_DEV_PORTAL_PLUGIN_PATH . '/templates/api_subscribe_form.php';
 }
