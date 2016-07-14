@@ -124,7 +124,7 @@ class Tyk_Dev_Portal
 				wp_send_json_error($e->getMessage());
 			}
 		}
-		wp_send_json_error('Invalid request');
+		wp_send_json_error(__('Invalid request'));
 	}
 
 	/**
