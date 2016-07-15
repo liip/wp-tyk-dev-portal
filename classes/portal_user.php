@@ -17,6 +17,12 @@ class Tyk_Portal_User
 	const META_TYK_USER_ID_KEY = 'tyk_user_id';
 
 	/**
+	 * The name of the key in wordpress user meta data where tyk access tokens are stored
+	 * Note that the actual tokens are not stored, just the name and id so we can manage them
+	 */
+	const META_TYK_ACCESS_TOKENS_KEY = 'tyk_access_token';
+
+	/**
 	 * Name of the developer role this plugin creates
 	 */
 	const DEVELOPER_ROLE_NAME = 'developer';
@@ -47,6 +53,22 @@ class Tyk_Portal_User
 	 */
 	public function is_developer() {
 		return $this->user->exists() && in_array(self::DEVELOPER_ROLE_NAME, $this->user->roles);
+	}
+
+	/**
+	 * Save a tyk access token
+	 * Note that the actual tokens are not stored, just the name and id so we can manage them
+	 * 
+	 * @param array $token
+	 * @return void
+	 */
+	public function save_access_token($api_id, $token_name, $token_id) {
+		$data = array(
+			'api_id' => $api_id,
+			'token_name' => $token_name,
+			'token_id' => $token_id,
+			);
+		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $data, true);
 	}
 
 	/**

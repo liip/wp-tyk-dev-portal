@@ -94,30 +94,36 @@ class Tyk_Dev_Portal
 		// @todo check if this is a valid api
 		if (isset($_POST['api'])) {
 			try {
-				$apiManager = new Tyk_API_Manager();
+				//$apiManager = new Tyk_API_Manager();
+
+				$key_request = new Tyk_Key_Request();
 				$user = new Tyk_Portal_User();
-				$key = $apiManager->register_for_api($user, $_POST['api']);
+				$key_request->send($user, $_POST['api']);
 
 				// when keys are approved automatically
 				if (TYK_AUTO_APPROVE_KEY_REQUESTS) {
-					$message = sprintf('<div class="alert alert-info"><p>%s</p><p>%s</p></div>',
-						sprintf(__('Your token for this API is: %s', Tyk_Dev_Portal::TEXT_DOMAIN), $key),
-						__('We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN)
+					$key_request->approve();
+					// save the access token information (not the actual token) to the user
+					$user->save_access_token($_POST['api'], $_POST['token_name'], $key_request->get_key());
+
+					$message = sprintf(
+						__('Your token for this API is: %s. We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN), 
+						$key_request->get_key()
 						);
 				}
 				// when keys await manual approval
 				else {
-					$message = sprintf('<div class="alert alert-warning">%s</div>',
-						sprintf(
-							__('Your key request is pending review. You will receive an Email when your request is processed. Your request id is %s. This is not your access token. Please refer to the request ID when contacting us by Email.', 
-								Tyk_Dev_Portal::TEXT_DOMAIN),
-							$key)
+					$message = sprintf(
+						__('Your key request is pending review. You will receive an Email when your request is processed. Your request id is %s. This is not your access token. Please refer to the request ID when contacting us by Email.', 
+						Tyk_Dev_Portal::TEXT_DOMAIN),
+						$key_request->get_id()
 						);
 				}
 
 				wp_send_json_success(array(
 					'message' => $message,
-					'key' => $key
+					'key' => $key,
+					'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
 					));
 			}
 			catch (Exception $e) {
@@ -150,7 +156,7 @@ class Tyk_Dev_Portal
 	public function create_dashboard_page() {
 		// @todo check if the page already exists
 		$page = array(
-			'post_title' => 'Developer Dashboard',
+			'post_title' => __('Developer Dashboard', self::TEXT_DOMAIN),
 			'post_name' => self::DASHBOARD_SLUG,
 			'post_content' => '',
 			'post_status' => 'publish',
