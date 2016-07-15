@@ -59,16 +59,69 @@ class Tyk_Portal_User
 	 * Save a tyk access token
 	 * Note that the actual tokens are not stored, just the name and id so we can manage them
 	 * 
-	 * @param array $token
+	 * @param  string $api_id ID of tyk API policy
+	 * @param  string $token_name User-given name of token
+	 * @param  string $token_id Access token ID
 	 * @return void
 	 */
 	public function save_access_token($api_id, $token_name, $token_id) {
 		$data = array(
-			'api_id' => $api_id,
-			'token_name' => $token_name,
-			'token_id' => $token_id,
+			'api_id' => sanitize_text_field($api_id),
+			'token_name' => sanitize_text_field($token_name),
+			'token_id' => sanitize_text_field($token_id),
 			);
-		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $data, true);
+
+		// check if token already exists
+		$tokens = $this->get_access_tokens();
+
+		$key = false;
+		if (count($tokens)) {
+			$ids = wp_list_pluck($tokens, 'token_id');
+			$key = array_search($token_id, $ids);
+		}
+
+		// this is a new token
+		if ($key === false) {
+			$tokens[] = $data;
+		}
+		// this is an existing token
+		else {
+			$tokens[$key] = $data;
+		}
+
+		// update key in user meta storage
+		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $tokens);
+	}
+
+	/**
+	 * Get user's access tokens
+	 * 
+	 * @return array
+	 */
+	public function get_access_tokens() {
+		$tokens = get_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, true);
+		if (!is_array($tokens)) {
+			return array();
+		}
+		return $tokens;
+	}
+
+	/**
+	 * Delete an access token by it's ID
+	 * 
+	 * @param  string $token_id
+	 * @return void
+	 */
+	public function delete_access_token($token_id) {
+		$tokens = $this->get_access_tokens();
+		for ($i = 0; $i < count($tokens); $i++) {
+			if ($tokens[$i]['token_id'] == $token_id) {
+				break;
+			}
+		}
+		unset($tokens[$i]);
+		// update the dataset
+		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $tokens);
 	}
 
 	/**

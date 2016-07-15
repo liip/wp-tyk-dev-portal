@@ -7,7 +7,6 @@
  * @return void
  */
 function tyk_dev_portal_dashboard() {
-
 	// enqueue dashboard script and pass params
 	wp_enqueue_script('dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery'), 1, true);
 	$params = array(

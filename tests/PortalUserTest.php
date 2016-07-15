@@ -29,4 +29,61 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$this->assertNotEmpty($tyk_id);
 		$this->assertTrue(strlen($tyk_id) > 5);
 	}
+
+	// test adding an access token
+	// @todo test adding token that already exists (same token_id)
+	// @todo test adding multiple tokens and make sure they all get saved
+	function testAddAccessToken() {
+		$user = $this->createPortalUser();
+		// save a token
+		$testToken = array(
+			'api_id' => 'api-id',
+			'token_name' => 'Unittest Token',
+			'token_id' => 'token-id',
+			);
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);
+
+		// save it again to check that it updates and doesn't duplicate
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);		
+
+		// get all tokens
+		$tokens = $user->get_access_tokens();
+
+		// make sure it didn't duplicate
+		$this->assertEquals(count($tokens), 1);
+		$this->assertArraySubset(array($testToken), $tokens);
+	}
+
+	// make sure we always get an array of access tokens
+	function testGetAccessTokens() {
+		$user = $this->createPortalUser();
+
+		$this->assertTrue(is_array($user->get_access_tokens()));
+	}
+
+	// test that we can delete tokens
+	function testDeleteAccessToken() {
+		$user = $this->createPortalUser();
+		
+		// let's add three tokens
+		$user->save_access_token('api-id', 'My favorite token', 'token-id-1');
+		$user->save_access_token('api-id', 'My 2nd-favorite token', 'token-id-2');
+		$user->save_access_token('api-id', 'My 3rd-favorite token', 'token-id-3');
+
+		$tokens = $user->get_access_tokens();
+		$this->assertEquals(count($tokens), 3);
+
+		// delete the 2nd one
+		$user->delete_access_token('token-id-2');
+
+		$tokens = $user->get_access_tokens();
+		$found = false;
+		foreach ($tokens as $token) {
+			if ($token['token_id'] == 'token-id-2') {
+				$found = true;
+			}
+		}
+		$this->assertFalse($found);
+		$this->assertEquals(count($tokens), 2);
+	}
 }
