@@ -9,7 +9,7 @@
 			data: {
 				tokens: []
 			},
-			ready: function() {
+			beforeCompile: function() {
 				this.fetchTokens();
 			},
 			methods: {

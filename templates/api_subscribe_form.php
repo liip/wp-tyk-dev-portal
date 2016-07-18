@@ -5,12 +5,15 @@
 	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 	<div class="panel-body">
 		<ul id="tyk-token-list" class="list-group">
-			<li class="list-group-item" v-for="token in tokens">
-				{{ token.token_name }}
-				<div class="pull-right">
-					<a href="#" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-				</div>
-			</li>
+			<template v-if="tokens">
+				<li class="list-group-item" v-for="token in tokens">
+					{{ token.token_name }}
+					<div class="pull-right">
+						<a href="#" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>
+				</li>
+			</template>
+			<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
 		</ul>
 	</div>
 
