@@ -56,8 +56,33 @@ class Tyk_Dev_Portal
 		 */
 		add_action('user_register', array($this, 'register_user_with_tyk'), 10, 1);
 
-		// Process ajax get_token action
+		// Process ajax actions
 		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
+		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
+
+		add_action('wp_loaded', array($this, 'register_scripts'));
+	}
+
+	/**
+	 * Register javascript files
+	 * 
+	 * @return void
+	 */
+	public function register_scripts() {
+		// enqueue vue.js
+		$vue_file = (WP_LOCAL_DEV === true)
+			? 'vue.js'
+			: 'vue.min.js';
+		$vue_ver = (WP_LOCAL_DEV === true)
+			? time()
+			: 1;
+		wp_register_script('vue', tyk_dev_portal_plugin_url('scripts/vendor/' . $vue_file), array(), $vue_ver, true);
+		
+		// enqueue dashboard.js
+		$dashboard_ver = (WP_LOCAL_DEV === true)
+			? time()
+			: 1;
+		wp_register_script('dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
 	}
 
 	/**
