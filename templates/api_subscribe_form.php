@@ -4,15 +4,9 @@
 
 	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 	<div class="panel-body">
-		<ul class="list-group">
-			<li class="list-group-item">
-				My project Staging
-				<div class="pull-right">
-					<a href="#" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-				</div>
-			</li>
-			<li class="list-group-item">
-				My project Production
+		<ul id="tyk-token-list" class="list-group">
+			<li class="list-group-item" v-for="token in tokens">
+				{{ token.token_name }}
 				<div class="pull-right">
 					<a href="#" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
 				</div>

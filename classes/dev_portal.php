@@ -159,6 +159,15 @@ class Tyk_Dev_Portal
 	}
 
 	/**
+	 * Get user tokens
+	 * @return array
+	 */
+	public function get_user_tokens() {
+		$user = new Tyk_Portal_User();
+		wp_send_json_success($user->get_access_tokens());
+	}
+
+	/**
 	 * Create a role "developer"
 	 * 
 	 * @return void
