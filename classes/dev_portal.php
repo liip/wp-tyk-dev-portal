@@ -121,9 +121,9 @@ class Tyk_Dev_Portal
 			try {
 				//$apiManager = new Tyk_API_Manager();
 
-				$key_request = new Tyk_Key_Request();
+				$key_request = new Tyk_Token();
 				$user = new Tyk_Portal_User();
-				$key_request->send($user, $_POST['api']);
+				$key_request->request($user, $_POST['api']);
 
 				// when keys are approved automatically
 				if (TYK_AUTO_APPROVE_KEY_REQUESTS) {
