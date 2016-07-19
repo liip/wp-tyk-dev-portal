@@ -24,10 +24,3 @@
 
 ## Key approval
 When `TYK_AUTO_APPROVE_KEY_REQUESTS` is set to `true` developers may register for access tokens autonomously, they will be approved automatically. When set to `false` the key requests must be manually approved by an administrator in the Tyk dashboard. There is no handling for the follow-up, the key (or a rejection message) must be emailed to the developer manually.
-
-## Anderes
-
-Diesen Teil der Anleitung auslagern an einen anderen Ort. Hat nichts mit dem Plugin zu tun.
-
-1. *ODPCH temporär* theme aktivieren
-2. Die automatisch erstellte Seite "Dashboard" bearbeiten und Template auf *Developer Dashboard* setzen
