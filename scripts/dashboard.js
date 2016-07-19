@@ -45,6 +45,9 @@
 						}
 						else {
 							self.hasError = true;
+							if (console && console.error) {
+								console.error(result);
+							}
 						}
 						self.inProgress = false;
 					});
