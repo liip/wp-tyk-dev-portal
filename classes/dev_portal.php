@@ -54,13 +54,24 @@ class Tyk_Dev_Portal
 		 * Hook into wordpress "onregister" of a user and register the
 	 	 * user as a tyk developer if the user has the "developer" role
 		 */
-		add_action('user_register', array($this, 'register_user_with_tyk'), 10, 1);
+		add_action('user_register', array($this, 'register_user_with_tyk'));
 
 		// Process ajax actions
 		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
 
 		add_action('wp_loaded', array($this, 'register_scripts'));
+		add_action('wp_loaded', array($this, 'environment_is_ready'));
+	}
+
+	/**
+	 * Make sure environment is ready for our plugin
+	 * 
+	 * @return void
+	 */
+	public function environment_is_ready() {
+		// make sure we have a tyk user in case registration failed
+		$this->register_user_with_tyk();
 	}
 
 	/**
@@ -69,6 +80,8 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_scripts() {
+		$this->register_user_with_tyk();
+
 		// enqueue vue.js
 		$vue_file = (WP_DEBUG === true)
 			? 'vue.js'
@@ -91,9 +104,9 @@ class Tyk_Dev_Portal
 	 * @param integer $user_id
 	 * @return void
 	 */
-	public function register_user_with_tyk($user_id) {
+	public function register_user_with_tyk($user_id = null) {
 		$user = new Tyk_Portal_User($user_id);
-		if ($user->is_developer() && !$user->has_tyk_id()) {
+		if ($user->is_logged_in() && !$user->has_tyk_id()) {
 			$user->register_with_tyk();
 		}
 	}

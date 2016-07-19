@@ -47,6 +47,15 @@ class Tyk_Portal_User
 	}
 
 	/**
+	 * Check if we're dealing with a logged in user
+	 * 
+	 * @return boolean
+	 */
+	public function is_logged_in() {
+		return is_a($this->user, 'WP_User');
+	}
+
+	/**
 	 * Check if current user is logged in and is a developer
 	 * 
 	 * @return boolean
