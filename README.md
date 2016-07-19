@@ -8,12 +8,13 @@
 4. Configure ProfilePress settings:
 	* Redirections / Login: Dashboard
 	* Redirections / Logout: Log In
-4. In Tyk Dashboard: *System Management > Policies*
+5. In Tyk Dashboard: *System Management > Policies*
 	* Name your policies accordingly, these will be shown to user for access token registration
 	* Tag policies that developers may register for with `allow_registration`
 	* Create a dedicated management user at *System Management > Users*, save, then generate an access
 	token for this user on the same page.
-5. Configure Tyk in `wp-config.php`:
+6. Review portal settings page
+7. Configure Tyk in `wp-config.php`:
 `<key>` is the access token you created in step 4.
 ```php
     define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );
