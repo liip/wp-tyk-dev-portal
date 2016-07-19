@@ -70,16 +70,16 @@ class Tyk_Dev_Portal
 	 */
 	public function register_scripts() {
 		// enqueue vue.js
-		$vue_file = (WP_LOCAL_DEV === true)
+		$vue_file = (WP_DEBUG === true)
 			? 'vue.js'
 			: 'vue.min.js';
-		$vue_ver = (WP_LOCAL_DEV === true)
+		$vue_ver = (WP_DEBUG === true)
 			? time()
 			: 1;
 		wp_register_script('vue', tyk_dev_portal_plugin_url('scripts/vendor/' . $vue_file), array(), $vue_ver, true);
 		
 		// enqueue dashboard.js
-		$dashboard_ver = (WP_LOCAL_DEV === true)
+		$dashboard_ver = (WP_DEBUG === true)
 			? time()
 			: 1;
 		wp_register_script('dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
