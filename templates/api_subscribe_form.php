@@ -8,44 +8,57 @@
 			<template v-if="tokens">
 				<li class="list-group-item" v-for="token in tokens">
 					{{ token.token_name }}
-					<div class="pull-right">
-						<a href="#" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-					</div>
+					<!--<div class="pull-right">
+						<a href="#" v-on:click="revokeToken(token.token_id, $event)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+					</div>-->
 				</li>
 			</template>
 			<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
 		</ul>
 	</div>
 
-	<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+	<div id="tyk-request-token">
+		<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 
-	<div>
-		<div id="tyk-subscribe-success" class="hidden alert alert-info"></div>
-		<div id="tyk-subscribe-error" class="hidden alert alert-danger"></div>
-	</div>
-
-	<div class="form-group">
-		<label for="tyk-token-name" class="col-xs-2"><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
-		<div class="col-xs-10">
-			<input type="text" name="token_name" class="form-control" id="tyk-token-name" placeholder="<?php _e('Give this token a name', Tyk_Dev_Portal::TEXT_DOMAIN)?>" />
+		<div>
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" transition="expand">
+				{{message}}
+			</div>
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  transition="expand">
+				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+			</div>
 		</div>
-	</div>	
 
-	<div class="form-group">
-		<label for="tyk-api-select" class="col-xs-2"><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
-		<div class="col-xs-10">
-			<select name="api" id="tyk-api-select" class="form-control">
-			<?php foreach (Tyk_API_Manager::available_apis() as $policy): ?>
-				<option value="<?php print $policy['id']?>"><?php print $policy['name']?></option>
-			<?php endforeach; ?>
-			</select>
+		<div class="form-group">
+			<label for="tyk-token-name" class="col-xs-2"><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+			<div class="col-xs-10">
+				<input type="text" v-model="token_name" name="token_name" class="form-control" id="tyk-token-name" placeholder="<?php _e('Give this token a name', Tyk_Dev_Portal::TEXT_DOMAIN)?>" />
+			</div>
+		</div>	
+
+		<div class="form-group">
+			<label for="tyk-api-select" class="col-xs-2"><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+			<div class="col-xs-10">
+				<select name="api" id="tyk-api-select" class="form-control" v-model="api">
+					<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN)?></option>
+				<?php foreach (Tyk_API_Manager::available_apis() as $policy): ?>
+					<option value="<?php print $policy['id']?>"><?php print $policy['name']?></option>
+				<?php endforeach; ?>
+				</select>
+			</div>
 		</div>
-	</div>
 
-
-	<div class="form-group">
-		<div class="col-xs-10 col-xs-offset-2">
-			<input type="submit" id="btn-tyk-api-subscribe" class="btn btn-primary" value="<?php _e('Request an access token', Tyk_Dev_Portal::TEXT_DOMAIN)?>">						
+		<div class="form-group">
+			<div class="col-xs-10 col-xs-offset-2">
+				<button v-on:click="register" :disabled="inProgress" v-if="formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
+					<template v-if="inProgress">
+						<?php _e('loading...', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+					</template>
+					<template v-else>
+						<?php _e('Request an access token', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+					</template>
+				</button>					
+			</div>
 		</div>
 	</div>
 
