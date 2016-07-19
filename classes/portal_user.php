@@ -94,6 +94,23 @@ class Tyk_Portal_User
 	}
 
 	/**
+	 * Get a single access token
+	 * 
+	 * @param  string $token_id
+	 * @return Tyk_Token
+	 */
+	public function get_access_token($token_id) {
+		$tokens = $this->get_access_tokens();
+		foreach ($tokens as $token) {
+			if ($token['token_id'] == $token_id) {
+				return new Tyk_Token($token);
+			}
+		}
+		// if we get here, we didn't find the token
+		throw new OutOfBoundsException('Invalid token id');
+	}
+
+	/**
 	 * Get user's access tokens
 	 * 
 	 * @return array

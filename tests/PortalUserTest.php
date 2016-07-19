@@ -86,4 +86,32 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$this->assertFalse($found);
 		$this->assertEquals(count($tokens), 2);
 	}
+
+	// test getting a token
+	function testGetExistingToken() {
+		$user = $this->createPortalUser();
+		// save a token
+		$testToken = array(
+			'api_id' => 'api-id',
+			'token_name' => 'Unittest Token',
+			'token_id' => 'token-id-4',
+			);
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);
+
+		$token = $user->get_access_token('token-id-4');
+
+		$this->assertInstanceOf('Tyk_Token', $token);
+		// note: the token name isn't relevant for the Tyk_Token class
+		$this->assertEquals($token->get_id(), $testToken['token_id']);
+		$this->assertEquals($token->get_policy(), $testToken['api_id']);
+	}
+
+	/**
+	 * test that you can't get a on existent token
+	 * @expectedException OutOfBoundsException
+	 */
+	function testGetNonExistentToken() {
+		$user = $this->createPortalUser();
+		$user->get_access_token("surely this won't work");
+	}
 }
