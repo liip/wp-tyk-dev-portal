@@ -5,7 +5,7 @@
 	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 	<div class="panel-body">
 		<ul id="tyk-token-list" class="list-group">
-			<template v-if="tokens">
+			<template v-if="tokens.length">
 				<li class="list-group-item" v-for="token in tokens">
 					{{ token.token_name }}
 					<!--<div class="pull-right">
