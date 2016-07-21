@@ -1,33 +1,4 @@
-# How to activate
+# This repo has moved
 
-1. Activate *ProfilePress Lite* plugin
-2. Activate *Tyk Developer Portal* plugin. This should create the role "Developer" and the page "Dashboard".
-3. In WordPress: *Settings > General*
-	* *New User Default Role* = "Developer"
-	* *Membership* = "Anyone can register"
-4. Configure ProfilePress settings:
-	* Redirections / Login: Dashboard
-	* Redirections / Logout: Log In
-5. In Tyk Dashboard: *System Management > Policies*
-	* Name your policies accordingly, these will be shown to user for access token registration
-	* Tag policies that developers may register for with `allow_registration`
-	* Create a dedicated management user at *System Management > Users*, save, then generate an access
-	token for this user on the same page.
-6. Review portal settings page
-7. Configure Tyk in `wp-config.php`:
-`<key>` is the access token you created in step 4.
-```php
-    define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );
-    define( 'TYK_API_KEY', '<key>' );
-    define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );
-```
+It's new home is on [Github](https://github.com/liip/wp-tyk-dev-portal)!
 
-## Key approval
-When `TYK_AUTO_APPROVE_KEY_REQUESTS` is set to `true` developers may register for access tokens autonomously, they will be approved automatically. When set to `false` the key requests must be manually approved by an administrator in the Tyk dashboard. There is no handling for the follow-up, the key (or a rejection message) must be emailed to the developer manually.
-
-## Anderes
-
-Diesen Teil der Anleitung auslagern an einen anderen Ort. Hat nichts mit dem Plugin zu tun.
-
-1. *ODPCH temporär* theme aktivieren
-2. Die automatisch erstellte Seite "Dashboard" bearbeiten und Template auf *Developer Dashboard* setzen
