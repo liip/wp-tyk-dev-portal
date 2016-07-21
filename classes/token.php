@@ -2,7 +2,6 @@
 
 /**
  * This class represents a key/token request for a Tyk API policy
- * @todo  rename this file to token.php
  */
 class Tyk_Token
 {
