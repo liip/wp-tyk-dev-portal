@@ -195,4 +195,20 @@ class Tyk_Portal_User
 			trigger_error(sprintf('Could not register user for API: %s', $e->getMessage()), E_USER_WARNING);
 		}
 	}
+
+	/**
+	 * Fetch developer data from Tyk
+	 * 
+	 * @return stdClass
+	 */
+	public function fetch_from_tyk() {
+		try {
+			$tyk = new Tyk_API();
+			$developer = $tyk->get(sprintf('/portal/developers/%s', $this->get_tyk_id()));
+			return $developer;
+		}
+		catch (Exception $e) {
+			trigger_error(sprintf('Could not fetch developer from API: %s', $e->getMessage()), E_USER_WARNING);
+		}
+	}
 }

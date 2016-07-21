@@ -114,4 +114,13 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$user = $this->createPortalUser();
 		$user->get_access_token("surely this won't work");
 	}
+
+	// test if we can pull user data from tyk
+	function testFetchUserFromTyk() {
+		$user = $this->createPortalUser();
+
+		$developer = $user->fetch_from_tyk();
+		$this->assertInstanceOf('stdClass', $developer);
+		$this->assertEquals($developer->id, $user->get_tyk_id());
+	}
 }
