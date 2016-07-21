@@ -39,12 +39,12 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$testToken = array(
 			'api_id' => 'api-id',
 			'token_name' => 'Unittest Token',
-			'token_id' => 'token-id',
+			'hash' => 'token-id',
 			);
-		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['hash']);
 
 		// save it again to check that it updates and doesn't duplicate
-		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);		
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['hash']);		
 
 		// get all tokens
 		$tokens = $user->get_access_tokens();
@@ -79,7 +79,7 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$tokens = $user->get_access_tokens();
 		$found = false;
 		foreach ($tokens as $token) {
-			if ($token['token_id'] == 'token-id-2') {
+			if ($token['hash'] == 'token-id-2') {
 				$found = true;
 			}
 		}
@@ -94,15 +94,15 @@ class TykPortalUserTest extends Tyk_Dev_Portal_Testcase {
 		$testToken = array(
 			'api_id' => 'api-id',
 			'token_name' => 'Unittest Token',
-			'token_id' => 'token-id-4',
+			'hash' => 'token-id-4',
 			);
-		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['token_id']);
+		$user->save_access_token($testToken['api_id'], $testToken['token_name'], $testToken['hash']);
 
-		$token = $user->get_access_token('token-id-4');
+		$token = $user->get_access_token($testToken['hash']);
 
 		$this->assertInstanceOf('Tyk_Token', $token);
 		// note: the token name isn't relevant for the Tyk_Token class
-		$this->assertEquals($token->get_id(), $testToken['token_id']);
+		$this->assertEquals($token->get_hash(), $testToken['hash']);
 		$this->assertEquals($token->get_policy(), $testToken['api_id']);
 	}
 

@@ -7,8 +7,8 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	function testKeyRequest() {
 		$user = $this->createPortalUser();
 		
-		$token = new Tyk_Token();
-		$token->request($user, TYK_TEST_API_POLICY);
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
 
 		// it's hard to check if the key is valid, but let's make sure 
 		// it's not empty and is at leaast 5 chars long
@@ -24,8 +24,8 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	function testInvalidKeyRequest() {
 		$user = $this->createPortalUser();
 		
-		$token = new Tyk_Token();
-		$token->request($user, 'invalid api');
+		$token = new Tyk_Token($user, 'invalid api');
+		$token->request();
 		print $token->get_id();
 	}*/
 
@@ -34,14 +34,16 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	function testKeyApproval() {
 		$user = $this->createPortalUser();
 
-		$token = new Tyk_Token();
-		$token->request($user, TYK_TEST_API_POLICY);
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
 		$token->approve();
 		
 		// it's hard to check if the token is valid, but let's make sure 
 		// it's not empty and is at leaast 5 chars long
 		$this->assertNotEmpty($token->get_key());
 		$this->assertTrue(strlen($token->get_key()) > 5);
+		$this->assertNotEmpty($token->get_hash());
+		$this->assertTrue(strlen($token->get_hash()) > 5);
 	}
 
 	/**
@@ -51,8 +53,8 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	function testEmptyKeyApproval() {
 		$user = $this->createPortalUser();
 
-		$token = new Tyk_Token();
-		$token->request($user, TYK_TEST_API_POLICY);
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
 		// let's set the internal id to something invalid
 		$token->set_id(null);
 		$token->approve();
@@ -65,8 +67,8 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	function testInvalidKeyApproval() {
 		$user = $this->createPortalUser();
 
-		$token = new Tyk_Token();
-		$token->request($user, TYK_TEST_API_POLICY);
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
 		// let's set the internal id to an id that isn't on tyk
 		$token->set_id('not an actual id');
 		$token->approve();
@@ -77,7 +79,8 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	function testInvalidTokenInstantiation() {
-		$token = new Tyk_Token(array('foo' => 'bar'));
+		$user = $this->createPortalUser();
+		$token = Tyk_Token::init(array('foo' => 'bar'), $user);
 	}
 
 	// test revoking a key

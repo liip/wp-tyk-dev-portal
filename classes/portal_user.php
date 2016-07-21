@@ -70,14 +70,14 @@ class Tyk_Portal_User
 	 * 
 	 * @param  string $api_id ID of tyk API policy
 	 * @param  string $token_name User-given name of token
-	 * @param  string $token_id Access token ID
+	 * @param  string $hash Token hash
 	 * @return void
 	 */
-	public function save_access_token($api_id, $token_name, $token_id) {
+	public function save_access_token($api_id, $token_name, $hash) {
 		$data = array(
-			'api_id' => sanitize_text_field($api_id),
+			'api_id'     => sanitize_text_field($api_id),
 			'token_name' => sanitize_text_field($token_name),
-			'token_id' => sanitize_text_field($token_id),
+			'hash'       => sanitize_text_field($hash),
 			);
 
 		// check if token already exists
@@ -85,8 +85,8 @@ class Tyk_Portal_User
 
 		$key = false;
 		if (count($tokens)) {
-			$ids = wp_list_pluck($tokens, 'token_id');
-			$key = array_search($token_id, $ids);
+			$ids = wp_list_pluck($tokens, 'hash');
+			$key = array_search($hash, $ids);
 		}
 
 		// this is a new token
@@ -105,14 +105,14 @@ class Tyk_Portal_User
 	/**
 	 * Get a single access token
 	 * 
-	 * @param  string $token_id
+	 * @param  string $hash
 	 * @return Tyk_Token
 	 */
-	public function get_access_token($token_id) {
+	public function get_access_token($hash) {
 		$tokens = $this->get_access_tokens();
 		foreach ($tokens as $token) {
-			if ($token['token_id'] == $token_id) {
-				return new Tyk_Token($token);
+			if ($token['hash'] == $hash) {
+				return Tyk_Token::init($token, $this);
 			}
 		}
 		// if we get here, we didn't find the token
@@ -135,13 +135,13 @@ class Tyk_Portal_User
 	/**
 	 * Delete an access token by it's ID
 	 * 
-	 * @param  string $token_id
+	 * @param  string $hash
 	 * @return void
 	 */
-	public function delete_access_token($token_id) {
+	public function delete_access_token($hash) {
 		$tokens = $this->get_access_tokens();
 		for ($i = 0; $i < count($tokens); $i++) {
-			if ($tokens[$i]['token_id'] == $token_id) {
+			if ($tokens[$i]['hash'] == $hash) {
 				break;
 			}
 		}
@@ -205,6 +205,9 @@ class Tyk_Portal_User
 		try {
 			$tyk = new Tyk_API();
 			$developer = $tyk->get(sprintf('/portal/developers/%s', $this->get_tyk_id()));
+			if (!is_object($developer) || !isset($developer->id)) {
+				throw new Exception('Received invalid response');
+			}
 			return $developer;
 		}
 		catch (Exception $e) {

@@ -2,6 +2,9 @@
 
 /**
  * This class represents a key/token request for a Tyk API policy
+ *
+ * This class is a bit of a mess. It represents a key request and a token.
+ * Maybe we should refactor it into two classes that each serve one purpose.
  */
 class Tyk_Token
 {
@@ -13,9 +16,17 @@ class Tyk_Token
 
 	/**
 	 * Key/access token
+	 * This is the unhashed access token we show to user but do not save
 	 * @var string
 	 */
 	protected $key;
+
+	/**
+	 * Key/access token hash
+	 * This is the hashed access token we save
+	 * @var string
+	 */
+	protected $hash;
 
 	/**
 	 * API/policy id
@@ -30,18 +41,37 @@ class Tyk_Token
 	protected $api;
 
 	/**
-	 * Setup the class
+	 * Tyk portal user
+	 * @var Tyk_Portal_User
 	 */
-	public function __construct(array $token = null) {
+	protected $user;
+
+	/**
+	 * Setup the class
+	 *
+	 * @param Portal_User $user
+	 * @param string $policy
+	 */
+	public function __construct(Tyk_Portal_User $user, $policy) {
 		$this->api = new Tyk_API();
-		if (!is_null($token)) {
-			if (isset($token['token_id']) && isset($token['api_id'])) {
-				$this->id = $token['token_id'];
-				$this->policy = $token['api_id'];
-			}
-			else {
-				throw new InvalidArgumentException('Invalid token specified');
-			}
+		$this->user = $user;
+		$this->policy = $policy;
+	}
+
+	/**
+	 * Set an existing token
+	 * 
+	 * @param array $token
+	 * @param Portal_User $user
+	 */
+	public static function init(array $token, Tyk_Portal_User $user) {
+		if (isset($token['api_id']) && isset($token['hash'])) {
+			$instance = new Tyk_Token($user, $token['api_id']);
+			$instance->set_hash($token['hash']);
+			return $instance;
+		}
+		else {
+			throw new InvalidArgumentException('Invalid token specified');
 		}
 	}
 
@@ -74,6 +104,24 @@ class Tyk_Token
 	}
 
 	/**
+	 * Set the hashed token
+	 * 
+	 * @param string $hash
+	 */
+	public function set_hash($hash) {
+		$this->hash = $hash;
+	}
+
+	/**
+	 * Get the hashed token
+	 * 
+	 * @return string
+	 */
+	public function get_hash() {
+		return $this->hash;
+	}
+
+	/**
 	 * Get the api policy ID
 	 * 
 	 * @return string
@@ -85,14 +133,12 @@ class Tyk_Token
 	/**
 	 * Make a key request for a tyk api plan/policy
 	 *
-	 * @param Portal_User $user
-	 * @param string $policy
 	 * @return string
 	 */
-	public function request(Tyk_Portal_User $user, $policy) {
-		$key = $this->api->post('/portal/requests', array(
-			'by_user' => $user->get_tyk_id(),
-			'for_plan' => $policy,
+	public function request() {
+		$request_id = $this->api->post('/portal/requests', array(
+			'by_user' => $this->user->get_tyk_id(),
+			'for_plan' => $this->policy,
 			// it's possible to have key requests approved manually
 			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
 			// this is a bit absurd but tyk api doesn't set this by itself
@@ -100,8 +146,8 @@ class Tyk_Token
 			));
 
 		// save key request id
-		if (is_string($key)) {
-			$this->id = $key;
+		if (is_string($request_id)) {
+			$this->id = $request_id;
 		}
 		else {
 			throw new UnexpectedValueException('Received an invalid response for key request');
@@ -113,11 +159,11 @@ class Tyk_Token
 	 * 
 	 * Unfortunately, tyk api doesn't support making and approving a key
 	 * request in the same request, so this method must be invoked after
-	 * issuing {@link this::send()}.
+	 * issuing {@link this::request()}.
 	 *
 	 * @throws Exception When we don't get a token bac from API
-	 * 
-	 * @return string Actual access token
+	 *
+	 * @return void
 	 */
 	public function approve() {
 		if (!is_string($this->id) || empty($this->id)) {
@@ -126,9 +172,16 @@ class Tyk_Token
 
 		try {
 			$token = $this->api->put('/portal/requests/approve', $this->id);
+			$developer = $this->user->fetch_from_tyk();
+
 			if (is_object($token) && isset($token->RawKey)) {
 				$this->key = $token->RawKey;
-				return $this->key;
+
+				if (is_object($developer) && isset($developer->subscriptions)) {
+					if (isset($developer->subscriptions->{$this->policy})) {
+						$this->hash = $developer->subscriptions->{$this->policy};
+					}
+				}
 			}
 			else {
 				throw new Exception('Could not register for API');

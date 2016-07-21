@@ -132,21 +132,19 @@ class Tyk_Dev_Portal
 		// @todo check if this is a valid api
 		if (isset($_POST['api'])) {
 			try {
-				//$apiManager = new Tyk_API_Manager();
-
-				$key_request = new Tyk_Token();
 				$user = new Tyk_Portal_User();
-				$key_request->request($user, $_POST['api']);
+				$token = new Tyk_Token($user, $_POST['api']);
+				$token->request();
 
 				// when keys are approved automatically
 				if (TYK_AUTO_APPROVE_KEY_REQUESTS) {
-					$key_request->approve();
-					// save the access token information (not the actual token) to the user
-					$user->save_access_token($_POST['api'], $_POST['token_name'], $key_request->get_key());
+					$token->approve();
+					// save the access token information
+					$user->save_access_token($_POST['api'], $_POST['token_name'], $token->get_hash());
 
 					$message = sprintf(
 						__('Your token for this API is: %s. We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN), 
-						$key_request->get_key()
+						$token->get_key()
 						);
 				}
 				// when keys await manual approval
@@ -154,7 +152,7 @@ class Tyk_Dev_Portal
 					$message = sprintf(
 						__('Your key request is pending review. You will receive an Email when your request is processed. Your request id is %s. This is not your access token. Please refer to the request ID when contacting us by Email.', 
 						Tyk_Dev_Portal::TEXT_DOMAIN),
-						$key_request->get_id()
+						$token->get_id()
 						);
 				}
 
