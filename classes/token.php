@@ -143,6 +143,7 @@ class Tyk_Token
 			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
 			// this is a bit absurd but tyk api doesn't set this by itself
 			'date_created' => date('c'),
+			'version' => 'v2',
 			));
 
 		// save key request id
@@ -173,8 +174,7 @@ class Tyk_Token
 		try {
 			$token = $this->api->put('/portal/requests/approve', $this->id);
 			$developer = $this->user->fetch_from_tyk();
-
-			if (is_object($token) && isset($token->RawKey)) {
+			if (is_object($token) && isset($token->RawKey) && !empty($token->RawKey)) {
 				$this->key = $token->RawKey;
 
 				if (is_object($developer) && isset($developer->subscriptions)) {
@@ -184,7 +184,7 @@ class Tyk_Token
 				}
 			}
 			else {
-				throw new Exception('Could not register for API');
+				throw new Exception('Could not approve token request');
 			}
 		}
 		catch (Exception $e) {
