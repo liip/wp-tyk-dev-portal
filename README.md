@@ -24,3 +24,12 @@
 
 ## Key approval
 When `TYK_AUTO_APPROVE_KEY_REQUESTS` is set to `true` developers may register for access tokens autonomously, they will be approved automatically. When set to `false` the key requests must be manually approved by an administrator in the Tyk dashboard. There is no handling for the follow-up, the key (or a rejection message) must be emailed to the developer manually.
+
+## Contributing
+
+### Unit testing
+
+1. Document how to install wp-cli stuff
+2. Document bootstrap.php or add to repo
+3. Document creating cloud account and configuring policy and api key
+4. Document `TYK_TEST_API_POLICY`
