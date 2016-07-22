@@ -133,6 +133,8 @@ class Tyk_Token
 	/**
 	 * Make a key request for a tyk api plan/policy
 	 *
+	 * @throws UnexpectedValueException When we get an invalid response from API
+	 * 
 	 * @return string
 	 */
 	public function request() {
@@ -162,7 +164,8 @@ class Tyk_Token
 	 * request in the same request, so this method must be invoked after
 	 * issuing {@link this::request()}.
 	 *
-	 * @throws Exception When we don't get a token bac from API
+	 * @throws InvalidArgumentException When the key request ID is missing
+	 * @throws UnexpectedValueException When we don't get a token back from API
 	 *
 	 * @return void
 	 */
