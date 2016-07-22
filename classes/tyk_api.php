@@ -95,6 +95,33 @@ class Tyk_API
 		}
 		else {
 			throw new Exception('Received invalid response from API');
+		}
+	}
+
+	/**
+	 * Send a delete request to Tyk API
+	 * 
+	 * @param string $path
+	 *
+	 * @throws Exception When API sends invalid response
+	 * 
+	 * @return stdClass
+	 */
+	public function delete($path) {
+		$url = $this->get_url_for_path($path);
+
+		$api_response = wp_remote_request($url, array(
+			'method' => 'DELETE',
+			'headers' => array(
+				'Authorization' => TYK_API_KEY,
+			)));
+
+		$response = $this->parse_response($api_response);
+		if (is_object($response)) {
+			return $response;
+		}
+		else {
+			throw new Exception('Received invalid response from API');
 		}	
 	}
 

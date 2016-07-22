@@ -63,7 +63,9 @@
 		registerWidget: RegisterForToken,
 		el: '#tyk-token-list',
 		data: {
-			tokens: []
+			tokens: null,
+			message: '',
+			hasError: false
 		},
 		beforeCompile: function() {
 			self = this;
@@ -80,19 +82,42 @@
 			fetchTokens: function() {
 				var self = this;
 				$.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
-					if (typeof(result) == 'object' && result.data) {
+					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
 						self.tokens = result.data;
+					}
+					// reset tokens in case it was already set
+					else {
+						self.tokens = null;
 					}
 				});
 			},
 
 			/**
 			 * Revoke a token on tyk api
-			 * @param {string} token id
+			 * @param {string} token hash
 			 * @param {object} MouseEvent
 			 */
-			revokeToken: function(id, e) {
+			revokeToken: function(hash, e) {
 				e.preventDefault();
+				var data = {
+					action: 'revoke_token',
+					token: hash
+				};
+				var self = this;
+				$.post(scriptParams.actionUrl, data)
+					.done(function(result) {
+						if (result && result.success) {
+							console.log(result);
+							self.message = result.data.message;
+							self.fetchTokens();
+						}
+						else {
+							self.hasError = true;
+							if (console && console.error) {
+								console.error(result);
+							}
+						}
+					});
 			}	
 		}
 	});

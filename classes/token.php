@@ -68,6 +68,7 @@ class Tyk_Token
 		if (isset($token['api_id']) && isset($token['hash'])) {
 			$instance = new Tyk_Token($user, $token['api_id']);
 			$instance->set_hash($token['hash']);
+			$instance->set_name($token['token_name']);
 			return $instance;
 		}
 		else {
@@ -119,6 +120,25 @@ class Tyk_Token
 	 */
 	public function get_hash() {
 		return $this->hash;
+	}
+
+	/**
+	 * Set the name
+	 * 
+	 * @param string $name
+	 */
+	public function set_name($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * Get the name
+	 * Note: the name isn't always set, only when token is setup with self::init()
+	 * 
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
 	}
 
 	/**
@@ -188,6 +208,37 @@ class Tyk_Token
 			}
 			else {
 				throw new Exception('Could not approve token request');
+			}
+		}
+		catch (Exception $e) {
+			throw new UnexpectedValueException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Revoke (delete!) a token
+	 *
+	 * @throws InvalidArgumentException When this class doesn't have all the data it needs
+	 * @throws UnexpectedValueException When API does not respond as expected
+	 * 
+	 * @return boolean True when successful
+	 */
+	public function revoke() {
+		if (!is_string($this->policy) || !is_string($this->hash) || !is_a($this->user, 'Tyk_Portal_User')) {
+			throw new InvalidArgumentException('Missing token information');
+		}
+
+		try {
+			$response = $this->api->delete(sprintf('/portal/developers/key/%s/%s/%s',
+				$this->policy,
+				$this->hash,
+				$this->user->get_tyk_id()
+				));
+			if (is_object($response) && isset($response->Status) && $response->Status == 'OK') {
+				return true;
+			}
+			else {
+				throw new Exception('Received invalid response from API');
 			}
 		}
 		catch (Exception $e) {

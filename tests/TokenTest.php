@@ -84,12 +84,12 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 	}
 
 	// test revoking a key
-	/*function testRevokeKey() {
+	function testRevokeKey() {
 		$user = $this->createPortalUser();
 
 		// request a token
-		$token = new Tyk_Token();
-		$token->request($user, TYK_TEST_API_POLICY);
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
 		
 		// approve it
 		$token->approve();
@@ -97,5 +97,6 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 		$this->assertTrue(strlen($token->get_key()) > 5);
 
 		// revoke it
-	}*/
+		$this->assertTrue($token->revoke());
+	}
 }

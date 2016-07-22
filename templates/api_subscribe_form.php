@@ -2,24 +2,41 @@
 
 	<h2><?php _e('Dashboard', Tyk_Dev_Portal::TEXT_DOMAIN)?></h2>
 
-	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
-	<div class="panel-body">
-		<ul id="tyk-token-list" class="list-group">
-			<template v-if="tokens.length">
-				<li class="list-group-item" v-for="token in tokens">
-					{{ token.token_name }}
-					<!--<div class="pull-right">
-						<a href="#" v-on:click="revokeToken(token.token_id, $event)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-					</div>-->
-				</li>
-			</template>
-			<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
-		</ul>
+	<!-- list of user tokens -->
+	<div id="tyk-token-list">
+		<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+
+		<!-- area for messages -->
+		<div>
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" transition="expand">
+				{{message}}
+			</div>
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  transition="expand">
+				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+			</div>
+		</div>
+
+		<div class="panel-body">
+			<ul class="list-group">
+				<template v-if="tokens">
+					<li class="list-group-item" v-for="token in tokens">
+						{{ token.token_name }}
+						<div class="pull-right">
+							<a href="#" v-on:click="revokeToken(token.hash, $event)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+						</div>
+					</li>
+				</template>
+				<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
+			</ul>
+		</div>
 	</div>
 
+
+	<!-- request an access token for an api -->
 	<div id="tyk-request-token">
 		<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 
+		<!-- area for messages -->
 		<div>
 			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" transition="expand">
 				{{message}}
