@@ -8,10 +8,10 @@
 
 		<!-- area for messages -->
 		<div>
-			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" transition="expand">
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" v-cloak>
 				{{message}}
 			</div>
-			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  transition="expand">
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  v-cloak>
 				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 			</div>
 		</div>
@@ -38,10 +38,10 @@
 
 		<!-- area for messages -->
 		<div>
-			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" transition="expand">
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" v-cloak>
 				{{message}}
 			</div>
-			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  transition="expand">
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  v-cloak>
 				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 			</div>
 		</div>
