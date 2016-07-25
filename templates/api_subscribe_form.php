@@ -22,7 +22,7 @@
 					<li class="list-group-item" v-for="token in tokens">
 						{{ token.token_name }}
 						<div class="pull-right">
-							<a href="#" v-on:click="revokeToken(token.hash, $event)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<a href="#revoke" v-on:click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
 						</div>
 					</li>
 				</template>
@@ -67,7 +67,7 @@
 
 		<div class="form-group">
 			<div class="col-xs-10 col-xs-offset-2">
-				<button v-on:click="register" :disabled="inProgress" v-if="formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
+				<button v-on:click.prevent="register" :disabled="inProgress" v-if="formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
 					<template v-if="inProgress">
 						<?php _e('loading...', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 					</template>

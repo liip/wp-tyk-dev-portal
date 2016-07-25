@@ -23,10 +23,8 @@
 		methods: {
 			/**
 			 * Register for a token
-			 * @param {object} MouseEvent
 			 */
-			register: function(e) {
-				e.preventDefault();
+			register: function() {
 				this.inProgress = true;
 				var self = this;
 
@@ -95,10 +93,8 @@
 			/**
 			 * Revoke a token on tyk api
 			 * @param {string} token hash
-			 * @param {object} MouseEvent
 			 */
-			revokeToken: function(hash, e) {
-				e.preventDefault();
+			revokeToken: function(hash) {
 				var data = {
 					action: 'revoke_token',
 					token: hash
