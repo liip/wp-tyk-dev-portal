@@ -67,7 +67,7 @@
 
 		<div class="form-group">
 			<div class="col-xs-10 col-xs-offset-2">
-				<button v-on:click.prevent="register" :disabled="inProgress" v-if="formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
+				<button v-on:click.prevent="register" :disabled="inProgress || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
 					<template v-if="inProgress">
 						<?php _e('loading...', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 					</template>
