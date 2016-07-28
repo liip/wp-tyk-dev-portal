@@ -18,15 +18,18 @@
 
 		<div class="panel-body">
 			<ul class="list-group">
-				<template v-if="tokens">
-					<li class="list-group-item" v-for="token in tokens">
-						{{ token.token_name }}
-						<div class="pull-right">
-							<a href="#revoke" v-on:click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-						</div>
-					</li>
+				<li class="list-group-item" v-if="loading"><?php _e("Loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
+				<template v-else>
+					<template v-if="tokens">
+						<li class="list-group-item" v-for="token in tokens">
+							{{ token.token_name }}
+							<div class="pull-right">
+								<a href="#revoke" v-on:click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</li>
+					</template>
+					<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
 				</template>
-				<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
 			</ul>
 		</div>
 	</div>

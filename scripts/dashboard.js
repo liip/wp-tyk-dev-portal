@@ -63,10 +63,12 @@
 		data: {
 			tokens: null,
 			message: '',
-			hasError: false
+			hasError: false,
+			loading: false
 		},
 		beforeCompile: function() {
 			self = this;
+			self.loading = true;
 			this.fetchTokens();
 			// is this the proper way to do this?
 			this.$options.registerWidget.$on('registered', function() {
@@ -87,6 +89,7 @@
 					else {
 						self.tokens = null;
 					}
+					self.loading = false;
 				});
 			},
 
