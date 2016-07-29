@@ -13,6 +13,15 @@
 				inProgress: false
 			};
 		},
+		events: {
+			/**
+			 * Reset form fields after token was created
+			 */
+			'new-token': function() {
+				this.token_name = '';
+				this.api = '';
+			}
+		},
 		computed: {
 			/**
 			 * Check if register button should be shown
@@ -84,41 +93,53 @@
 			 * Request token form got a new token: refresh token list
 			 */
 			'new-token': function() {
-				this.fetchTokens();
+				this.updateFromServer();
+			},
+
+			/**
+			 * A token was deleted: refresh token list
+			 */
+			'deleted-token': function() {
+				this.updateFromServer();
 			}
 		},
 		beforeCompile: function() {
-			var self = this;
-			this.loading = true;
-
-			// we're loading until all requests are done
-			$.when( this.fetchApis() ).then(function() {
-				self.fetchTokens().done(function() {
-					// group tokens by api
-					$.each(self.tokens, function() {
-						if (!$.isArray(self.tokensByApi[this.api_id])) {
-							self.tokensByApi[this.api_id] = [];
-						}
-						self.tokensByApi[this.api_id].push(this);
-					});
-					self.loading = false;
-				});
-			});
+			this.updateFromServer();
 		},
 		methods: {
+			/**
+			 * Update tokens and apis from server
+			 */
+			updateFromServer: function() {
+				var self = this;
+				this.loading = true;
+
+				// we're loading until all requests are done
+				$.when( this.fetchApis() ).then(function() {
+					self.fetchTokens().done(function() {
+						// group tokens by api
+						$.each(self.tokens, function() {
+							if (!self.tokensByApi[this.api_id]) {
+								self.tokensByApi[this.api_id] = {};
+							}
+							self.tokensByApi[this.api_id][this.hash] = this;
+						});
+						self.loading = false;
+					});
+				});	
+			},
+
 			/**
 			 * Fetch tokens from server
 			 * @return {object} jQuery Deferred
 			 */
 			fetchTokens: function() {
 				var self = this;
+				this.tokens = null;
+				this.tokensByApi = {};
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
 					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
 						self.tokens = result.data;
-					}
-					else {
-						// reset tokens in case it was already set
-						self.tokens = null;
 					}
 				});
 			},
@@ -138,20 +159,19 @@
 
 			/**
 			 * Revoke a token on tyk api
-			 * @param {string} token hash
+			 * @param {object} token
 			 */
-			revokeToken: function(hash) {
+			revokeToken: function(token) {
 				var data = {
 					action: 'revoke_token',
-					token: hash
+					token: token.hash
 				};
 				var self = this;
 				$.post(scriptParams.actionUrl, data)
 					.done(function(result) {
 						if (result && result.success) {
-							console.log(result);
 							self.message = result.data.message;
-							self.fetchTokens();
+							self.$emit('deleted-token');
 						}
 						else {
 							self.hasError = true;
