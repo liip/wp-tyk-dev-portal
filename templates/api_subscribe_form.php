@@ -11,10 +11,10 @@
 
 	<!-- area for messages -->
 	<div v-cloak>
-		<div id="tyk-subscribe-success" class="alert alert-info" v-if="message">
+		<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" role="alert">
 			{{message}}
 		</div>
-		<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" >
+		<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" role="alert">
 			<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 		</div>
 	</div>
@@ -27,7 +27,7 @@
 					<li class="list-group-item" v-for="token in tokens">
 						{{ token.token_name }}
 						<div class="pull-right">
-							<a href="#revoke" v-on:click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+							<a href="#revoke" @click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
 						</div>
 					</li>
 				</template>
@@ -43,10 +43,11 @@
 
 			<!-- area for messages -->
 			<div v-cloak>
-				<div id="tyk-subscribe-success" class="alert alert-info" v-if="message">
+				<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="closeMessage"><span aria-hidden="true">&times;</span></button>
 					{{message}}
 				</div>
-				<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" >
+				<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" role="alert">
 					<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 				</div>
 			</div>
@@ -70,7 +71,7 @@
 
 			<div class="form-group">
 				<div class="col-xs-10 col-xs-offset-2">
-					<button v-on:click.prevent="register" :disabled="inProgress || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
+					<button @click.prevent="register" :disabled="inProgress || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
 						<template v-if="inProgress">
 							<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 						</template>

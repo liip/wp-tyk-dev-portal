@@ -51,6 +51,13 @@
 						}
 						self.inProgress = false;
 					});
+			},
+
+			/**
+			 * Reset the message
+			 */
+			closeMessage: function() {
+				this.message = '';
 			}
 		}
 	});
