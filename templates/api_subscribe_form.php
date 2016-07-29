@@ -1,4 +1,9 @@
+<style>
+	[v-cloak] { display: none; }
+</style>
+
 <form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="form-horizontal" method="post">
+
 
 	<h2><?php _e('Dashboard', Tyk_Dev_Portal::TEXT_DOMAIN)?></h2>
 
@@ -7,11 +12,11 @@
 		<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 
 		<!-- area for messages -->
-		<div>
-			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" v-cloak>
+		<div v-cloak>
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message">
 				{{message}}
 			</div>
-			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  v-cloak>
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" >
 				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 			</div>
 		</div>
@@ -40,11 +45,11 @@
 		<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 
 		<!-- area for messages -->
-		<div>
-			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" v-cloak>
+		<div v-cloak>
+			<div id="tyk-subscribe-success" class="alert alert-info" v-if="message">
 				{{message}}
 			</div>
-			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError"  v-cloak>
+			<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" >
 				<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 			</div>
 		</div>
