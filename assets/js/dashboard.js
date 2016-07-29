@@ -1,15 +1,16 @@
 ;(function($, Vue) {
 	/**
-	 * Register for API token component
+	 * Request token form component
 	 */
-	var RegisterForToken = new Vue({
-		el: '#tyk-request-token',
-		data: {
-			token_name: '',
-			api: '',
-			message: '',
-			hasError: false,
-			inProgress: false
+	var RequestTokenForm = Vue.extend({
+		data: function() {
+			return {
+				token_name: '',
+				api: '',
+				message: '',
+				hasError: false,
+				inProgress: false
+			};
 		},
 		computed: {
 			/**
@@ -39,7 +40,7 @@
 					.done(function(result) {
 						if (result && result.success) {
 							self.message = result.data.message;
-							self.$emit('registered');
+							self.$dispatch('new-token');
 						}
 						else {
 							self.hasError = true;
@@ -57,23 +58,27 @@
 	/**
 	 * List of user tokens component
 	 */
-	var UserTokenList = new Vue({
-		registerWidget: RegisterForToken,
-		el: '#tyk-token-list',
+	var Dashboard = new Vue({
+		el: '#tyk-dashboard',
+		components: {
+			'request-token-form': RequestTokenForm
+		},
 		data: {
 			tokens: null,
 			message: '',
 			hasError: false,
 			loading: false
 		},
+		events: {
+			/**
+			 * Request token form got a new token: refresh token list
+			 */
+			'new-token': function() {
+				this.fetchTokens();
+			}
+		},
 		beforeCompile: function() {
-			self = this;
-			self.loading = true;
 			this.fetchTokens();
-			// is this the proper way to do this?
-			this.$options.registerWidget.$on('registered', function() {
-				self.fetchTokens();
-			});
 		},
 		methods: {
 			/**
@@ -81,6 +86,7 @@
 			 */
 			fetchTokens: function() {
 				var self = this;
+				this.loading = true;
 				$.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
 					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
 						self.tokens = result.data;
