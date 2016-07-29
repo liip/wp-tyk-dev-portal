@@ -24,7 +24,7 @@
 		},
 		methods: {
 			/**
-			 * Register for a token
+			 * Request a token
 			 */
 			register: function() {
 				this.inProgress = true;
@@ -73,6 +73,7 @@
 		},
 		data: {
 			tokens: null,
+			tokensByApi: {},
 			message: '',
 			hasError: false,
 			loading: false,
@@ -91,8 +92,17 @@
 			this.loading = true;
 
 			// we're loading until all requests are done
-			$.when([ this.fetchTokens(), this.fetchApis() ]).done(function() {
-				self.loading = false;
+			$.when( this.fetchApis() ).then(function() {
+				self.fetchTokens().done(function() {
+					// group tokens by api
+					$.each(self.tokens, function() {
+						if (!$.isArray(self.tokensByApi[this.api_id])) {
+							self.tokensByApi[this.api_id] = [];
+						}
+						self.tokensByApi[this.api_id].push(this);
+					});
+					self.loading = false;
+				});
 			});
 		},
 		methods: {

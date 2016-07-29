@@ -24,12 +24,15 @@
 			<li class="list-group-item" v-if="loading"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
 			<template v-else>
 				<template v-if="tokens">
-					<li class="list-group-item" v-for="token in tokens">
-						{{ token.token_name }}
-						<div class="pull-right">
-							<a href="#revoke" @click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-						</div>
-					</li>
+					<template v-for="api in availableApis">
+						<li class="list-group-item"><h4 class="list-group-item-heading">{{ api.name }}</h4></li>
+						<li v-for="token in tokensByApi[api.id]" class="list-group-item">
+							{{ token.token_name }}
+							<div class="pull-right">
+								<a href="#revoke" @click.prevent="revokeToken(token.hash)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+							</div>
+						</li>
+					</template>
 				</template>
 				<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
 			</template>
