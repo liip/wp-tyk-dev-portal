@@ -23,7 +23,7 @@
 
 		<div class="panel-body">
 			<ul class="list-group">
-				<li class="list-group-item" v-if="loading"><?php _e("Loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
+				<li class="list-group-item" v-if="loading"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
 				<template v-else>
 					<template v-if="tokens">
 						<li class="list-group-item" v-for="token in tokens">
@@ -77,10 +77,10 @@
 			<div class="col-xs-10 col-xs-offset-2">
 				<button v-on:click.prevent="register" :disabled="inProgress || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
 					<template v-if="inProgress">
-						<?php _e('loading...', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+						<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 					</template>
 					<template v-else>
-						<?php _e('Request an access token', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+						<?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 					</template>
 				</button>
 			</div>
