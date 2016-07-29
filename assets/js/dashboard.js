@@ -1,15 +1,17 @@
 ;(function($, Vue) {
 	/**
-	 * Register for API token component
+	 * Request token form component
 	 */
-	var RegisterForToken = new Vue({
-		el: '#tyk-request-token',
-		data: {
-			token_name: '',
-			api: '',
-			message: '',
-			hasError: false,
-			inProgress: false
+	var RequestTokenForm = Vue.extend({
+		props: ['apis'],
+		data: function() {
+			return {
+				token_name: '',
+				api: '',
+				message: '',
+				hasError: false,
+				inProgress: false
+			};
 		},
 		computed: {
 			/**
@@ -39,7 +41,7 @@
 					.done(function(result) {
 						if (result && result.success) {
 							self.message = result.data.message;
-							self.$emit('registered');
+							self.$dispatch('new-token');
 						}
 						else {
 							self.hasError = true;
@@ -57,39 +59,63 @@
 	/**
 	 * List of user tokens component
 	 */
-	var UserTokenList = new Vue({
-		registerWidget: RegisterForToken,
-		el: '#tyk-token-list',
+	var Dashboard = new Vue({
+		el: '#tyk-dashboard',
+		components: {
+			'request-token-form': RequestTokenForm
+		},
 		data: {
 			tokens: null,
 			message: '',
 			hasError: false,
-			loading: false
+			loading: false,
+			availableApis: []
+		},
+		events: {
+			/**
+			 * Request token form got a new token: refresh token list
+			 */
+			'new-token': function() {
+				this.fetchTokens();
+			}
 		},
 		beforeCompile: function() {
-			self = this;
-			self.loading = true;
-			this.fetchTokens();
-			// is this the proper way to do this?
-			this.$options.registerWidget.$on('registered', function() {
-				self.fetchTokens();
+			var self = this;
+			this.loading = true;
+
+			// we're loading until all requests are done
+			$.when([ this.fetchTokens(), this.fetchApis() ]).done(function() {
+				self.loading = false;
 			});
 		},
 		methods: {
 			/**
 			 * Fetch tokens from server
+			 * @return {object} jQuery Deferred
 			 */
 			fetchTokens: function() {
 				var self = this;
-				$.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
+				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
 					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
 						self.tokens = result.data;
 					}
-					// reset tokens in case it was already set
 					else {
+						// reset tokens in case it was already set
 						self.tokens = null;
 					}
-					self.loading = false;
+				});
+			},
+
+			/**
+			 * Fetch available apis from server
+			 * @return {object} jQuery Deferred
+			 */
+			fetchApis: function() {
+				var self = this;
+				return $.getJSON(scriptParams.actionUrl, {action: 'get_available_apis'}).done(function(result) {
+					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+						self.availableApis = result.data;
+					}
 				});
 			},
 
