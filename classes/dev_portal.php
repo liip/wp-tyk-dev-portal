@@ -64,6 +64,7 @@ class Tyk_Dev_Portal
 		// Process ajax actions
 		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
+		add_action('wp_ajax_get_available_apis', array($this, 'get_available_apis'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
 
 		add_action('init', array($this, 'register_scripts'));
@@ -223,6 +224,15 @@ class Tyk_Dev_Portal
 	public function get_user_tokens() {
 		$user = new Tyk_Portal_User();
 		wp_send_json_success($user->get_access_tokens());
+	}
+
+	/**
+	 * Get available APIs
+	 * 
+	 * @return array
+	 */
+	public function get_available_apis() {
+		wp_send_json_success(Tyk_API_Manager::available_apis());
 	}
 
 	/**

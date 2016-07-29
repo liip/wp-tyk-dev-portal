@@ -3,6 +3,7 @@
 	 * Request token form component
 	 */
 	var RequestTokenForm = Vue.extend({
+		props: ['apis'],
 		data: function() {
 			return {
 				token_name: '',
@@ -67,7 +68,8 @@
 			tokens: null,
 			message: '',
 			hasError: false,
-			loading: false
+			loading: false,
+			availableApis: []
 		},
 		events: {
 			/**
@@ -78,24 +80,42 @@
 			}
 		},
 		beforeCompile: function() {
-			this.fetchTokens();
+			var self = this;
+			this.loading = true;
+
+			// we're loading until all requests are done
+			$.when([ this.fetchTokens(), this.fetchApis() ]).done(function() {
+				self.loading = false;
+			});
 		},
 		methods: {
 			/**
 			 * Fetch tokens from server
+			 * @return {object} jQuery Deferred
 			 */
 			fetchTokens: function() {
 				var self = this;
-				this.loading = true;
-				$.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
+				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
 					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
 						self.tokens = result.data;
 					}
-					// reset tokens in case it was already set
 					else {
+						// reset tokens in case it was already set
 						self.tokens = null;
 					}
-					self.loading = false;
+				});
+			},
+
+			/**
+			 * Fetch available apis from server
+			 * @return {object} jQuery Deferred
+			 */
+			fetchApis: function() {
+				var self = this;
+				return $.getJSON(scriptParams.actionUrl, {action: 'get_available_apis'}).done(function(result) {
+					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+						self.availableApis = result.data;
+					}
 				});
 			},
 
