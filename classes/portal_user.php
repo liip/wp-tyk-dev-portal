@@ -98,8 +98,8 @@ class Tyk_Portal_User
 			$tokens[$key] = $data;
 		}
 
-		// update key in user meta storage
-		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $tokens);
+		// re-index array and update key in user meta storage
+		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, array_values($tokens));
 	}
 
 	/**
@@ -140,14 +140,18 @@ class Tyk_Portal_User
 	 */
 	public function delete_access_token($hash) {
 		$tokens = $this->get_access_tokens();
-		for ($i = 0; $i < count($tokens); $i++) {
-			if ($tokens[$i]['hash'] == $hash) {
+		$found = false;
+		foreach ($tokens as $i => $token) {
+			if ($token['hash'] == $hash) {
+				$found = true;
 				break;
 			}
 		}
-		unset($tokens[$i]);
-		// update the dataset
-		update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, $tokens);
+		if ($found === true) {
+			unset($tokens[$i]);
+			// re-index array update the dataset
+			update_user_meta($this->user->ID, self::META_TYK_ACCESS_TOKENS_KEY, array_values($tokens));
+		}
 	}
 
 	/**
