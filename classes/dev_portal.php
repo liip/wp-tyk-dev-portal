@@ -18,6 +18,11 @@ class Tyk_Dev_Portal
 	const PLUGIN_NAME = 'Tyk Developer Portal';
 
 	/**
+	 * Version of this plugin
+	 */
+	const PLUGIN_VERSION = '1';
+
+	/**
 	 * Slug of the dashboard page
 	 */
 	const DASHBOARD_SLUG = 'dev-dashboard';
@@ -61,8 +66,10 @@ class Tyk_Dev_Portal
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
 
-		add_action('wp_loaded', array($this, 'register_scripts'));
-		add_action('wp_loaded', array($this, 'environment_is_ready'));
+		add_action('init', array($this, 'register_scripts'));
+		add_action('init', array($this, 'register_styles'));
+		add_action('wp', array($this, 'enqueue_assets'));
+		add_action('wp', array($this, 'environment_is_ready'));
 	}
 
 	/**
@@ -73,6 +80,31 @@ class Tyk_Dev_Portal
 	public function environment_is_ready() {
 		// make sure we have a tyk user in case registration failed
 		$this->register_user_with_tyk();
+	}
+
+	/**
+	 * Enqueue scripts and styles for the appropriate page
+	 *
+	 * We do this in 'wp' hook because it's after the theme has setup
+	 * and enqueued it's styles so we can react accordingly.
+	 * 
+	 * @return void
+	 */
+	public function enqueue_assets() {
+		// if this is our dashboard page, enqueue our assets
+		if (is_page(self::DASHBOARD_SLUG)) {
+			// enqueue and localize our dashboard script
+			wp_enqueue_script('tyk-dev-portal-dashboard');
+			$params = array(
+				'actionUrl' => esc_url(admin_url('admin-ajax.php')),
+				);
+			wp_localize_script('tyk-dev-portal-dashboard', 'scriptParams', $params);
+
+			// only enqueue our bootstrap styles if the current theme isn't using bootstrap
+			if (!wp_style_is('bootstrap', 'enqueued')) {
+				wp_enqueue_style('tyk-dev-portal-bootstrap');
+			}
+		}
 	}
 
 	/**
@@ -87,14 +119,29 @@ class Tyk_Dev_Portal
 			: 'vue.min.js';
 		$vue_ver = (WP_DEBUG === true)
 			? time()
-			: 1;
+			: self::PLUGIN_VERSION;
 		wp_register_script('vue', tyk_dev_portal_plugin_url('scripts/vendor/' . $vue_file), array(), $vue_ver, true);
 		
 		// enqueue dashboard.js
 		$dashboard_ver = (WP_DEBUG === true)
 			? time()
-			: 1;
-		wp_register_script('dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
+			: self::PLUGIN_VERSION;
+		wp_register_script('tyk-dev-portal-dashboard', tyk_dev_portal_plugin_url('scripts/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
+	}
+
+	/**
+	 * Register styles
+	 * 
+	 * Registers a minimal bootstrap theme that only contains the stuff we need
+	 * Note: this style is only enqueued if the activate theme does not enqueue a bootstrap file
+	 * 
+	 * @return void
+	 */
+	public function register_styles() {
+		$bootstrap_ver = (WP_DEBUG === true)
+			? time()
+			: self::PLUGIN_VERSION;
+		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $bootstrap_ver);
 	}
 
 	/**

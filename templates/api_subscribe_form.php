@@ -82,7 +82,7 @@
 					<template v-else>
 						<?php _e('Request an access token', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 					</template>
-				</button>					
+				</button>
 			</div>
 		</div>
 	</div>
