@@ -81,8 +81,6 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_scripts() {
-		$this->register_user_with_tyk();
-
 		// enqueue vue.js
 		$vue_file = (WP_DEBUG === true)
 			? 'vue.js'
