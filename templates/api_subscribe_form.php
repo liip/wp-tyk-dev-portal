@@ -23,7 +23,7 @@
 		<ul class="list-group">
 			<li class="list-group-item" v-if="loading"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
 			<template v-else>
-				<template v-if="tokensByApi">
+				<template v-if="tokens">
 					<template v-for="api in availableApis">
 						<li class="list-group-item"><h4 class="list-group-item-heading">{{ api.name }}</h4></li>
 						<li v-for="token in tokensByApi[api.id]" class="list-group-item">
