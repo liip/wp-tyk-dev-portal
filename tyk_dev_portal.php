@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Tyk Developer Portal
- * Description: Plugin to use your WordPress as a developer portal for Tyk.io
+ * Description: Integrates a developer portal of a Tyk API Gateway in your WordPress site
  * Author: Liip <be-dev@liip.ch>
  * Version: 1.0.0
  * Date: 04.07.2016

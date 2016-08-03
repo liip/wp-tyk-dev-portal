@@ -1,3 +1,10 @@
+/**
+ * Tyk Dev Portal Dashbaord Components
+ *
+ * As this is currently all we have in terms of js, we're keeping everything in one
+ * file. When our js codebase grows, we should consider spilitting it up into modules
+ * and adding a build step.
+ */
 ;(function($, Vue) {
 	/**
 	 * Request token form component
