@@ -44,8 +44,8 @@ class Tyk_Dev_Portal
 	 */
 	public function register_hooks() {
 		// in backend: register activation hook for this plugin
-		if (!is_admin()) {
-			register_activation_hook(__FILE__, array($this, 'activate_plugin'));
+		if (is_admin()) {
+			register_activation_hook(TYK_DEV_PORTAL_PLUGIN_FILE, array($this, 'activate_plugin'));
 		}
 	}
 
