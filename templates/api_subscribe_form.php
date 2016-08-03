@@ -2,8 +2,6 @@
 	[v-cloak] { display: none; }
 </style>
 
-<h2><?php _e('Dashboard', Tyk_Dev_Portal::TEXT_DOMAIN)?></h2>
-
 <div id="tyk-dashboard">
 
 	<!-- list of user tokens -->
