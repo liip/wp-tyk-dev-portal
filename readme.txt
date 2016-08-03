@@ -22,7 +22,7 @@ This plugin is a work in progress and currently offers the following features:
 * storage of token (references) by name and API policy
 * revoking of tokens by developer
 
-What this plugin does not (try to) offer:
+What this plugin does not offer:
 
 * Management of Tyk API Gateway (the Tyk Dashboard is best suited for that)
 * WordPress user registration (there are enough plugins that do that quite well)
@@ -66,7 +66,10 @@ define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 = Automatic key approval =
 When `TYK_AUTO_APPROVE_KEY_REQUESTS` is set to `true` in wp-config.php, key requests will be approved automatically by this plugin. That means a developer will request an access token on the Dashboard page of your WordPress (where this plugin is running) and they will be processed automatically. For this to work, make sure *Require key approval* is not active in your Tyk Dashboard at *Portal Management > Settings*.
 
-If you wish to approve key requests manually, set `TYK_AUTO_APPROVE_KEY_REQUESTS` to false and activate *Require key approval* mentioned above.
+If you wish to approve key requests manually, set `TYK_AUTO_APPROVE_KEY_REQUESTS` to false and activate *Require key approval* mentioned above. When a developer requests an access token, he will get a message with his key request ID. The further process is up to you. Key requests can be approved in the Tyk Dashboard at *Portal Management > Key Requests*. You could configure an email to be sent out in the Portal Management Settings or do it manually.
 
 = Custom dashboard page =
 The developer dashboard will displayed in the same layout as your other pages. If you wish to further customize the page, you can create a [custom page template](https://developer.wordpress.org/themes/template-files-section/page-template-files/page-templates/) and embed the dashboard by using this template tag: `<?php tyk_dev_portal_dashboard()?>`.
+
+= Styling =
+You may need to fix some styles as this plugin includes a subset of the [bootstrap](http://www.getbootstrap.com) styles with it and the styles of your theme may conflict with some of them.
