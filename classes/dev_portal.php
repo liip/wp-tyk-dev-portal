@@ -71,6 +71,15 @@ class Tyk_Dev_Portal
 	}
 
 	/**
+	 * Register any shortcodes
+	 * 
+	 * @return void
+	 */
+	public function register_shortcodes() {
+		add_shortcode('tyk_dev_dashboard', 'tyk_dev_portal_dashboard');
+	}
+
+	/**
 	 * Make sure environment is ready for our plugin
 	 * 
 	 * @return void
@@ -190,7 +199,7 @@ class Tyk_Dev_Portal
 		$page = array(
 			'post_title' => __('Developer Dashboard', self::TEXT_DOMAIN),
 			'post_name' => self::DASHBOARD_SLUG,
-			'post_content' => '',
+			'post_content' => '[tyk_dev_dashboard]',
 			'post_status' => 'publish',
 			'post_type' => 'page',
 			'post_author' => 1, // @todo get an admin user id here

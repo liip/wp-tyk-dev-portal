@@ -24,6 +24,7 @@ require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/template_tags.php';
 $plugin = new Tyk_Dev_Portal();
 $plugin->register_hooks();
 $plugin->register_actions();
+$plugin->register_shortcodes();
 
 /**
  * Get url to this plugin's dir

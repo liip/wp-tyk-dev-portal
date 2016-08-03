@@ -33,21 +33,22 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 
 == Installation ==
 
-1. Upload the plugin zip file or install the plugin through the WordPress plugins screen directly
-2. Optional: choose and install a plugin that offers a better registration experience for WordPress users. This plugin was tested with [ProfilePress](https://wordpress.org/plugins/ppress/) and [Profile Builder](https://wordpress.org/plugins/profile-builder/), it should work with most or any registration/profile plugin though.
-3. Activate the plugins through the 'Plugins' screen in WordPress. Activation of this plugin should have triggered the creation of the user role "Developer" an the page "Developer Dashboard".
-4. Setup your Tyk Gateway in the Tyk Dashboard: *System Management > Policies*
-	* Name your policies accordingly, these will be shown to user for access token registration
+* Upload the plugin zip file or install the plugin through the WordPress plugins screen directly
+* Optional: choose and install a plugin that offers a better registration experience for WordPress users. This plugin was tested with [ProfilePress](https://wordpress.org/plugins/ppress/) and [Profile Builder](https://wordpress.org/plugins/profile-builder/), it should work with most or any registration/profile plugin though.
+* Activate the plugins through the 'Plugins' screen in WordPress. Activation of this plugin should have triggered the creation of the user role "Developer" an the page "Developer Dashboard".
+* Setup your Tyk Gateway in the Tyk Dashboard (assuming you already configured an API and policy):
+	* Go to *System Management > Policies*
 	* Tag policies that developers may register for with `allow_registration`
-	* Create a dedicated management user at *System Management > Users*, save, then generate an access
-	token for this user on the same page.
-5. Review portal settings page
-6. Finally, add the following configuration to your `wp-config.php` file:
+	* Name your policies accordingly, these will be shown to user for access token registration
+	* Create a dedicated management user at *System Management > Users* (does not have to be an Admin), save, then generate an access
+	token for this user on the same page (*Tyk Dashboard API Access Credentials*)
+	* Go to *Portal Management > Settings* and make sure *Disable developer signup* is not active
+* Add the following configuration to your wp-config.php file:
 
 ```php
-define( 'TYK_API_ENDPOINT', 'http://odpch-api.begasoft.ch:3000/api/' );
-define( 'TYK_API_KEY', '8b259a9a2c3e493a69d4e6386ef33b30' );
-define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );
+define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
+define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
+define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 ```
 
 == Screenshots ==
@@ -59,3 +60,13 @@ define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );
 
 = 1.0 =
 * Initial release offering the features mentioned in the description
+
+== Further reading ==
+
+= Automatic key approval =
+When `TYK_AUTO_APPROVE_KEY_REQUESTS` is set to `true` in wp-config.php, key requests will be approved automatically by this plugin. That means a developer will request an access token on the Dashboard page of your WordPress (where this plugin is running) and they will be processed automatically. For this to work, make sure *Require key approval* is not active in your Tyk Dashboard at *Portal Management > Settings*.
+
+If you wish to approve key requests manually, set `TYK_AUTO_APPROVE_KEY_REQUESTS` to false and activate *Require key approval* mentioned above.
+
+= Custom dashboard page =
+The developer dashboard will displayed in the same layout as your other pages. If you wish to further customize the page, you can create a [custom page template](https://developer.wordpress.org/themes/template-files-section/page-template-files/page-templates/) and embed the dashboard by using this template tag: `<?php tyk_dev_portal_dashboard()?>`.
