@@ -43,6 +43,7 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 	* Create a dedicated management user at *System Management > Users* (does not have to be an Admin), save, then generate an access
 	token for this user on the same page (*Tyk Dashboard API Access Credentials*)
 	* Go to *Portal Management > Settings* and make sure *Disable developer signup* is not active
+	* Go to *Portal Management > Catalogue*, this is required because it does some setup work in the background, no need to do anything
 * Add the following configuration to your wp-config.php file:
 
 ```php
