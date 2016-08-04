@@ -54,7 +54,7 @@ define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 
 == Screenshots ==
 
-
+1. Developer Dashboard with token overview in WordPress frontend
 
 
 == Changelog ==
@@ -74,3 +74,7 @@ The developer dashboard will displayed in the same layout as your other pages. I
 
 = Styling =
 You may need to fix some styles as this plugin includes a subset of the [bootstrap](http://www.getbootstrap.com) styles with it and the styles of your theme may conflict with some of them.
+
+= i18n =
+This plugin is ready for translation and currently supports the following languages:
+* DE (German)
