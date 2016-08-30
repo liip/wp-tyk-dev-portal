@@ -11,6 +11,7 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('TYK_DEV_PORTAL_PLUGIN_PATH', dirname( __FILE__ ));
+define('TYK_DEV_PORTAL_PLUGIN_FILE', __FILE__);
 
 require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/dev_portal.php';
 require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/portal_user.php';
@@ -23,6 +24,7 @@ require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/template_tags.php';
 $plugin = new Tyk_Dev_Portal();
 $plugin->register_hooks();
 $plugin->register_actions();
+$plugin->register_shortcodes();
 
 /**
  * Get url to this plugin's dir

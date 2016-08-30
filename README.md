@@ -88,5 +88,6 @@ The developer dashboard will displayed in the same layout as your other pages. I
 You may need to fix some styles as this plugin includes a subset of the [bootstrap](http://www.getbootstrap.com) styles with it and the styles of your theme may conflict with some of them. Bootstrap is only included when your theme doesn't already include it.
 
 ### i18n
+
 This plugin is ready for translation and currently supports the following languages:
 * DE (German)
