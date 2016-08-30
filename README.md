@@ -5,7 +5,7 @@ Tags: api, api-management, tyk, liip
 Requires at least: 4.6 		
 Test up to: 4.6 	
 Stable tag: 4.6 	
-License: MIT
+License: MIT									
 License URI: https://opensource.org/licenses/MIT
 
 Integrates a developer portal of a Tyk API Gateway in your WordPress site
