@@ -33,3 +33,12 @@ $plugin->register_actions();
 function tyk_dev_portal_plugin_url($path) {
 	return plugin_dir_url(__FILE__) . $path;
 }
+
+/**
+ * load the localized strings
+ *
+ */
+function tyk_dev_portal_load_plugin_textdomain() {
+    load_plugin_textdomain( 'tyk-dev-portal', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'tyk_dev_portal_load_plugin_textdomain' );

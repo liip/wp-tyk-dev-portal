@@ -1,0 +1,115 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-tyk-dev-portal\n"
+"POT-Creation-Date: 2016-07-29 11:36+0200\n"
+"PO-Revision-Date: 2016-09-07 17:49+0200\n"
+"Last-Translator: Adrian Schlegel <adrian.schlegel@liip.ch>\n"
+"Language-Team: Team Amboss <be-dev@liip.ch>\n"
+"Language: de_CH\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: classes/dev_portal.php:192
+#, php-format
+msgid ""
+"Your token for this API is: %s. We will only show this once. Please save it "
+"somewhere now."
+msgstr ""
+"Dein Schlüssel für diese API ist: %s. Dieser Schlüssel kann nur einmal "
+"angezeigt werden, leg ihn bitte jetzt an einem sicheren Ort ab."
+
+#: classes/dev_portal.php:199
+#, php-format
+msgid ""
+"Your key request is pending review. You will receive an Email when your "
+"request is processed. Your request id is %s. This is not your access token. "
+"Please refer to the request ID when contacting us by Email."
+msgstr ""
+"Ihre Anfrage wird geprüft. Sie erhalten ein Email wenn Ihre Anfrage "
+"bearbeitet wurde. Ihre Anfrage ID ist: %s (dies ist kein Zugangs-Token für "
+"die API). Bitte geben Sie diese ID an falls Sie uns per Email kontaktieren."
+
+#: classes/dev_portal.php:215 classes/dev_portal.php:258
+msgid "Invalid request"
+msgstr "Ungültiger request"
+
+#: classes/dev_portal.php:253
+#, php-format
+msgid ""
+"Your token \"%s\" was revoked permanently and is invalidated effective "
+"immediately."
+msgstr ""
+"Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort "
+"ungültig."
+
+#: classes/dev_portal.php:267
+msgid "Developer"
+msgstr "Entwickler"
+
+#: classes/dev_portal.php:284
+msgid "Developer Dashboard"
+msgstr "Entwickler Dashboard"
+
+#: templates/api_subscribe_form.php:8
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: templates/api_subscribe_form.php:12
+msgid "My tokens"
+msgstr "Meine Schlüssel"
+
+#: templates/api_subscribe_form.php:20 templates/api_subscribe_form.php:53
+msgid "An error occurred. Please try again."
+msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
+
+#: templates/api_subscribe_form.php:26 templates/api_subscribe_form.php:80
+msgid "loading"
+msgstr "laden"
+
+#: templates/api_subscribe_form.php:32
+msgid "Revoke this token"
+msgstr "Schlüssel annullieren"
+
+#: templates/api_subscribe_form.php:36
+msgid "You don't have any tokens yet"
+msgstr "Du hast noch keine Schlüssel"
+
+#: templates/api_subscribe_form.php:45 templates/api_subscribe_form.php:83
+msgid "Request a token"
+msgstr "Schlüssel anfordern"
+
+#: templates/api_subscribe_form.php:58
+msgid "Name"
+msgstr "Name"
+
+#: templates/api_subscribe_form.php:60
+msgid "Give this token a name"
+msgstr "Gib diesem Schlüssel einen Namen"
+
+#: templates/api_subscribe_form.php:65
+msgid "API"
+msgstr "API"
+
+#: templates/api_subscribe_form.php:68
+msgid "-- please choose"
+msgstr "-- bitte wählen "
+
+#~ msgid "Loading"
+#~ msgstr "wird geladen"
+
+#~ msgid "loading..."
+#~ msgstr "laden…"
+
+#~ msgid "Your token for this API is: %s"
+#~ msgstr "Ihr token für diese Schnittstelle ist: %s"
+
+#~ msgid "We will only show this once. Please save it somewhere now."
+#~ msgstr ""
+#~ "Dies wird nur einmal angezeigt. Bitte speichern Sie ihr Zugangs-Token "
+#~ "jetzt an einem sicheren Ort ab."
