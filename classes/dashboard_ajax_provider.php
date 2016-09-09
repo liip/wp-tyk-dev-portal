@@ -72,8 +72,13 @@ class Tyk_Dashboard_Ajax_Provider
 	 * @return array
 	 */
 	public function get_user_tokens() {
-		$user = new Tyk_Portal_User();
-		wp_send_json_success($user->get_access_tokens());
+		try {
+			$user = new Tyk_Portal_User();
+			wp_send_json_success($user->get_access_tokens());
+		}
+		catch (Exception $e) {
+			wp_send_json_error(sprintf('An error occured: %s', $e->getMessage()));
+		}
 	}
 
 	/**
@@ -82,7 +87,12 @@ class Tyk_Dashboard_Ajax_Provider
 	 * @return array
 	 */
 	public function get_available_apis() {
-		wp_send_json_success(Tyk_API_Manager::available_apis());
+		try {
+			wp_send_json_success(Tyk_API_Manager::available_apis());
+		}
+		catch (Exception $e) {
+			wp_send_json_error(sprintf('An error occured: %s', $e->getMessage()));
+		}
 	}
 
 	/**

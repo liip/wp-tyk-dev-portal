@@ -145,8 +145,14 @@
 				this.tokens = null;
 				this.tokensByApi = {};
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
-					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+					if (typeof(result) == 'object' && result.success) {
 						self.tokens = result.data;
+					}
+					else {
+						self.hasError = true;
+						if (console && console.error) {
+							console.error(result);
+						}
 					}
 				});
 			},
@@ -158,8 +164,14 @@
 			fetchApis: function() {
 				var self = this;
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_available_apis'}).done(function(result) {
-					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+					if (typeof(result) == 'object' && result.success) {
 						self.availableApis = result.data;
+					}
+					else {
+						self.hasError = true;
+						if (console && console.error) {
+							console.error(result);
+						}
 					}
 				});
 			},
