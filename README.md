@@ -67,9 +67,10 @@ define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 
 The following changes are in planning:
 
-* do not allow registering for multiple API policies (as it's not supported by Tyk)
 * add option to not include bootstrap altogether
 * use catalogues on Tyk portal to group policies instead of tags
+* refactor dashboard a bit considering that there can't be more than 1 token per API anyway
+* ~~do not allow registering for multiple API policies (as it's not supported by Tyk)~~
 
 ## Further reading
 
