@@ -110,7 +110,9 @@ class Tyk_Dev_Portal
 
 			// only enqueue our bootstrap styles if the current theme isn't using bootstrap
 			if (!wp_style_is('bootstrap', 'enqueued')) {
-				wp_enqueue_style('tyk-dev-portal-bootstrap');
+				if (!defined('TYK_FORCE_DISABLE_BOOTSTRAP') || TYK_FORCE_DISABLE_BOOTSTRAP !== true) {
+					wp_enqueue_style('tyk-dev-portal-bootstrap');
+				}
 			}
 		}
 	}
