@@ -99,8 +99,9 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function enqueue_assets() {
+		$user = new Tyk_Portal_User;
 		// if this is our dashboard page, enqueue our assets
-		if (is_page(self::DASHBOARD_SLUG)) {
+		if ($user->is_logged_in() && is_page(self::DASHBOARD_SLUG)) {
 			// enqueue and localize our dashboard script
 			wp_enqueue_script('tyk-dev-portal-dashboard');
 			$params = array(

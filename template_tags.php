@@ -7,5 +7,8 @@
  * @return void
  */
 function tyk_dev_portal_dashboard() {
-	include_once TYK_DEV_PORTAL_PLUGIN_PATH . '/templates/api_subscribe_form.php';
+	$user = new Tyk_Portal_User;
+	if ($user->is_logged_in()) {
+		include_once TYK_DEV_PORTAL_PLUGIN_PATH . '/templates/api_subscribe_form.php';
+	}
 }
