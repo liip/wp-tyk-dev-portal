@@ -1,10 +1,10 @@
 # Tyk Dev Portal
 
-Contributors: chlab		
+Contributors: teamamboss, chlab		
 Tags: api, api-management, tyk, liip		
 Requires at least: 4.6 		
-Test up to: 4.6 	
-Stable tag: 4.6 	
+Tested up to: 4.6.1	
+Stable tag: 4.6.1	
 License: MIT										
 License URI: https://opensource.org/licenses/MIT
 
@@ -13,6 +13,8 @@ Integrates a developer portal of a Tyk API Gateway in your WordPress site
 ## Description
 
 If you are using the [Tyk API Gateway](http://www.tyk.io) and have a WordPress site you can use this plugin to integrate a developer portal into your site. This is handy when your API requires a complementary website with information e.g. about the service and you want the developer portal in the same place. It's main goal is to offer developer sign up and obtaining access tokens from your WordPress site.
+
+![Screenshot 1](./screenshot-1.png)
 
 This plugin is a work in progress and currently offers the following features:
 
@@ -47,13 +49,14 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 	* Go to *Portal Management > Catalogue*, this is required because it does some setup work in the background, no need to do anything
 * Add the following configuration to your wp-config.php file:
 
-```php
+
+`
 define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 // optional
 define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap styles
-```
+`
 
 ## Screenshots
 
@@ -61,7 +64,13 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 
 ## Changelog
 
-### 1.0
+### Version 1.1
+
+* fixed language loading
+* only allow 1 token per policy
+* added support to force-disable bootstrap styles
+
+### Version 1.0
 
 * Initial release offering the features mentioned in the description
 
