@@ -68,6 +68,7 @@ class Tyk_Dev_Portal
 		add_action('init', array($this, 'register_styles'));
 		add_action('wp', array($this, 'enqueue_assets'));
 		add_action('wp', array($this, 'environment_is_ready'));
+		add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 	}
 
 	/**
@@ -109,7 +110,9 @@ class Tyk_Dev_Portal
 
 			// only enqueue our bootstrap styles if the current theme isn't using bootstrap
 			if (!wp_style_is('bootstrap', 'enqueued')) {
-				wp_enqueue_style('tyk-dev-portal-bootstrap');
+				if (!defined('TYK_FORCE_DISABLE_BOOTSTRAP') || TYK_FORCE_DISABLE_BOOTSTRAP !== true) {
+					wp_enqueue_style('tyk-dev-portal-bootstrap');
+				}
 			}
 		}
 	}
@@ -149,6 +152,15 @@ class Tyk_Dev_Portal
 			? time()
 			: self::PLUGIN_VERSION;
 		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $bootstrap_ver);
+	}
+
+	/**
+	 * load the localized strings
+	 *
+	 * @return void
+	 */
+	public function load_plugin_textdomain() {
+	    load_plugin_textdomain(self::TEXT_DOMAIN, FALSE, basename(TYK_DEV_PORTAL_PLUGIN_PATH) . '/languages');
 	}
 
 	/**

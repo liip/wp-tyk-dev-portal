@@ -104,6 +104,8 @@ class Tyk_Portal_User
 
 	/**
 	 * Get a single access token
+	 *
+	 * @throws OutOfBoundsException When token id is invalid
 	 * 
 	 * @param  string $hash
 	 * @return Tyk_Token

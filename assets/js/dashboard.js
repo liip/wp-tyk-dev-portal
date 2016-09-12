@@ -10,7 +10,8 @@
 	 * Request token form component
 	 */
 	var RequestTokenForm = Vue.extend({
-		props: ['apis'],
+		props: ['apis', 'subscribedApis'],
+
 		data: function() {
 			return {
 				token_name: '',
@@ -20,6 +21,7 @@
 				inProgress: false
 			};
 		},
+
 		events: {
 			/**
 			 * Reset form fields after token was created
@@ -29,6 +31,7 @@
 				this.api = '';
 			}
 		},
+
 		computed: {
 			/**
 			 * Check if register button should be shown
@@ -38,7 +41,16 @@
 				return (this.token_name != '' && this.api != '');
 			}
 		},
+
 		methods: {
+			/**
+			 * Check if user is already subscribed to an api
+			 * @return {boolean}
+			 */
+			hasTokenForAPI: function(apiId) {
+				return ($.inArray(apiId, this.subscribedApis) >= 0);
+			},
+
 			/**
 			 * Request a token
 			 */
@@ -84,17 +96,21 @@
 	 */
 	var Dashboard = new Vue({
 		el: '#tyk-dashboard',
+		
 		components: {
 			'request-token-form': RequestTokenForm
 		},
+		
 		data: {
 			tokens: null,
-			tokensByApi: {},
 			message: '',
 			hasError: false,
 			loading: false,
-			availableApis: []
+			tokensByApi: {},
+			availableApis: [],
+			subscribedApis: []
 		},
+		
 		events: {
 			/**
 			 * Request token form got a new token: refresh token list
@@ -110,9 +126,11 @@
 				this.updateFromServer();
 			}
 		},
+		
 		beforeCompile: function() {
 			this.updateFromServer();
 		},
+
 		methods: {
 			/**
 			 * Update tokens and apis from server
@@ -128,6 +146,7 @@
 						$.each(self.tokens, function() {
 							if (!self.tokensByApi[this.api_id]) {
 								self.tokensByApi[this.api_id] = {};
+								self.subscribedApis.push(this.api_id);
 							}
 							self.tokensByApi[this.api_id][this.hash] = this;
 						});
@@ -145,8 +164,14 @@
 				this.tokens = null;
 				this.tokensByApi = {};
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
-					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+					if (typeof(result) == 'object' && result.success) {
 						self.tokens = result.data;
+					}
+					else {
+						self.hasError = true;
+						if (console && console.error) {
+							console.error(result);
+						}
 					}
 				});
 			},
@@ -158,8 +183,14 @@
 			fetchApis: function() {
 				var self = this;
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_available_apis'}).done(function(result) {
-					if (typeof(result) == 'object' && result.data && !$.isEmptyObject(result.data)) {
+					if (typeof(result) == 'object' && result.success) {
 						self.availableApis = result.data;
+					}
+					else {
+						self.hasError = true;
+						if (console && console.error) {
+							console.error(result);
+						}
 					}
 				});
 			},

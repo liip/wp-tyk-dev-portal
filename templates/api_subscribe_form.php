@@ -38,7 +38,7 @@
 	</div>
 
 	<!-- request an access token for an api -->
-	<request-token-form inline-template :apis="availableApis">
+	<request-token-form inline-template :apis="availableApis" :subscribed-apis.sync="subscribedApis">
 		<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="form-horizontal" method="post">
 			<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 
@@ -65,7 +65,7 @@
 				<div class="col-xs-10">
 					<select name="api" id="tyk-api-select" class="form-control" v-model="api">
 						<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN)?></option>
-						<option v-for="api in apis" value="{{ api.id }}">{{ api.name }}</option>
+						<option v-for="api in apis" value="{{ api.id }}" :disabled="hasTokenForAPI(api.id)">{{ api.name }}</option>
 					</select>
 				</div>
 			</div>

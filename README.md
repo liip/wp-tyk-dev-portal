@@ -51,6 +51,8 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
+// optional
+define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap styles
 ```
 
 ## Screenshots
@@ -67,9 +69,10 @@ define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 
 The following changes are in planning:
 
-* do not allow registering for multiple API policies (as it's not supported by Tyk)
-* add option to not include bootstrap altogether
 * use catalogues on Tyk portal to group policies instead of tags
+* refactor dashboard a bit considering that there can't be more than 1 token per API anyway
+* ~~add option to not include bootstrap altogether~~
+* ~~do not allow registering for multiple API policies (as it's not supported by Tyk)~~
 
 ## Further reading
 
@@ -85,7 +88,7 @@ The developer dashboard will displayed in the same layout as your other pages. I
 
 ### Styling
 
-You may need to fix some styles as this plugin includes a subset of the [bootstrap](http://www.getbootstrap.com) styles with it and the styles of your theme may conflict with some of them. Bootstrap is only included when your theme doesn't already include it.
+You may need to fix some styles as this plugin includes a subset of the [bootstrap](http://www.getbootstrap.com) styles with it and the styles of your theme may conflict with some of them. Bootstrap is only included when your theme doesn't already include it. You can set `TYK_FORCE_DISABLE_BOOTSTRAP` to `true` to force disable the bootstrap styles in case you need to.
 
 ### i18n
 
