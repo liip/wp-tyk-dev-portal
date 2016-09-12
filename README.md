@@ -1,6 +1,6 @@
 # Tyk Dev Portal
 
-Contributors: chlab		
+Contributors: teamamboss		
 Tags: api, api-management, tyk, liip		
 Requires at least: 4.6 		
 Test up to: 4.6 	
@@ -47,7 +47,7 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 	* Go to *Portal Management > Catalogue*, this is required because it does some setup work in the background, no need to do anything
 * Add the following configuration to your wp-config.php file:
 
-```php
+```
 define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
