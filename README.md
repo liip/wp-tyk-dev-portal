@@ -93,7 +93,7 @@ If you wish to approve key requests manually, set `TYK_AUTO_APPROVE_KEY_REQUESTS
 
 ### Custom dashboard page
 
-The developer dashboard will displayed in the same layout as your other pages. If you wish to further customize the page, you can create a [custom page template](https://developer.wordpress.org/themes/template-files-section/page-template-files/page-templates/) and embed the dashboard by using this template tag: `<?php tyk_dev_portal_dashboard()?>`.
+The developer dashboard will be displayed in the same layout as your other pages. If you wish to further customize the page, you can create a [custom page template](https://developer.wordpress.org/themes/template-files-section/page-template-files/page-templates/) and embed the dashboard by using this template tag: `<?php tyk_dev_portal_dashboard()?>`.
 
 ### Styling
 
