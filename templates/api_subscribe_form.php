@@ -1,5 +1,6 @@
 <style>
 	[v-cloak] { display: none; }
+	th.icon { width: 50px; }
 </style>
 
 <div id="tyk-dashboard">
@@ -18,23 +19,34 @@
 	</div>
 
 	<div class="panel-body">
-		<ul class="list-group">
-			<li class="list-group-item" v-if="loading"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?>...</li>
-			<template v-else>
-				<template v-if="tokens">
-					<template v-for="api in availableApis">
-						<li class="list-group-item"><h4 class="list-group-item-heading">{{ api.name }}</h4></li>
-						<li v-for="token in tokensByApi[api.id]" class="list-group-item">
-							{{ token.token_name }}
-							<div class="pull-right">
-								<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
-							</div>
-						</li>
-					</template>
-				</template>
-				<li class="list-group-item" v-else><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></li>
+		<table class="table">
+			<template v-if="tokens.length">
+				<thead>
+					<tr>
+						<th><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
+						<th><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
+						<th class="icon"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="token in tokens">
+						<td>{{ token.token_name }}</td>
+						<td>{{ getApiName(token.api_id) }}</td>
+						<td>
+							<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+						</td>
+					</tr>
+				</tbody>
 			</template>
-		</ul>
+			<tbody v-else>
+				<tr class="info" v-if="loading">
+					<td colspan="3"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?></td>
+				</tr>
+				<tr class="info" v-else>
+					<td colspan="3"><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 	<!-- request an access token for an api -->

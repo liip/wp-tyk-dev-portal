@@ -102,13 +102,21 @@
 		},
 		
 		data: {
-			tokens: null,
+			tokens: [],
 			message: '',
 			hasError: false,
 			loading: false,
-			tokensByApi: {},
 			availableApis: [],
-			subscribedApis: []
+		},
+
+		computed: {
+			/**
+			 * Get a list of subscribed APIs
+			 * @return {array}
+			 */
+			subscribedApis: function() {
+				return _.pluck(this.tokens, 'api_id');
+			}
 		},
 		
 		events: {
@@ -133,36 +141,34 @@
 
 		methods: {
 			/**
-			 * Update tokens and apis from server
+			 * Update all data from server
+			 * @return {void}
 			 */
 			updateFromServer: function() {
 				var self = this;
 				this.loading = true;
+				$.when( this.fetchTokens(), this.fetchApis() ).then(function() {
+					self.loading = false;
+				});
+			},
 
-				// we're loading until all requests are done
-				$.when( this.fetchApis() ).then(function() {
-					self.fetchTokens().done(function() {
-						// group tokens by api
-						$.each(self.tokens, function() {
-							if (!self.tokensByApi[this.api_id]) {
-								self.tokensByApi[this.api_id] = {};
-								self.subscribedApis.push(this.api_id);
-							}
-							self.tokensByApi[this.api_id][this.hash] = this;
-						});
-						self.loading = false;
-					});
-				});	
+			/**
+			 * Get api name from id
+			 * @return {string}
+			 */
+			getApiName: function(apiId) {
+				var api = _.findWhere(this.availableApis, { id: apiId });
+				return _.isObject(api)
+					? api.name
+					: '';
 			},
 
 			/**
 			 * Fetch tokens from server
-			 * @return {object} jQuery Deferred
+			 * @return {object} jQuery Promise
 			 */
 			fetchTokens: function() {
 				var self = this;
-				this.tokens = null;
-				this.tokensByApi = {};
 				return $.getJSON(scriptParams.actionUrl, {action: 'get_tokens'}).done(function(result) {
 					if (typeof(result) == 'object' && result.success) {
 						self.tokens = result.data;
@@ -178,7 +184,7 @@
 
 			/**
 			 * Fetch available apis from server
-			 * @return {object} jQuery Deferred
+			 * @return {object} jQuery Promise
 			 */
 			fetchApis: function() {
 				var self = this;

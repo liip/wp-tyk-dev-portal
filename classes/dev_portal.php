@@ -20,7 +20,7 @@ class Tyk_Dev_Portal
 	/**
 	 * Version of this plugin
 	 */
-	const PLUGIN_VERSION = '1';
+	const PLUGIN_VERSION = '1.2';
 
 	/**
 	 * Slug of the dashboard page
@@ -128,16 +128,17 @@ class Tyk_Dev_Portal
 		$vue_file = (WP_DEBUG === true)
 			? 'vue.js'
 			: 'vue.min.js';
-		$vue_ver = (WP_DEBUG === true)
+		$vendor_version = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vue_ver, true);
+		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vendor_version, true);
+		wp_register_script('underscore', tyk_dev_portal_plugin_url('assets/js/vendor/underscore.min.js'), array(), $vendor_version, true);
 		
 		// enqueue dashboard.js
 		$dashboard_ver = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_script('tyk-dev-portal-dashboard', tyk_dev_portal_plugin_url('assets/js/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
+		wp_register_script('tyk-dev-portal-dashboard', tyk_dev_portal_plugin_url('assets/js/dashboard.js'), array('jquery', 'vue', 'underscore'), $dashboard_ver, true);
 	}
 
 	/**
