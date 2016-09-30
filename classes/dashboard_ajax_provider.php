@@ -16,6 +16,7 @@ class Tyk_Dashboard_Ajax_Provider
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
 		add_action('wp_ajax_get_available_apis', array($this, 'get_available_policies'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
+		add_action('wp_ajax_get_token_usage', array($this, 'get_token_usage'));
 	}
 
 	/**
@@ -69,7 +70,7 @@ class Tyk_Dashboard_Ajax_Provider
 	/**
 	 * Get user tokens
 	 * 
-	 * @return array
+	 * @return void
 	 */
 	public function get_user_tokens() {
 		try {
@@ -85,7 +86,7 @@ class Tyk_Dashboard_Ajax_Provider
 	 * Get available policies
 	 * These are communicated as APIs to the user because that's what they're interested in
 	 * 
-	 * @return array
+	 * @return void
 	 */
 	public function get_available_policies() {
 		try {
@@ -99,7 +100,7 @@ class Tyk_Dashboard_Ajax_Provider
 	/**
 	 * Revoke a user token
 	 * 
-	 * @return array Array of remaining tokens
+	 * @return void
 	 */
 	public function revoke_token() {
 		if (isset($_POST['token'])) {
@@ -125,6 +126,25 @@ class Tyk_Dashboard_Ajax_Provider
 			wp_send_json_success(array(
 				'message' => $message,
 				));
+		}
+		wp_send_json_error(__('Invalid request'));
+	}
+
+	/**
+	 * Get usage quota
+	 * 
+	 * @return void
+	 */
+	public function get_token_usage() {
+		if (isset($_POST['token'])) {
+			try {
+				$user = new Tyk_Portal_User();
+				$token = Tyk_Token::init_from_key(sanitize_text_field($_POST['token']), $user);
+				wp_send_json_success($token->get_usage_quota());
+			}
+			catch (Exception $e) {
+				wp_send_json_error($e->getMessage());
+			}
 		}
 		wp_send_json_error(__('Invalid request'));
 	}

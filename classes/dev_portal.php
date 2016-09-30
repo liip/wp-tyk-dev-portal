@@ -109,6 +109,9 @@ class Tyk_Dev_Portal
 				);
 			wp_localize_script('tyk-dev-portal-dashboard', 'scriptParams', $params);
 
+			wp_enqueue_script('chartist');
+			wp_enqueue_style('chartist');
+
 			// only enqueue our bootstrap styles if the current theme isn't using bootstrap
 			if (!wp_style_is('bootstrap', 'enqueued')) {
 				if (!defined('TYK_FORCE_DISABLE_BOOTSTRAP') || TYK_FORCE_DISABLE_BOOTSTRAP !== true) {
@@ -133,6 +136,8 @@ class Tyk_Dev_Portal
 			: self::PLUGIN_VERSION;
 		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vendor_version, true);
 		wp_register_script('underscore', tyk_dev_portal_plugin_url('assets/js/vendor/underscore.min.js'), array(), $vendor_version, true);
+
+		wp_register_script('chartist', tyk_dev_portal_plugin_url('node_modules/chartist/dist/chartist.min.js'), array(), $vendor_version, false);
 		
 		// enqueue dashboard.js
 		$dashboard_ver = (WP_DEBUG === true)
@@ -150,10 +155,11 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_styles() {
-		$bootstrap_ver = (WP_DEBUG === true)
+		$style_ver = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $bootstrap_ver);
+		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $style_ver);
+		wp_register_style('chartist', tyk_dev_portal_plugin_url('node_modules/chartist/dist/chartist.min.css'), null, $style_ver);
 	}
 
 	/**
