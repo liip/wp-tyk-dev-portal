@@ -14,7 +14,7 @@ class Tyk_Dashboard_Ajax_Provider
 		// Process ajax actions
 		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
-		add_action('wp_ajax_get_available_apis', array($this, 'get_available_apis'));
+		add_action('wp_ajax_get_available_apis', array($this, 'get_available_policies'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
 	}
 
@@ -82,13 +82,14 @@ class Tyk_Dashboard_Ajax_Provider
 	}
 
 	/**
-	 * Get available APIs
+	 * Get available policies
+	 * These are communicated as APIs to the user because that's what they're interested in
 	 * 
 	 * @return array
 	 */
-	public function get_available_apis() {
+	public function get_available_policies() {
 		try {
-			wp_send_json_success(Tyk_API_Manager::available_apis());
+			wp_send_json_success(Tyk_API_Manager::available_policies());
 		}
 		catch (Exception $e) {
 			wp_send_json_error(sprintf('An error occured: %s', $e->getMessage()));
