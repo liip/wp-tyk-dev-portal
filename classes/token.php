@@ -50,12 +50,14 @@ class Tyk_Token
 	 * Setup the class
 	 *
 	 * @param Portal_User $user
-	 * @param string $policy
+	 * @param string $policy optional, not required for all actions
 	 */
-	public function __construct(Tyk_Portal_User $user, $policy) {
+	public function __construct(Tyk_Portal_User $user, $policy = null) {
 		$this->api = new Tyk_API();
 		$this->user = $user;
-		$this->policy = $policy;
+		if (!is_null($policy)) {
+			$this->policy = $policy;
+		}
 	}
 
 	/**
@@ -63,6 +65,7 @@ class Tyk_Token
 	 * 
 	 * @param array $token
 	 * @param Portal_User $user
+	 * @return Tyk_Token
 	 */
 	public static function init(array $token, Tyk_Portal_User $user) {
 		if (isset($token['api_id']) && isset($token['hash'])) {
@@ -74,6 +77,20 @@ class Tyk_Token
 		else {
 			throw new InvalidArgumentException('Invalid token specified');
 		}
+	}
+
+	/**
+	 * Setup token from the key
+	 * 
+	 * @param string $key
+	 * @param Tyk_Portal_User $user
+	 * @return Tyk_Token
+	 */
+	public static function init_from_key($key, Tyk_Portal_User $user) {
+		$token = new Tyk_Token($user);
+		$token->set_key($key);
+		return $token;
+
 	}
 
 	/**
@@ -102,6 +119,15 @@ class Tyk_Token
 	 */
 	public function get_key() {
 		return $this->key;
+	}
+
+	/**
+	 * Set the unhashed key
+	 * 
+	 * @param string $key
+	 */
+	public function set_key($key) {
+		$this->key = $key;
 	}
 
 	/**
@@ -239,6 +265,44 @@ class Tyk_Token
 			}
 			else {
 				throw new Exception('Received invalid response from API');
+			}
+		}
+		catch (Exception $e) {
+			throw new UnexpectedValueException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Get usage quota of this token
+	 * Requires the unhashed key of the token, unfortunately.
+	 *
+	 * @throws InvalidArgumentException When the key isn't set
+	 * @throws UnexpectedValueException When API does not respond as expected
+	 * 
+	 * @return object Usage data
+	 */
+	public function get_usage_quota() {
+		if (!is_string($this->key)) {
+			throw new InvalidArgumentException('Missing token key');
+		}
+
+		try {
+			// first: we need an api id on which to request the tokens
+			// sound weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
+			$apiManager = new Tyk_API_Manager;
+			$apis = $apiManager->available_apis();
+			if (is_array($apis)) {
+				$firstApi = array_shift($apis);
+				$response = $this->api->get(sprintf('/apis/%s/keys/%s',
+					$firstApi->api_definition->api_id,
+					$this->key
+				));
+				if (is_object($response) && isset($response->data)) {
+					return $response->data;
+				}
+				else {
+					throw new Exception('Received invalid response from API');
+				}
 			}
 		}
 		catch (Exception $e) {

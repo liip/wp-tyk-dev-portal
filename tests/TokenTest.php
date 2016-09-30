@@ -2,7 +2,7 @@
 
 require_once 'TykDevPortalTestcase.php';
 
-class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
+class TokenTest extends Tyk_Dev_Portal_Testcase {
 	// test making a key request for an api policy
 	function testKeyRequest() {
 		$user = $this->createPortalUser();
@@ -98,5 +98,20 @@ class KeyRequestTest extends Tyk_Dev_Portal_Testcase {
 
 		// revoke it
 		$this->assertTrue($token->revoke());
+	}
+
+	// test getting usage quota of a token
+	function testUsageQuota() {
+		$user = $this->createPortalUser();
+
+		// create a token first
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
+		$token->approve();
+
+		$token = Tyk_Token::init_from_key($token->get_key(), $user);
+		$data = $token->get_usage_quota();
+
+		$this->assert(is_object($data));
 	}
 }
