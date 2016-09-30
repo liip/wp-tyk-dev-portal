@@ -384,12 +384,17 @@
   "css": [
     "type.less",
     "grid.less",
+    "tables.less",
     "forms.less",
     "buttons.less",
     "glyphicons.less",
+    "navs.less",
     "alerts.less",
-    "list-group.less"
+    "list-group.less",
+    "component-animations.less"
   ],
-  "js": [],
-  "customizerUrl": "https://getbootstrap.com/customize/?id=ec7e94d897413215c160e2b602496b68"
+  "js": [
+    "tab.js"
+  ],
+  "customizerUrl": "https://getbootstrap.com/customize/?id=38e82de47bacb1a273e8a2f31a1edcbf"
 }
