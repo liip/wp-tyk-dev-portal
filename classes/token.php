@@ -279,7 +279,7 @@ class Tyk_Token
 	 * @throws InvalidArgumentException When the key isn't set
 	 * @throws UnexpectedValueException When API does not respond as expected
 	 * 
-	 * @return object Usage data
+	 * @return object Usage quota
 	 */
 	public function get_usage_quota() {
 		if (!is_string($this->key)) {
@@ -288,7 +288,7 @@ class Tyk_Token
 
 		try {
 			// first: we need an api id on which to request the tokens
-			// sound weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
+			// sounds weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
 			$apiManager = new Tyk_API_Manager;
 			$apis = $apiManager->available_apis();
 			if (is_array($apis)) {
@@ -309,4 +309,37 @@ class Tyk_Token
 			throw new UnexpectedValueException($e->getMessage());
 		}
 	}
+
+	/**
+	 * Get usage stats for this token
+	 *
+	 * @throws InvalidArgumentException When the hash isn't set
+	 * @throws UnexpectedValueException When API does not respond as expected
+	 * 
+	 * @return object Usage data
+	 */
+	public function get_usage() {
+		if (!is_string($this->hash)) {
+			throw new InvalidArgumentException('Missing token hash');
+		}
+
+		try {
+			$response = $this->api->get(sprintf('/activity/keys/aggregate/%s/%s/%s?res=day',
+				$this->hash,
+				date('j/n/Y', strtotime('26.9.2016')),
+				date('j/n/Y')
+			));
+			if (is_object($response) && isset($response->data)) {
+				return $response->data;
+			}
+			else {
+				throw new Exception('Received invalid response from API');
+			}
+		}
+		catch (Exception $e) {
+			throw new UnexpectedValueException($e->getMessage());
+		}
+	}
 }
+
+

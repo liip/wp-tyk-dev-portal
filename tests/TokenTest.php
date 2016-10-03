@@ -114,4 +114,18 @@ class TokenTest extends Tyk_Dev_Portal_Testcase {
 
 		$this->assertTrue(is_object($data));
 	}
+
+	// test getting usage stats of a token
+	function testUsageStats() {
+		$user = $this->createPortalUser();
+
+		// create a token first
+		$token = new Tyk_Token($user, TYK_TEST_API_POLICY);
+		$token->request();
+		$token->approve();
+
+		$data = $token->get_usage();
+
+		$this->assertTrue(is_object($data));
+	}
 }

@@ -17,6 +17,7 @@ class Tyk_Dashboard_Ajax_Provider
 		add_action('wp_ajax_get_available_apis', array($this, 'get_available_policies'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
 		add_action('wp_ajax_get_token_usage', array($this, 'get_token_usage'));
+		add_action('wp_ajax_get_token_quota', array($this, 'get_token_quota'));
 	}
 
 	/**
@@ -135,12 +136,31 @@ class Tyk_Dashboard_Ajax_Provider
 	 * 
 	 * @return void
 	 */
-	public function get_token_usage() {
+	public function get_token_quota() {
 		if (isset($_POST['token'])) {
 			try {
 				$user = new Tyk_Portal_User();
 				$token = Tyk_Token::init_from_key(sanitize_text_field($_POST['token']), $user);
 				wp_send_json_success($token->get_usage_quota());
+			}
+			catch (Exception $e) {
+				wp_send_json_error($e->getMessage());
+			}
+		}
+		wp_send_json_error(__('Invalid request'));
+	}
+
+	/**
+	 * Get token usage
+	 * 
+	 * @return void
+	 */
+	public function get_token_usage() {
+		if (isset($_POST['token'])) {
+			try {
+				$user = new Tyk_Portal_User();
+				$token = $user->get_access_token($_POST['token']);
+				wp_send_json_success($token->get_usage());
 			}
 			catch (Exception $e) {
 				wp_send_json_error($e->getMessage());
