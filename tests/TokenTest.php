@@ -112,6 +112,6 @@ class TokenTest extends Tyk_Dev_Portal_Testcase {
 		$token = Tyk_Token::init_from_key($token->get_key(), $user);
 		$data = $token->get_usage_quota();
 
-		$this->assert(is_object($data));
+		$this->assertTrue(is_object($data));
 	}
 }
