@@ -88,7 +88,6 @@ class Tyk_API
 			'headers' => array(
 				'Authorization' => TYK_API_KEY,
 			)));
-
 		$response = $this->parse_response($api_response);
 		if (is_object($response)) {
 			return $response;
@@ -101,10 +100,9 @@ class Tyk_API
 	/**
 	 * Send a delete request to Tyk API
 	 * 
-	 * @param string $path
-	 *
 	 * @throws Exception When API sends invalid response
 	 * 
+	 * @param string $path
 	 * @return stdClass
 	 */
 	public function delete($path) {
@@ -139,6 +137,10 @@ class Tyk_API
 		$http_code = wp_remote_retrieve_response_code($api_response);
 		$message = wp_remote_retrieve_response_message($api_response);
 		if ($http_code != 200) {
+			// see if we have more information
+			if (is_object($response) && isset($response->Message)) {
+				$message .= sprintf(': %s', $response->Message);
+			}
 			throw new Exception($message);
 		}
 		return $response;
