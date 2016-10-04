@@ -156,10 +156,10 @@ class Tyk_Dashboard_Ajax_Provider
 	 * @return void
 	 */
 	public function get_token_usage() {
-		if (isset($_POST['token'])) {
+		if (isset($_GET['token'])) {
 			try {
 				$user = new Tyk_Portal_User();
-				$token = $user->get_access_token($_POST['token']);
+				$token = $user->get_access_token($_GET['token']);
 				wp_send_json_success($token->get_usage());
 			}
 			catch (Exception $e) {

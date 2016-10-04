@@ -1,6 +1,6 @@
 <style>
 	[v-cloak] { display: none; }
-	th.icon { width: 50px; }
+	th.icon { width: 110px; }
 </style>
 
 <div id="tyk-dashboard">
@@ -10,7 +10,7 @@
 			<a href="#tokens-tab" aria-controls="tokens-tab" role="tab" data-toggle="tab">Tokens</a>
 		</li>
 		<li role="presentation">
-			<a href="#usage-tab" aria-controls="usage-tab" role="tab" data-toggle="tab">Usage</a>
+			<a href="#usage-tab" v-el:usage-tab aria-controls="usage-tab" role="tab" data-toggle="tab">Usage</a>
 		</li>
 	</ul>
 
@@ -45,7 +45,12 @@
 							<td>{{ token.token_name }}</td>
 							<td>{{ getApiName(token.api_id) }}</td>
 							<td>
-								<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>"><span class="glyphicon glyphicon-trash"></span></a>
+								<a href="#" @click.prevent="showUsageTab(token)" class="btn text-info" title="<?php _e('Show usage', Tyk_Dev_Portal::TEXT_DOMAIN)?>">
+									<span class="glyphicon glyphicon-stats"></span>
+								</a>
+								<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>">
+									<span class="glyphicon glyphicon-trash"></span>
+								</a>
 							</td>
 						</tr>
 					</tbody>
@@ -95,8 +100,8 @@
 
 					<div class="form-group">
 						<div class="col-xs-10 col-xs-offset-2">
-							<button @click.prevent="register" :disabled="inProgress || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
-								<template v-if="inProgress">
+							<button @click.prevent="register" :disabled="busy || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
+								<template v-if="busy">
 									<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 								</template>
 								<template v-else>
@@ -109,26 +114,44 @@
 			</request-token-form>
 		</div> <!-- /#tokens -->
 
-
 		<!-- usage tab -->
 		<div class="tab-pane" id="usage-tab">
-			<usage-tab inline-template>
-	
+
+			<usage-tab inline-template :tokens="tokens">
 				<div class="row">
+					
+					<!-- usage over time -->
 					<div class="col-md-6">
-						<div class="input-group" style="margin-top: 2em;">
-							<input type="text" class="form-control" v-model="key" placeholder="Paste your token here" @keyup.enter="getUsage()">
+						<h3><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+						<select class="form-control" v-model="token">
+							<option value="">--</option>
+							<option v-for="token in tokens" value="{{ token.hash }}">{{ token.token_name }}</option>
+						</select>
+						<canvas v-el:usage></canvas>
+					</div>
+
+					<!-- usage quotas -->
+					<div class="col-md-6">
+						<h3><?php _e('Quota', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+						<div class="input-group">
+							<input type="text" class="form-control" v-model="key" placeholder="Please paste your token here" @keyup.enter="getQuotas()">
 							<span class="input-group-btn">
-								<button class="btn btn-default" :disabled="busy" @click="getUsage()"><?php _e('Go', Tyk_Dev_Portal::TEXT_DOMAIN)?></button>
+								<button class="btn btn-default" :disabled="busy" @click="getQuotas()">
+									<template v-if="busy">
+										<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+									</template>
+									<template v-else>
+										<?php _e('Go', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+									</template>
+								</button>
 							</span>
 						</div>
 					</div>
 				</div>
 
-				<div class="row" v-if="usage">
-					<h3><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+				<div class="row"><!--  v-if="usage" -->
 					<div class="col-md-6">
-						<div id="tyk-usage-chart" v-el:chart></div>
+						<canvas id="tyk-usage-chart" v-el:chart></canvas>
 					</div>
 				</div>
 

@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/liip/wp-tyk-dev-portal#readme",
   "dependencies": {
-    "chartist": "^0.9.8"
+    "chart.js": "^2.3.0"
   }
 }

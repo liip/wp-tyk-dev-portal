@@ -1,11 +1,11 @@
 /**
  * Tyk Dev Portal Dashbaord Components
  *
- * As this is currently all we have in terms of js, we're keeping everything in one
- * file. When our js codebase grows, we should consider spilitting it up into modules
+ * To keep things simple, we're keeping everything in one file for now.
+ * When our js codebase grows, we should consider spilitting it up into modules
  * and adding a build step.
  */
-;(function($, Vue, Chartist) {
+;(function($, Vue, Chart, _) {
 	/**
 	 * Request token form component
 	 */
@@ -18,7 +18,7 @@
 				api: '',
 				message: '',
 				hasError: false,
-				inProgress: false
+				busy: false
 			};
 		},
 
@@ -55,7 +55,7 @@
 			 * Request a token
 			 */
 			register: function() {
-				this.inProgress = true;
+				this.busy = true;
 				var self = this;
 
 				var data = { 
@@ -77,7 +77,7 @@
 								console.error(result);
 							}
 						}
-						self.inProgress = false;
+						self.busy = false;
 					});
 			},
 
@@ -95,11 +95,25 @@
 	 * Usage quota tab component
 	 */
 	var UsageTab = Vue.extend({
+		props: ['tokens'],
+
 		data: function() {
 			return {
 				key: null,
-				usage: null,
-				busy: false
+				busy: false,
+				token: null
+			}
+		},
+
+		watch: {
+			token: function(token) {
+				this.fetchUsage(token);
+			}
+		},
+
+		events: {
+			showUsage: function(token) {
+				this.fetchUsage(token.hash);
 			}
 		},
 
@@ -107,16 +121,55 @@
 			/**
 			 * Get token usage data from server
 			 */
-			getUsage: function() {
+			getQuotas: function() {
 				var self = this;
 				this.busy = true;
 
 				var data = {
-					action: 'get_token_usage',
+					action: 'get_token_quota',
 					token: this.key
 				};
 
 				$.post(scriptParams.actionUrl, data)
+					.done(function(response) {
+						if (response.data) {
+							self.showQuotas(response.data);
+						}
+					});
+			},
+
+			/**
+			 * Show usage quota
+			 * @param {object} data
+			 */
+			showQuotas: function(data) {
+				var self = this;
+
+				this.$nextTick(function() {
+					new Chart(this.$els.chart, {
+						type: 'doughnut',
+						data: {
+							labels: ['Used', 'Remaining'],
+							datasets: [{
+								data: [(data.quota_max-data.quota_remaining), data.quota_remaining],
+								backgroundColor: ['#ffc115', '#05348B']
+							}]
+						}
+					});
+					this.busy = false;
+				});
+			},
+
+			/**
+			 * Fetch usage data from server and display it
+			 */
+			fetchUsage: function(hash) {
+				var self = this;
+				var data = {
+					action: 'get_token_usage',
+					token: hash
+				};
+				$.get(scriptParams.actionUrl, data)
 					.done(function(response) {
 						if (response.data) {
 							self.showUsage(response.data);
@@ -125,26 +178,47 @@
 			},
 
 			/**
-			 * /
-			 * @param {object} data
+			 * Show usage data
+			 * @return {[type]}
 			 */
 			showUsage: function(data) {
-				var self = this;
-				this.usage = [
-					(data.quota_max-data.quota_remaining)*100,  // used
-					data.quota_max  // available (in total)
-					];
+				var success = [],
+					errors  = [],
+					labels  = [];
 
+				// get each "success" and "error" stat from the stack
+				_.each(data, function(stat) {
+					success.push(stat.success);
+					errors.push(stat.error);
+					if (stat.id) {
+						// @todo localize this?
+						labels.push(stat.id.day + '.' + stat.id.month + '.');
+					}
+				});
+
+				// build a line chart on next view render with this data
 				this.$nextTick(function() {
-					new Chartist.Pie(this.$els.chart, { series: this.usage }, {
-						donut: true,
-						donutWidth: 80,
-						startAngle: 270,
-						// total must be the doubled sum of all parts for a gauge chart
-						total: _.reduce(this.usage, function(a, b) { return a + b }) * 2,
-						showLabel: false
-					});	
-					this.busy = false;
+					new Chart(this.$els.usage, {
+						type: 'line',
+						data: {
+							labels: labels,
+							datasets: [
+								{
+									data: success,
+									backgroundColor: 'rgba(5,52,139,.6)',
+									label: 'Success',
+								},
+								{
+									data: errors,
+									backgroundColor: 'rgba(255,193,21,.6)',
+									label: 'Errors',
+								},
+							]
+						},
+						options: {
+							spanGaps: true
+						}
+					});
 				});
 			}
 		}
@@ -286,7 +360,15 @@
 							}
 						}
 					});
-			}	
+			},
+
+			/**
+			 * Activate usage tab
+			 */
+			showUsageTab: function(token) {
+				this.$broadcast('showUsage', token);
+				$(this.$els.usageTab).tab('show');
+			},	
 		}
 	});
-})(jQuery, Vue, Chartist);
+})(jQuery, Vue, Chart, _);
