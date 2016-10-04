@@ -324,12 +324,13 @@ class Tyk_Token
 		}
 
 		try {
-			$response = $this->api->get(sprintf('/activity/keys/aggregate/%s/%s/%s?res=day',
+			$response = $this->api->get(sprintf('/activity/keys/aggregate/%s/%s/%s',
 				$this->hash,
 				date('j/n/Y', strtotime('26.9.2016')),
 				date('j/n/Y')
-			));
-			if (is_object($response) && isset($response->data)) {
+			), array('res' => 'day'));
+
+			if (is_object($response) && property_exists($response, 'data')) {
 				return $response->data;
 			}
 			else {
