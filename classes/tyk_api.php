@@ -159,8 +159,8 @@ class Tyk_API
 			$qs = '?' . http_build_query($args);
 		}
 		return sprintf('%s/%s%s', 
-			TYK_API_ENDPOINT, 
-			$path,
+			rtrim(TYK_API_ENDPOINT, '/'), 
+			ltrim($path, '/'),
 			$qs
 			);
 	}
