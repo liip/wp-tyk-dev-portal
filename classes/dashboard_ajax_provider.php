@@ -158,9 +158,15 @@ class Tyk_Dashboard_Ajax_Provider
 	public function get_token_usage() {
 		if (isset($_GET['token'])) {
 			try {
+				$from_date = isset($_GET['from'])
+					? $_GET['from']
+					: null;
+				$to_date = isset($_GET['to'])
+					? $_GET['to']
+					: null;
 				$user = new Tyk_Portal_User();
 				$token = $user->get_access_token($_GET['token']);
-				wp_send_json_success($token->get_usage());
+				wp_send_json_success($token->get_usage($from_date, $to_date));
 			}
 			catch (Exception $e) {
 				wp_send_json_error($e->getMessage());

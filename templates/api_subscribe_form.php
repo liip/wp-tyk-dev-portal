@@ -123,10 +123,23 @@
 					<!-- usage over time -->
 					<div class="col-md-6">
 						<h3><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
-						<select class="form-control" v-model="token">
-							<option value="">--</option>
+						<select class="form-control" v-model="form.token">
+							<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN)?></option>
 							<option v-for="token in tokens" value="{{ token.hash }}">{{ token.token_name }}</option>
 						</select>
+						
+						<div class="row">
+							<div class="col-xs-6">
+								<label for="tyk-usage-from"><?php _e('From', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+								<input id="tyk-usage-from" type="date" class="form-control" v-model="form.fromDate" @blur="fetchUsage">
+							</div>
+
+							<div class="col-xs-6">
+								<label for="tyk-usage-to"><?php _e('To', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+								<input id="tyk-usage-to" type="date" class="form-control" v-model="form.toDate" @blur="fetchUsage">
+							</div>
+						</div>
+
 						<canvas v-el:usage></canvas>
 					</div>
 
@@ -136,8 +149,8 @@
 						<div class="input-group">
 							<input type="text" class="form-control" v-model="key" placeholder="Please paste your token here" @keyup.enter="getQuotas()">
 							<span class="input-group-btn">
-								<button class="btn btn-default" :disabled="busy" @click="getQuotas()">
-									<template v-if="busy">
+								<button class="btn btn-default" :disabled="form.busy" @click="getQuotas()">
+									<template v-if="form.busy">
 										<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
 									</template>
 									<template v-else>
@@ -146,12 +159,10 @@
 								</button>
 							</span>
 						</div>
-					</div>
-				</div>
 
-				<div class="row"><!--  v-if="usage" -->
-					<div class="col-md-6">
-						<canvas id="tyk-usage-chart" v-el:chart></canvas>
+						<div style="margin-top: 1em;">
+							<canvas id="tyk-usage-chart" v-el:chart></canvas>
+						</div>
 					</div>
 				</div>
 

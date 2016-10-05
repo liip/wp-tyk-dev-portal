@@ -4,6 +4,8 @@
  * To keep things simple, we're keeping everything in one file for now.
  * When our js codebase grows, we should consider spilitting it up into modules
  * and adding a build step.
+ *
+ * @todo  make colors configurable
  */
 ;(function($, Vue, Chart, _) {
 	/**
@@ -99,21 +101,31 @@
 
 		data: function() {
 			return {
+				// the selected token key
 				key: null,
-				busy: false,
-				token: null
+				// instance of chartist line chart
+				lineChart: null,
+				form: {
+					token: null,
+					fromDate: null,
+					toDate: null,
+					// is the form busy?
+					busy: false,
+				}
 			}
 		},
 
 		watch: {
-			token: function(token) {
-				this.fetchUsage(token);
+			'form.token': function() {
+				this.fetchUsage();
 			}
 		},
 
 		events: {
+			// list for an event from parent to show data
 			showUsage: function(token) {
-				this.fetchUsage(token.hash);
+				// this will trigger a reload of the data
+				this.form.token = token.hash;
 			}
 		},
 
@@ -123,13 +135,14 @@
 			 */
 			getQuotas: function() {
 				var self = this;
-				this.busy = true;
+				this.form.busy = true;
 
 				var data = {
 					action: 'get_token_quota',
 					token: this.key
 				};
 
+				// use a post request so the key doesn't show up in server logs
 				$.post(scriptParams.actionUrl, data)
 					.done(function(response) {
 						if (response.data) {
@@ -143,32 +156,41 @@
 			 * @param {object} data
 			 */
 			showQuotas: function(data) {
-				var self = this;
-
 				this.$nextTick(function() {
 					new Chart(this.$els.chart, {
 						type: 'doughnut',
 						data: {
-							labels: ['Used', 'Remaining'],
+							labels: [scriptParams.label_used, scriptParams.label_remaining],
 							datasets: [{
 								data: [(data.quota_max-data.quota_remaining), data.quota_remaining],
 								backgroundColor: ['#ffc115', '#05348B']
 							}]
 						}
 					});
-					this.busy = false;
+					this.form.busy = false;
 				});
 			},
 
 			/**
 			 * Fetch usage data from server and display it
+			 * Uses this.form params to filter data
 			 */
-			fetchUsage: function(hash) {
+			fetchUsage: function() {
 				var self = this;
 				var data = {
 					action: 'get_token_usage',
-					token: hash
+					token: this.form.token
 				};
+
+				// add from date
+				if (this.form.fromDate) {
+					data.from = this.form.fromDate;
+				}
+				// add to date
+				if (this.form.toDate) {
+					data.to = this.form.toDate;
+				}
+
 				$.get(scriptParams.actionUrl, data)
 					.done(function(response) {
 						if (response.data) {
@@ -196,29 +218,40 @@
 					}
 				});
 
+				// setup the chart data
+				var chartData = {
+					labels: labels,
+					datasets: [
+						{
+							data: success,	
+							backgroundColor: 'rgba(5,52,139,.6)',
+							label: scriptParams.label_success,
+						},
+						{
+							data: errors,
+							backgroundColor: 'rgba(255,193,21,.6)',
+							label: scriptParams.label_errors,
+						},
+					]
+				};
+
 				// build a line chart on next view render with this data
 				this.$nextTick(function() {
-					new Chart(this.$els.usage, {
-						type: 'line',
-						data: {
-							labels: labels,
-							datasets: [
-								{
-									data: success,
-									backgroundColor: 'rgba(5,52,139,.6)',
-									label: 'Success',
-								},
-								{
-									data: errors,
-									backgroundColor: 'rgba(255,193,21,.6)',
-									label: 'Errors',
-								},
-							]
-						},
-						options: {
-							spanGaps: true
-						}
-					});
+					// init chart from scratch
+					if (!this.lineChart) {
+						this.lineChart = new Chart(this.$els.usage, {
+							type: 'line',
+							data: chartData,
+							options: {
+								spanGaps: true
+							}
+						});	
+					}
+					// just update the data
+					else {
+						this.lineChart.config.data = chartData;
+						this.lineChart.update();
+					}
 				});
 			}
 		}

@@ -315,19 +315,30 @@ class Tyk_Token
 	 *
 	 * @throws InvalidArgumentException When the hash isn't set
 	 * @throws UnexpectedValueException When API does not respond as expected
-	 * 
+	 *
+	 * @param string $from_date From this date forward
+	 * @param string $to_date To this date
 	 * @return object Usage data
 	 */
-	public function get_usage() {
+	public function get_usage($from_date = null, $to_date = null) {
 		if (!is_string($this->hash)) {
 			throw new InvalidArgumentException('Missing token hash');
 		}
 
+		// use from_date or today-1 month
+		$from = is_null($from_date)
+			? strtotime('-1 month')
+			: strtotime($from_date);
+		// use to_date or <now>
+		$to = is_null($to_date)
+			? time()
+			: strtotime($to_date);
+
 		try {
 			$response = $this->api->get(sprintf('/activity/keys/aggregate/%s/%s/%s',
 				$this->hash,
-				date('j/n/Y', strtotime('26.9.2016')),
-				date('j/n/Y')
+				date('j/n/Y', $from),
+				date('j/n/Y', $to)
 			), array('res' => 'day'));
 
 			if (is_object($response) && property_exists($response, 'data')) {

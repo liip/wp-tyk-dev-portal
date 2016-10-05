@@ -106,6 +106,10 @@ class Tyk_Dev_Portal
 			wp_enqueue_script('tyk-dev-portal-dashboard');
 			$params = array(
 				'actionUrl' => esc_url(admin_url('admin-ajax.php')),
+				'label_used' => __('Used', self::TEXT_DOMAIN),
+				'label_remaining' => __('Remaining', self::TEXT_DOMAIN),
+				'label_success' => __('Success', self::TEXT_DOMAIN),
+				'label_errors' => __('Errors', self::TEXT_DOMAIN),
 				);
 			wp_localize_script('tyk-dev-portal-dashboard', 'scriptParams', $params);
 
