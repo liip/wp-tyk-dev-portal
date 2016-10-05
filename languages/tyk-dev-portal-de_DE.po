@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-tyk-dev-portal\n"
-"POT-Creation-Date: 2016-10-05 16:46+0200\n"
-"PO-Revision-Date: 2016-10-05 16:51+0200\n"
+"POT-Creation-Date: 2016-10-05 16:55+0200\n"
+"PO-Revision-Date: 2016-10-05 16:55+0200\n"
 "Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: Team Amboss <be-dev@liip.ch>\n"
 "Language: de_DE\n"
@@ -84,6 +84,14 @@ msgid ""
 msgstr ""
 "Diese Seite ist nur verfügbar wenn Sie <a href=\"%1$s\">eingeloggt sind</a>."
 
+#: templates/api_subscribe_form.php:10
+msgid "Tokens"
+msgstr "Schlüssel"
+
+#: templates/api_subscribe_form.php:13
+msgid "Usage"
+msgstr "Nutzung"
+
 #: templates/api_subscribe_form.php:22
 msgid "My tokens"
 msgstr "Meine Schlüssel"
@@ -130,8 +138,8 @@ msgid "-- please choose"
 msgstr "-- bitte wählen "
 
 #: templates/api_subscribe_form.php:125
-msgid "Usage"
-msgstr "Nutzung"
+msgid "Token"
+msgstr "Schlüssel"
 
 #: templates/api_subscribe_form.php:133
 msgid "From"

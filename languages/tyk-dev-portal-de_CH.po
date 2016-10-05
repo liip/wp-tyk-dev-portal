@@ -1,22 +1,23 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-tyk-dev-portal\n"
-"POT-Creation-Date: 2016-09-19 15:18+0200\n"
-"PO-Revision-Date: 2016-09-19 15:19+0200\n"
+"POT-Creation-Date: 2016-10-05 16:55+0200\n"
+"PO-Revision-Date: 2016-10-05 16:55+0200\n"
 "Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: Team Amboss <be-dev@liip.ch>\n"
 "Language: de_CH\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPath-1: template_tags.php\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: assets\n"
 
-#: classes/dashboard_ajax_provider.php:43
+#: classes/dashboard_ajax_provider.php:45
 #, php-format
 msgid ""
 "Your token for this API is: %s. We will only show this once. Please save it "
@@ -25,7 +26,7 @@ msgstr ""
 "Dein Schlüssel für diese API ist: %s. Dieser Schlüssel kann nur einmal "
 "angezeigt werden, leg ihn bitte jetzt an einem sicheren Ort ab."
 
-#: classes/dashboard_ajax_provider.php:50
+#: classes/dashboard_ajax_provider.php:52
 #, php-format
 msgid ""
 "Your key request is pending review. You will receive an Email when your "
@@ -36,12 +37,14 @@ msgstr ""
 "bearbeitet wurde. Ihre Anfrage ID ist: %s (dies ist kein Zugangs-Token für "
 "die API). Bitte geben Sie diese ID an falls Sie uns per Email kontaktieren."
 
-#: classes/dashboard_ajax_provider.php:66
-#: classes/dashboard_ajax_provider.php:128
+#: classes/dashboard_ajax_provider.php:68
+#: classes/dashboard_ajax_provider.php:131
+#: classes/dashboard_ajax_provider.php:150
+#: classes/dashboard_ajax_provider.php:175
 msgid "Invalid request"
 msgstr "Ungültiger request"
 
-#: classes/dashboard_ajax_provider.php:123
+#: classes/dashboard_ajax_provider.php:126
 #, php-format
 msgid ""
 "Your token \"%s\" was revoked permanently and is invalidated effective "
@@ -50,11 +53,27 @@ msgstr ""
 "Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort "
 "ungültig."
 
-#: classes/dev_portal.php:196
+#: classes/dev_portal.php:109
+msgid "Used"
+msgstr "Gebraucht"
+
+#: classes/dev_portal.php:110
+msgid "Remaining"
+msgstr "Verbleibend"
+
+#: classes/dev_portal.php:111
+msgid "Success"
+msgstr "Erfolgreich"
+
+#: classes/dev_portal.php:112
+msgid "Errors"
+msgstr "Fehler"
+
+#: classes/dev_portal.php:205
 msgid "Developer"
 msgstr "Entwickler"
 
-#: classes/dev_portal.php:213
+#: classes/dev_portal.php:222
 msgid "Developer Dashboard"
 msgstr "Entwickler Dashboard"
 
@@ -65,45 +84,78 @@ msgid ""
 msgstr ""
 "Diese Seite ist nur verfügbar wenn Sie <a href=\"%1$s\">eingeloggt sind</a>."
 
-#: templates/api_subscribe_form.php:8
+#: templates/api_subscribe_form.php:10
+msgid "Tokens"
+msgstr "Schlüssel"
+
+#: templates/api_subscribe_form.php:13
+msgid "Usage"
+msgstr "Nutzung"
+
+#: templates/api_subscribe_form.php:22
 msgid "My tokens"
 msgstr "Meine Schlüssel"
 
-#: templates/api_subscribe_form.php:16 templates/api_subscribe_form.php:52
+#: templates/api_subscribe_form.php:30 templates/api_subscribe_form.php:80
 msgid "An error occurred. Please try again."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
 
-#: templates/api_subscribe_form.php:22 templates/api_subscribe_form.php:77
-msgid "loading"
-msgstr "laden"
-
-#: templates/api_subscribe_form.php:30
-msgid "Revoke this token"
-msgstr "Schlüssel annullieren"
-
-#: templates/api_subscribe_form.php:35
-msgid "You don't have any tokens yet"
-msgstr "Du hast noch keine Schlüssel"
-
-#: templates/api_subscribe_form.php:43 templates/api_subscribe_form.php:80
-msgid "Request a token"
-msgstr "Schlüssel anfordern"
-
-#: templates/api_subscribe_form.php:57
+#: templates/api_subscribe_form.php:38 templates/api_subscribe_form.php:85
 msgid "Name"
 msgstr "Name"
 
-#: templates/api_subscribe_form.php:59
-msgid "Give this token a name"
-msgstr "Gib diesem Schlüssel einen Namen"
-
-#: templates/api_subscribe_form.php:64
+#: templates/api_subscribe_form.php:39 templates/api_subscribe_form.php:92
 msgid "API"
 msgstr "API"
 
-#: templates/api_subscribe_form.php:67
+#: templates/api_subscribe_form.php:48
+msgid "Show usage"
+msgstr "Nutzung anzeigen"
+
+#: templates/api_subscribe_form.php:51
+msgid "Revoke this token"
+msgstr "Schlüssel annullieren"
+
+#: templates/api_subscribe_form.php:60 templates/api_subscribe_form.php:105
+#: templates/api_subscribe_form.php:154
+msgid "loading"
+msgstr "laden"
+
+#: templates/api_subscribe_form.php:63
+msgid "You don't have any tokens yet"
+msgstr "Du hast noch keine Schlüssel"
+
+#: templates/api_subscribe_form.php:71 templates/api_subscribe_form.php:108
+msgid "Request a token"
+msgstr "Schlüssel anfordern"
+
+#: templates/api_subscribe_form.php:87
+msgid "Give this token a name"
+msgstr "Gib diesem Schlüssel einen Namen"
+
+#: templates/api_subscribe_form.php:95 templates/api_subscribe_form.php:127
 msgid "-- please choose"
 msgstr "-- bitte wählen "
+
+#: templates/api_subscribe_form.php:125
+msgid "Token"
+msgstr "Schlüssel"
+
+#: templates/api_subscribe_form.php:133
+msgid "From"
+msgstr "Von"
+
+#: templates/api_subscribe_form.php:138
+msgid "To"
+msgstr "Bis"
+
+#: templates/api_subscribe_form.php:148
+msgid "Quota"
+msgstr "Kontingent"
+
+#: templates/api_subscribe_form.php:157
+msgid "Go"
+msgstr "Los"
 
 #~ msgid "Dashboard"
 #~ msgstr "Dashboard"

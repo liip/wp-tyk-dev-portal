@@ -7,10 +7,10 @@
 
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active">
-			<a href="#tokens-tab" aria-controls="tokens-tab" role="tab" data-toggle="tab">Tokens</a>
+			<a href="#tokens-tab" aria-controls="tokens-tab" role="tab" data-toggle="tab"><?php _e('Tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></a>
 		</li>
 		<li role="presentation">
-			<a href="#usage-tab" v-el:usage-tab aria-controls="usage-tab" role="tab" data-toggle="tab">Usage</a>
+			<a href="#usage-tab" v-el:usage-tab aria-controls="usage-tab" role="tab" data-toggle="tab"><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></a>
 		</li>
 	</ul>
 
@@ -122,7 +122,7 @@
 					
 					<!-- usage over time -->
 					<div class="col-md-6">
-						<h3><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+						<h3><?php _e('Token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 						<select class="form-control" v-model="form.token">
 							<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN)?></option>
 							<option v-for="token in tokens" value="{{ token.hash }}">{{ token.token_name }}</option>
