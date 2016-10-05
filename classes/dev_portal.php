@@ -140,7 +140,7 @@ class Tyk_Dev_Portal
 		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vendor_version, true);
 		wp_register_script('underscore', tyk_dev_portal_plugin_url('assets/js/vendor/underscore.min.js'), array(), $vendor_version, true);
 
-		wp_register_script('chart.js', tyk_dev_portal_plugin_url('node_modules/chart.js/dist/Chart.min.js'), array(), $vendor_version, false);
+		wp_register_script('chart.js', tyk_dev_portal_plugin_url('assets/js/vendor/chart.min.js'), array(), $vendor_version, false);
 		
 		// enqueue dashboard.js
 		$dashboard_ver = (WP_DEBUG === true)
