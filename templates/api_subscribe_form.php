@@ -147,7 +147,7 @@
 					<div class="col-md-6">
 						<h3><?php _e('Quota', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 						<div class="input-group">
-							<input type="text" class="form-control" v-model="key" placeholder="Please paste your token here" @keyup.enter="getQuotas()">
+							<input type="text" class="form-control" v-model="key" placeholder="<?php _e('Please enter your token here', Tyk_Dev_Portal::TEXT_DOMAIN)?>" @keyup.enter="getQuotas()">
 							<span class="input-group-btn">
 								<button class="btn btn-default" :disabled="form.busy" @click="getQuotas()">
 									<template v-if="form.busy">

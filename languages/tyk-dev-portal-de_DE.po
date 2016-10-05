@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-tyk-dev-portal\n"
-"POT-Creation-Date: 2016-10-05 16:55+0200\n"
-"PO-Revision-Date: 2016-10-05 16:55+0200\n"
+"POT-Creation-Date: 2016-10-05 17:30+0200\n"
+"PO-Revision-Date: 2016-10-05 17:30+0200\n"
 "Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: Team Amboss <be-dev@liip.ch>\n"
 "Language: de_DE\n"
@@ -152,6 +152,10 @@ msgstr "Bis"
 #: templates/api_subscribe_form.php:148
 msgid "Quota"
 msgstr "Kontingent"
+
+#: templates/api_subscribe_form.php:150
+msgid "Please enter your token here"
+msgstr "Bitte Schlüssel eingeben"
 
 #: templates/api_subscribe_form.php:157
 msgid "Go"
