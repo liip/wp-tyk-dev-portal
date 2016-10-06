@@ -4,10 +4,27 @@
  * To keep things simple, we're keeping everything in one file for now.
  * When our js codebase grows, we should consider spilitting it up into modules
  * and adding a build step.
- *
- * @todo  make colors configurable
  */
 ;(function($, Vue, Chart, _) {
+	/**
+	 * Add a leading zero to a number if it's not there yet
+	 * @param {int} nr
+	 * @return {string}
+	 */
+	function leadingZero(nr) {
+		return ('0' + nr).slice(-2);
+	}
+
+	/**
+	 * Add two numbers
+	 * @param {number} a
+	 * @param {number} b
+	 * @return {number} Sum of a and b
+	 */
+	function add(a, b) { 
+		return a+b 
+	}
+
 	/**
 	 * Request token form component
 	 */
@@ -100,6 +117,13 @@
 		props: ['tokens'],
 
 		data: function() {
+			// look at all this code! all just to format two dates to set initial values for the date fields :0
+			var now = new Date(),
+				nextWeek = new Date();
+			nextWeek.setDate(now.getDate() - 7);
+			var fromDate = [nextWeek.getFullYear(), leadingZero(nextWeek.getMonth()+1), leadingZero(nextWeek.getDate())].join('-'),
+				toDate = [now.getFullYear(), leadingZero(now.getMonth()+1), leadingZero(now.getDate())].join('-');
+
 			return {
 				// the selected token key
 				key: null,
@@ -107,8 +131,8 @@
 				lineChart: null,
 				form: {
 					token: null,
-					fromDate: null,
-					toDate: null,
+					fromDate: fromDate,
+					toDate: toDate,
 					// is the form busy?
 					busy: false,
 				}
@@ -204,31 +228,19 @@
 			 * @return {[type]}
 			 */
 			showUsage: function(data) {
-				var success = [],
-					errors  = [],
-					labels  = [];
-
-				// get each "success" and "error" stat from the stack
-				_.each(data, function(stat) {
-					success.push(stat.success);
-					errors.push(stat.error);
-					if (stat.id) {
-						// @todo localize this?
-						labels.push(stat.id.day + '.' + stat.id.month + '.');
-					}
-				});
+				var chartData = this.crunchUsageNumbers(data);
 
 				// setup the chart data
-				var chartData = {
-					labels: labels,
+				var chartConfig = {
+					labels: chartData.labels,
 					datasets: [
 						{
-							data: success,	
+							data: chartData.success,	
 							backgroundColor: 'rgba(5,52,139,.6)',
 							label: scriptParams.label_success,
 						},
 						{
-							data: errors,
+							data: chartData.errors,
 							backgroundColor: 'rgba(255,193,21,.6)',
 							label: scriptParams.label_errors,
 						},
@@ -241,18 +253,62 @@
 					if (!this.lineChart) {
 						this.lineChart = new Chart(this.$els.usage, {
 							type: 'line',
-							data: chartData,
+							data: chartConfig,
 							options: {
-								spanGaps: true
+								spanGaps: true,
+								scales: {
+									yAxes: [{ ticks: { min: 0 }}]
+								}
 							}
 						});	
 					}
 					// just update the data
 					else {
-						this.lineChart.config.data = chartData;
-						this.lineChart.update();
+						this.lineChart.config.data = chartConfig;
 					}
+
+					// start y scale at 0 and increment in steps of 1
+					if (chartData.sum.total < 1) {
+						this.lineChart.config.options.scales.yAxes[0].ticks.stepSize = 1;
+					}
+					this.lineChart.update();
 				});
+			},
+
+			/**
+			 * Crunch the numbers from usage data and gain insightful information :)
+			 * @param {object} data
+			 * @return {object}
+			 */
+			crunchUsageNumbers: function(data) {
+				var chartData = {
+					success: [],
+					errors: [],
+					labels: [],
+					sum: {}
+				};
+
+				// get each "success" and "error" stat from the stack
+				_.chain(data)
+					// sort by timestamp first
+					.sortBy(function(item) {
+						return (new Date([item.id.year, item.id.month, item.id.day].join('-'))).getTime();
+					})
+					// get number for each entry
+					.each(function(stat) {
+						chartData.success.push(stat.success);
+						chartData.errors.push(stat.error);
+						if (stat.id) {
+							// @todo localize this?
+							chartData.labels.push(stat.id.day + '.' + stat.id.month + '.');
+						}
+					});
+
+ 				chartData.sum.success = _.reduce(chartData.success, add),
+ 				chartData.sum.errors  = _.reduce(chartData.errors, add);
+ 				chartData.sum.total   = add(chartData.sum.success, chartData.sum.errors);
+
+ 				return chartData;
 			}
 		}
 	});
