@@ -79,7 +79,10 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 The following changes are in planning:
 
 * use catalogues on Tyk portal to group policies instead of tags
-* refactor dashboard a bit considering that there can't be more than 1 token per API anyway
+* make chart colors configurable
+* split up template and dashboard.js into multiple components
+* build js to vendor/ dir
+* ~~refactor dashboard a bit considering that there can't be more than 1 token per API anyway~~
 * ~~add option to not include bootstrap altogether~~
 * ~~do not allow registering for multiple API policies (as it's not supported by Tyk)~~
 
