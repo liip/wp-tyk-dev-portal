@@ -327,7 +327,7 @@ class Tyk_Token
 
 		// use from_date or today-1 month
 		$from = is_null($from_date)
-			? strtotime('-1 month')
+			? strtotime('-1 week')
 			: strtotime($from_date);
 		// use to_date or <now>
 		$to = is_null($to_date)
@@ -335,7 +335,7 @@ class Tyk_Token
 			: strtotime($to_date);
 
 		try {
-			$response = $this->api->get(sprintf('/activity/keys/aggregate/%s/%s/%s',
+			$response = $this->api->get(sprintf('/activity/keys/%s/%s/%s',
 				$this->hash,
 				date('j/n/Y', $from),
 				date('j/n/Y', $to)
