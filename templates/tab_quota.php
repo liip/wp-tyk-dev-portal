@@ -4,7 +4,7 @@
 	<quota-tab inline-template>
 		<div class="row">
 			<div class="col-md-8">		
-				<h3><?php _e('Quota', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+				<h3><?php _e('Remaining quota', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
 					<input 
 						type="text" 
 						class="form-control" 
