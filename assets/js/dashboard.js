@@ -125,10 +125,9 @@
 				toDate = [now.getFullYear(), leadingZero(now.getMonth()+1), leadingZero(now.getDate())].join('-');
 
 			return {
-				// the selected token key
-				key: null,
 				// instance of chartist line chart
 				lineChart: null,
+				error: null,
 				form: {
 					token: null,
 					fromDate: fromDate,
@@ -154,47 +153,6 @@
 		},
 
 		methods: {
-			/**
-			 * Get token usage data from server
-			 */
-			getQuotas: function() {
-				var self = this;
-				this.form.busy = true;
-
-				var data = {
-					action: 'get_token_quota',
-					token: this.key
-				};
-
-				// use a post request so the key doesn't show up in server logs
-				$.post(scriptParams.actionUrl, data)
-					.done(function(response) {
-						if (response.data) {
-							self.showQuotas(response.data);
-						}
-					});
-			},
-
-			/**
-			 * Show usage quota
-			 * @param {object} data
-			 */
-			showQuotas: function(data) {
-				this.$nextTick(function() {
-					new Chart(this.$els.chart, {
-						type: 'doughnut',
-						data: {
-							labels: [scriptParams.label_used, scriptParams.label_remaining],
-							datasets: [{
-								data: [(data.quota_max-data.quota_remaining), data.quota_remaining],
-								backgroundColor: ['#ffc115', '#05348B']
-							}]
-						}
-					});
-					this.form.busy = false;
-				});
-			},
-
 			/**
 			 * Fetch usage data from server and display it
 			 * Uses this.form params to filter data
@@ -322,21 +280,16 @@
 			return {
 				// the selected token key
 				key: null,
-				busy: false
+				busy: false,
+				error: null
 			}
 		},
 
 		watch: {
 			'key': function() {
-				this.getQuotas();
-			}
-		},
-
-		events: {
-			// list for an event from parent to show data
-			showUsage: function(token) {
-				// this will trigger a reload of the data
-				this.key = token.hash;
+				if (this.key.length > 0) {
+					this.getQuotas();
+				}
 			}
 		},
 
@@ -347,6 +300,7 @@
 			getQuotas: function() {
 				var self = this;
 				this.busy = true;
+				this.error = null;
 
 				var data = {
 					action: 'get_token_quota',
@@ -356,10 +310,22 @@
 				// use a post request so the key doesn't show up in server logs
 				$.post(scriptParams.actionUrl, data)
 					.done(function(response) {
-						if (response.data) {
+						if (response.data && response.success) {
 							self.showQuotas(response.data);
 						}
+						else if (response.success === false) {
+							self.setError(response.data)
+						}
 					});
+			},
+
+			/**
+			 * Set an error in gui
+			 * @param {string} error
+			 */
+			setError: function(error) {
+				this.error = error;
+				this.busy = false;
 			},
 
 			/**
@@ -367,13 +333,19 @@
 			 * @param {object} data
 			 */
 			showQuotas: function(data) {
+				// catch invalid data
+				if (!data.quota_max || data.quota_max < data.quota_remaining) {
+					this.setError(scriptParams.error_invalid_data)
+					return;
+				}
+
 				this.$nextTick(function() {
 					new Chart(this.$els.chart, {
 						type: 'doughnut',
 						data: {
 							labels: [scriptParams.label_used, scriptParams.label_remaining],
 							datasets: [{
-								data: [(data.quota_max-data.quota_remaining), data.quota_remaining],
+								data: [(data.quota_max - data.quota_remaining), data.quota_remaining],
 								backgroundColor: ['#ffc115', '#05348B']
 							}]
 						}

@@ -110,6 +110,7 @@ class Tyk_Dev_Portal
 				'label_remaining' => __('Remaining', self::TEXT_DOMAIN),
 				'label_success' => __('Success', self::TEXT_DOMAIN),
 				'label_errors' => __('Errors', self::TEXT_DOMAIN),
+				'error_invalid_data' => __('Invalid or insufficient data', self::TEXT_DOMAIN),
 				);
 			wp_localize_script('tyk-dev-portal-dashboard', 'scriptParams', $params);
 
