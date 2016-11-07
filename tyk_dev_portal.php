@@ -11,6 +11,7 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('TYK_DEV_PORTAL_PLUGIN_PATH', dirname( __FILE__ ));
+define('TYK_DEV_PORTAL_TPL_PATH', TYK_DEV_PORTAL_PLUGIN_PATH . '/templates');
 define('TYK_DEV_PORTAL_PLUGIN_FILE', __FILE__);
 
 require_once TYK_DEV_PORTAL_PLUGIN_PATH . '/classes/dev_portal.php';
