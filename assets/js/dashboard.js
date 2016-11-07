@@ -111,7 +111,7 @@
 
 
 	/**
-	 * Usage quota tab component
+	 * Usage tab component
 	 */
 	var UsageTab = Vue.extend({
 		props: ['tokens'],
@@ -314,6 +314,77 @@
 	});
 
 
+	/**
+	 * Quota tab component
+	 */
+	var QuotaTab = Vue.extend({
+		data: function() {
+			return {
+				// the selected token key
+				key: null,
+				busy: false
+			}
+		},
+
+		watch: {
+			'key': function() {
+				this.getQuotas();
+			}
+		},
+
+		events: {
+			// list for an event from parent to show data
+			showUsage: function(token) {
+				// this will trigger a reload of the data
+				this.key = token.hash;
+			}
+		},
+
+		methods: {
+			/**
+			 * Get token usage data from server
+			 */
+			getQuotas: function() {
+				var self = this;
+				this.busy = true;
+
+				var data = {
+					action: 'get_token_quota',
+					token: this.key
+				};
+
+				// use a post request so the key doesn't show up in server logs
+				$.post(scriptParams.actionUrl, data)
+					.done(function(response) {
+						if (response.data) {
+							self.showQuotas(response.data);
+						}
+					});
+			},
+
+			/**
+			 * Show usage quota
+			 * @param {object} data
+			 */
+			showQuotas: function(data) {
+				this.$nextTick(function() {
+					new Chart(this.$els.chart, {
+						type: 'doughnut',
+						data: {
+							labels: [scriptParams.label_used, scriptParams.label_remaining],
+							datasets: [{
+								data: [(data.quota_max-data.quota_remaining), data.quota_remaining],
+								backgroundColor: ['#ffc115', '#05348B']
+							}]
+						}
+					});
+					this.busy = false;
+				});
+			}
+		}
+	});
+
+
 
 	/**
 	 * List of user tokens component
@@ -323,7 +394,8 @@
 		
 		components: {
 			'request-token-form': RequestTokenForm,
-			'usage-tab': UsageTab
+			'usage-tab': UsageTab,
+			'quota-tab': QuotaTab
 		},
 		
 		data: {
