@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wp-tyk-dev-portal\n"
-"POT-Creation-Date: 2016-10-05 17:30+0200\n"
-"PO-Revision-Date: 2016-10-05 17:30+0200\n"
+"POT-Creation-Date: 2016-11-10 10:17+0100\n"
+"PO-Revision-Date: 2016-11-10 10:17+0100\n"
 "Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: Team Amboss <be-dev@liip.ch>\n"
-"Language: de_CH\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
@@ -69,15 +69,19 @@ msgstr "Erfolgreich"
 msgid "Errors"
 msgstr "Fehler"
 
-#: classes/dev_portal.php:205
+#: classes/dev_portal.php:113
+msgid "Invalid or insufficient data"
+msgstr "Ungültige oder ungenügende Daten"
+
+#: classes/dev_portal.php:206
 msgid "Developer"
 msgstr "Entwickler"
 
-#: classes/dev_portal.php:222
+#: classes/dev_portal.php:223
 msgid "Developer Dashboard"
 msgstr "Entwickler Dashboard"
 
-#: template_tags.php:16
+#: template_tags.php:18
 #, php-format
 msgid ""
 "This page is only available when you are <a href=\"%1$s\">logged in</a>."
@@ -92,74 +96,77 @@ msgstr "Schlüssel"
 msgid "Usage"
 msgstr "Nutzung"
 
-#: templates/api_subscribe_form.php:22
-msgid "My tokens"
-msgstr "Meine Schlüssel"
-
-#: templates/api_subscribe_form.php:30 templates/api_subscribe_form.php:80
-msgid "An error occurred. Please try again."
-msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
-
-#: templates/api_subscribe_form.php:38 templates/api_subscribe_form.php:85
-msgid "Name"
-msgstr "Name"
-
-#: templates/api_subscribe_form.php:39 templates/api_subscribe_form.php:92
-msgid "API"
-msgstr "API"
-
-#: templates/api_subscribe_form.php:48
-msgid "Show usage"
-msgstr "Nutzung anzeigen"
-
-#: templates/api_subscribe_form.php:51
-msgid "Revoke this token"
-msgstr "Schlüssel annullieren"
-
-#: templates/api_subscribe_form.php:60 templates/api_subscribe_form.php:105
-#: templates/api_subscribe_form.php:154
-msgid "loading"
-msgstr "laden"
-
-#: templates/api_subscribe_form.php:63
-msgid "You don't have any tokens yet"
-msgstr "Du hast noch keine Schlüssel"
-
-#: templates/api_subscribe_form.php:71 templates/api_subscribe_form.php:108
-msgid "Request a token"
-msgstr "Schlüssel anfordern"
-
-#: templates/api_subscribe_form.php:87
-msgid "Give this token a name"
-msgstr "Gib diesem Schlüssel einen Namen"
-
-#: templates/api_subscribe_form.php:95 templates/api_subscribe_form.php:127
-msgid "-- please choose"
-msgstr "-- bitte wählen "
-
-#: templates/api_subscribe_form.php:125
-msgid "Token"
-msgstr "Schlüssel"
-
-#: templates/api_subscribe_form.php:133
-msgid "From"
-msgstr "Von"
-
-#: templates/api_subscribe_form.php:138
-msgid "To"
-msgstr "Bis"
-
-#: templates/api_subscribe_form.php:148
+#: templates/api_subscribe_form.php:16
 msgid "Quota"
 msgstr "Kontingent"
 
-#: templates/api_subscribe_form.php:150
+#: templates/tab_quota.php:7
+msgid "Remaining quota"
+msgstr "Offenes Kontingent"
+
+#: templates/tab_quota.php:12
 msgid "Please enter your token here"
 msgstr "Bitte Schlüssel eingeben"
 
-#: templates/api_subscribe_form.php:157
-msgid "Go"
-msgstr "Los"
+#: templates/tab_quota.php:13 templates/tab_tokens.php:42
+#: templates/tab_tokens.php:90
+msgid "loading"
+msgstr "laden"
+
+#: templates/tab_tokens.php:4
+msgid "My tokens"
+msgstr "Meine Schlüssel"
+
+#: templates/tab_tokens.php:12 templates/tab_tokens.php:65
+msgid "An error occurred. Please try again."
+msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
+
+#: templates/tab_tokens.php:20 templates/tab_tokens.php:70
+msgid "Name"
+msgstr "Name"
+
+#: templates/tab_tokens.php:21 templates/tab_tokens.php:77
+msgid "API"
+msgstr "API"
+
+#: templates/tab_tokens.php:30
+msgid "Show usage"
+msgstr "Nutzung anzeigen"
+
+#: templates/tab_tokens.php:33
+msgid "Revoke this token"
+msgstr "Schlüssel annullieren"
+
+#: templates/tab_tokens.php:45
+msgid "You don't have any tokens yet"
+msgstr "Du hast noch keine Schlüssel"
+
+#: templates/tab_tokens.php:56 templates/tab_tokens.php:93
+msgid "Request a token"
+msgstr "Schlüssel anfordern"
+
+#: templates/tab_tokens.php:72
+msgid "Give this token a name"
+msgstr "Gib diesem Schlüssel einen Namen"
+
+#: templates/tab_tokens.php:80 templates/tab_usage.php:9
+msgid "-- please choose"
+msgstr "-- bitte wählen "
+
+#: templates/tab_usage.php:7
+msgid "Token"
+msgstr "Schlüssel"
+
+#: templates/tab_usage.php:15
+msgid "From"
+msgstr "Von"
+
+#: templates/tab_usage.php:20
+msgid "To"
+msgstr "Bis"
+
+#~ msgid "Go"
+#~ msgstr "Los"
 
 #~ msgid "Dashboard"
 #~ msgstr "Dashboard"
