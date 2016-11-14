@@ -281,30 +281,22 @@ class Tyk_Token
 	 * 
 	 * @return object Usage quota
 	 */
-	public function get_usage_quota() {
-		if (!is_string($this->key)) {
+    public function get_usage_quota() {
+        if (!is_string($this->key)) {
 			throw new InvalidArgumentException('Missing token key');
 		}
 
 		try {
-			// first: we need an api id on which to request the tokens
-			// sounds weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
-			$apiManager = new Tyk_API_Manager;
-			$apis = $apiManager->available_apis();
-			if (is_array($apis)) {
-				$firstApi = array_shift($apis);
-				$response = $this->api->get(sprintf('/apis/%s/keys/%s',
-					$firstApi->api_definition->api_id,
-					$this->key
-				));
-				if (is_object($response) && isset($response->data)) {
-					return $response->data;
-				}
-				else {
-					throw new Exception('Received invalid response from API');
-				}
-			}
-		}
+            $response = $this->api->gateway_get(sprintf('/keys/%s',
+                $this->key
+            ));
+            if (is_object($response) && isset($response->data)) {
+                return $response->data;
+            }
+            else {
+                throw new Exception('Received invalid response from Gateway');
+            }
+        }
 		catch (Exception $e) {
 			throw new UnexpectedValueException($e->getMessage());
 		}
