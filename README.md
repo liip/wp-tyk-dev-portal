@@ -32,7 +32,7 @@ What this plugin does not offer:
 
 ## Support
 
-Please not that we, the plugin authors, cannot offer support for this plugin. The code is on [GitHub](https://github.com/liip/wp-tyk-dev-portal) however and we are happy to accept pull requests fixing bugs or adding functionality. Also feel free to report any [issues](https://github.com/liip/wp-tyk-dev-portal/issues) although we cannot promise when and if they will be fixed.
+Please note that we, the plugin authors, cannot offer support for this plugin. The code is on [GitHub](https://github.com/liip/wp-tyk-dev-portal) however and we are happy to accept pull requests fixing bugs or adding functionality. Also feel free to report any [issues](https://github.com/liip/wp-tyk-dev-portal/issues) although we cannot promise when and if they will be fixed.
 
 ## Installation
 
