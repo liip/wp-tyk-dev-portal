@@ -83,7 +83,8 @@ class Tyk_API
         $api_response = wp_remote_get($this->get_url_for_path($path, $args, 'GATEWAY'), array(
             'headers' => array(
                 'x-tyk-authorization' => TYK_GATEWAY_SECRET
-            )));
+            ),
+        ));
 
         $response = $this->parse_response($api_response);
         if (is_object($response)) {

@@ -290,8 +290,10 @@ class Tyk_Token
             $response = $this->api->gateway_get(sprintf('/keys/%s',
                 $this->key
             ));
-            if (is_object($response) && isset($response->data)) {
-                return $response->data;
+            if (is_object($response) && isset($response->quota_remaining)) {
+                $data = (object) array('quota_remaining' => $response->quota_remaining,
+                    'quota_max' => $response->quota_max);
+                return $data;
             }
             else {
                 throw new Exception('Received invalid response from Gateway');
