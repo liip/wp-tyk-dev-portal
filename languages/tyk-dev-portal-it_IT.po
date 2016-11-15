@@ -1,186 +1,124 @@
+# This file was generated from translations/tyk_it.xlsx
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-tyk-dev-portal\n"
-"POT-Creation-Date: 2016-11-10 10:17+0100\n"
-"PO-Revision-Date: 2016-11-10 10:17+0100\n"
-"Last-Translator: Team Amboss <be-dev@liip.ch>\n"
-"Language-Team: Team Amboss <be-dev@liip.ch>\n"
-"Language: it_IT\n"
-"MIME-Version: 1.0\n"
+"PO-Revision-Date: 2016-11-15 17:31+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Generated-By: xls-to-po 1.0\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: it_IT\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_e\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: node_modules\n"
-"X-Poedit-SearchPathExcluded-1: assets\n"
 
-#: classes/dashboard_ajax_provider.php:45
-#, php-format
 msgid ""
 "Your token for this API is: %s. We will only show this once. Please save it "
 "somewhere now."
 msgstr ""
-"Dein Schlüssel für diese API ist: %s. Dieser Schlüssel kann nur einmal "
-"angezeigt werden, leg ihn bitte jetzt an einem sicheren Ort ab."
+"Il token per questa API è: %s. Sarà mostrato una sola vola. Salvalo da "
+"qualche parte ora."
 
-#: classes/dashboard_ajax_provider.php:52
-#, php-format
 msgid ""
 "Your key request is pending review. You will receive an Email when your "
 "request is processed. Your request id is %s. This is not your access token. "
 "Please refer to the request ID when contacting us by Email."
 msgstr ""
-"Ihre Anfrage wird geprüft. Sie erhalten ein Email wenn Ihre Anfrage "
-"bearbeitet wurde. Ihre Anfrage ID ist: %s (dies ist kein Zugangs-Token für "
-"die API). Bitte geben Sie diese ID an falls Sie uns per Email kontaktieren."
+"La richiesta della chiave è in attesa di revisione. Sarà inviata un’e-mail al "
+"termine dell'elaborazione della richiesta. L’ID della richiesta è %s. Questo "
+"non è il token di accesso. Fare riferimento all’ID della richiesta in caso di "
+"contatto via e-mail."
 
-#: classes/dashboard_ajax_provider.php:68
-#: classes/dashboard_ajax_provider.php:131
-#: classes/dashboard_ajax_provider.php:150
-#: classes/dashboard_ajax_provider.php:175
 msgid "Invalid request"
-msgstr "Ungültiger request"
+msgstr "Richiesta non valida"
 
-#: classes/dashboard_ajax_provider.php:126
-#, php-format
 msgid ""
 "Your token \"%s\" was revoked permanently and is invalidated effective "
 "immediately."
 msgstr ""
-"Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort "
-"ungültig."
+"Il token \"%s\" è stato revocato in modo permanente e non è più valido con "
+"effetto immediato."
 
-#: classes/dev_portal.php:109
 msgid "Used"
-msgstr "Gebraucht"
+msgstr "Usato"
 
-#: classes/dev_portal.php:110
 msgid "Remaining"
-msgstr "Verbleibend"
+msgstr "Rimanente"
 
-#: classes/dev_portal.php:111
 msgid "Success"
-msgstr "Erfolgreich"
+msgstr "Successo"
 
-#: classes/dev_portal.php:112
 msgid "Errors"
-msgstr "Fehler"
+msgstr "Errori"
 
-#: classes/dev_portal.php:113
 msgid "Invalid or insufficient data"
-msgstr "Ungültige oder ungenügende Daten"
+msgstr "Dati non validi o insufficienti"
 
-#: classes/dev_portal.php:206
 msgid "Developer"
-msgstr "Entwickler"
+msgstr "Sviluppatore"
 
-#: classes/dev_portal.php:223
 msgid "Developer Dashboard"
-msgstr "Entwickler Dashboard"
+msgstr "Sviluppatore Dashboard"
 
-#: template_tags.php:18
-#, php-format
-msgid ""
-"This page is only available when you are <a href=\"%1$s\">logged in</a>."
+msgid "This page is only available when you are <a href=\"%1$s\">logged in</a>."
 msgstr ""
-"Diese Seite ist nur verfügbar wenn Sie <a href=\"%1$s\">eingeloggt sind</a>."
+"Questa pagina è disponibile solo se <a href=”%1$s”>è stato effettuato il "
+"login</a>."
 
-#: templates/api_subscribe_form.php:10
 msgid "Tokens"
-msgstr "Schlüssel"
+msgstr "Token"
 
-#: templates/api_subscribe_form.php:13
 msgid "Usage"
-msgstr "Nutzung"
+msgstr "Utilizzo"
 
-#: templates/api_subscribe_form.php:16
 msgid "Quota"
-msgstr "Kontingent"
+msgstr "Quota"
 
-#: templates/tab_quota.php:7
 msgid "Remaining quota"
-msgstr "Offenes Kontingent"
+msgstr "Quota rimanente"
 
-#: templates/tab_quota.php:12
 msgid "Please enter your token here"
-msgstr "Bitte Schlüssel eingeben"
+msgstr "Inserire qui il proprio token"
 
-#: templates/tab_quota.php:13 templates/tab_tokens.php:42
-#: templates/tab_tokens.php:90
 msgid "loading"
-msgstr "laden"
+msgstr "Caricamento"
 
-#: templates/tab_tokens.php:4
 msgid "My tokens"
-msgstr "Meine Schlüssel"
+msgstr "Token personali"
 
-#: templates/tab_tokens.php:12 templates/tab_tokens.php:65
 msgid "An error occurred. Please try again."
-msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
+msgstr "Si è verificato un errore. Riprovare."
 
-#: templates/tab_tokens.php:20 templates/tab_tokens.php:70
 msgid "Name"
-msgstr "Name"
+msgstr "Nome"
 
-#: templates/tab_tokens.php:21 templates/tab_tokens.php:77
 msgid "API"
 msgstr "API"
 
-#: templates/tab_tokens.php:30
 msgid "Show usage"
-msgstr "Nutzung anzeigen"
+msgstr "Mostrare l'utilizzo"
 
-#: templates/tab_tokens.php:33
 msgid "Revoke this token"
-msgstr "Schlüssel annullieren"
+msgstr "Revocare questo token"
 
-#: templates/tab_tokens.php:45
 msgid "You don't have any tokens yet"
-msgstr "Du hast noch keine Schlüssel"
+msgstr "Non si è ancora in possesso di un token"
 
-#: templates/tab_tokens.php:56 templates/tab_tokens.php:93
 msgid "Request a token"
-msgstr "Schlüssel anfordern"
+msgstr "Richiedere un token"
 
-#: templates/tab_tokens.php:72
 msgid "Give this token a name"
-msgstr "Gib diesem Schlüssel einen Namen"
+msgstr "Assegnare un nome al token"
 
-#: templates/tab_tokens.php:80 templates/tab_usage.php:9
 msgid "-- please choose"
-msgstr "-- bitte wählen "
+msgstr "-- scegliere"
 
-#: templates/tab_usage.php:7
 msgid "Token"
-msgstr "Schlüssel"
+msgstr "Token"
 
-#: templates/tab_usage.php:15
 msgid "From"
-msgstr "Von"
+msgstr "Da"
 
-#: templates/tab_usage.php:20
 msgid "To"
-msgstr "Bis"
-
-#~ msgid "Go"
-#~ msgstr "Los"
-
-#~ msgid "Dashboard"
-#~ msgstr "Dashboard"
-
-#~ msgid "Loading"
-#~ msgstr "wird geladen"
-
-#~ msgid "loading..."
-#~ msgstr "laden…"
-
-#~ msgid "Your token for this API is: %s"
-#~ msgstr "Ihr token für diese Schnittstelle ist: %s"
-
-#~ msgid "We will only show this once. Please save it somewhere now."
-#~ msgstr ""
-#~ "Dies wird nur einmal angezeigt. Bitte speichern Sie ihr Zugangs-Token "
-#~ "jetzt an einem sicheren Ort ab."
+msgstr "A"
