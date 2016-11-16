@@ -38,6 +38,14 @@ class Tyk_Dev_Portal
 	const DEVELOPER_ROLE_NAME = 'developer';
 
 	/**
+	 * Tyk configuration types
+	 * we use these for consistency when checking TYK_CONFIGURATION throughout the code
+	 */
+	const CONFIGURATION_ON_PREMISE = 'on-premise';
+	const CONFIGURATION_HYBRID = 'hybrid';
+	const CONFIGURATION_CLOUD = 'cloud';
+
+	/**
 	 * Register any hooks
 	 * 
 	 * @return void
@@ -229,5 +237,32 @@ class Tyk_Dev_Portal
 		);
 		$post_id = wp_insert_post($page);
 		// @todo we should probably save the slug of the created page here
+	}
+
+	/**
+	 * Are we using Tyk Cloud?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_cloud() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_CLOUD;
+	}
+
+	/**
+	 * Are we using Tyk Hybrid?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_hybrid() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_HYBRID;	
+	}
+
+	/**
+	 * Are we using Tyk On-Premise?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_on_premise() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_ON_PREMISE;
 	}
 }

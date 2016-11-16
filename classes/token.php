@@ -35,10 +35,16 @@ class Tyk_Token
 	protected $policy;
 
 	/**
-	 * Tyk API handler
+	 * Tyk API interaction handler
 	 * @var Tyk_API
 	 */
 	protected $api;
+
+	/**
+	 * Tyk Gateway interaction handler
+	 * @var Tyk_Gateway
+	 */
+	protected $gateway;
 
 	/**
 	 * Tyk portal user
@@ -53,7 +59,8 @@ class Tyk_Token
 	 * @param string $policy optional, not required for all actions
 	 */
 	public function __construct(Tyk_Portal_User $user, $policy = null) {
-		$this->api = new Tyk_API();
+		$this->api = new Tyk_API;
+		$this->gateway = new Tyk_Gateway;
 		$this->user = $user;
 		if (!is_null($policy)) {
 			$this->policy = $policy;
@@ -281,22 +288,44 @@ class Tyk_Token
 	 * 
 	 * @return object Usage quota
 	 */
-	public function get_usage_quota() {
-		if (!is_string($this->key)) {
+    public function get_usage_quota() {
+        if (!is_string($this->key)) {
 			throw new InvalidArgumentException('Missing token key');
 		}
 
 		try {
-			// first: we need an api id on which to request the tokens
-			// sounds weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
-			$apiManager = new Tyk_API_Manager;
-			$apis = $apiManager->available_apis();
-			if (is_array($apis)) {
-				$firstApi = array_shift($apis);
-				$response = $this->api->get(sprintf('/apis/%s/keys/%s',
-					$firstApi->api_definition->api_id,
-					$this->key
-				));
+			/**
+			 * Hybrid and on-premise Tyk
+			 * Get usage quota from gateways, as this info isn't synced back to cloud
+			 */
+			if (Tyk_Dev_Portal::is_hybrid() || Tyk_Dev_Portal::is_on_premise()) {
+				$response = $this->gateway->get(sprintf('/keys/%s', $this->key));
+				if (is_object($response) && isset($response->quota_remaining)) {
+				    return (object) array(
+				    	'quota_remaining' => $response->quota_remaining,
+				        'quota_max' => $response->quota_max
+				        );
+				}
+				else {
+				    throw new Exception('Received invalid response from Gateway');
+				}
+			}
+			/**
+			 * Cloud Tyk
+			 * Get usage quota from API
+			 */
+			else {
+				// first: we need an api id on which to request the tokens
+				// sounds weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
+				$apiManager = new Tyk_API_Manager;
+				$apis = $apiManager->available_apis();
+				if (is_array($apis)) {
+					$firstApi = array_shift($apis);
+					$response = $this->api->get(sprintf('/apis/%s/keys/%s',
+						$firstApi->api_definition->api_id,
+						$this->key
+					));
+				}
 				if (is_object($response) && isset($response->data)) {
 					return $response->data;
 				}
@@ -304,7 +333,7 @@ class Tyk_Token
 					throw new Exception('Received invalid response from API');
 				}
 			}
-		}
+        }
 		catch (Exception $e) {
 			throw new UnexpectedValueException($e->getMessage());
 		}
