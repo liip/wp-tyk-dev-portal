@@ -51,11 +51,13 @@ Please not that we, the plugin authors, cannot offer support for this plugin. Th
 
 
 `
+define( 'TYK_CONFIGURATION', 'cloud' );  // the tyk setup you're using ('cloud', 'on-premise' or 'hybrid')
 define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
-define( 'TYK_GATEWAY_SECRET', 'the gateway secret' ); // the gateway secret needed to access token details
-define( 'TYK_GATEWAY_URL', 'https://your.tykgateway.com/tyk' ); // the url of your tyk gateway node
+// these are only needed when TYK_CONFIGURATION is 'on-premise' or 'hybrid'
+define( 'TYK_GATEWAY_URL', 'https://your.tykgateway.com/tyk' ); // the url of your tyk gateway
+define( 'TYK_GATEWAY_SECRET', 'the gateway secret' ); // the gateway secret
 // optional
 define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap styles
 `

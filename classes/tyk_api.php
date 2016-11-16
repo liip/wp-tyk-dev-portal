@@ -8,7 +8,7 @@
 /**
  * Class to handle interaction with Tyk API
  */
-class Tyk_API
+class Tyk_API extends Tyk_Interaction
 {
 	/**
 	 * Send a post request to Tyk API
@@ -150,44 +150,19 @@ class Tyk_API
 	}
 
 	/**
-	 * Parse and analyse response
-	 * 
-	 * @param mixed $api_response
-	 *
-	 * @throws Exception When API sends a non-200 response code
-	 * 
-	 * @return mixed
-	 */
-	private function parse_response($api_response) {
-		$response = json_decode(wp_remote_retrieve_body($api_response));
-		$http_code = wp_remote_retrieve_response_code($api_response);
-		$message = wp_remote_retrieve_response_message($api_response);
-		if ($http_code != 200) {
-			// see if we have more information
-			if (is_object($response) && isset($response->Message)) {
-				$message .= sprintf(': %s', $response->Message);
-			}
-			throw new Exception($message);
-		}
-		return $response;
-	}
-
-	/**
 	 * Get absolute url to api endpoint for a path
 	 * 
      * @param string $path
-     * @param string $type (optional)
 	 * @return string
 	 */
-	private function get_url_for_path($path, array $args = null, $type = 'API') {
+	protected function get_url_for_path($path, array $args = null) {
 		// build query string out of args if they're set
 		$qs = '';
 		if (is_array($args)) {
 			$qs = '?' . http_build_query($args);
         }
-        $url = $type == 'API' ? TYK_API_ENDPOINT : TYK_GATEWAY_URL;
 		return sprintf('%s/%s%s', 
-			rtrim($url, '/'), 
+			rtrim(TYK_API_ENDPOINT, '/'), 
 			ltrim($path, '/'),
 			$qs
 			);
