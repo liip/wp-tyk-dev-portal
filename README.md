@@ -51,9 +51,13 @@ Please note that we, the plugin authors, cannot offer support for this plugin. T
 
 
 `
+define( 'TYK_CONFIGURATION', 'cloud' );  // the tyk setup you're using ('cloud', 'on-premise' or 'hybrid')
 define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
+// these are only needed when TYK_CONFIGURATION is 'on-premise' or 'hybrid'
+define( 'TYK_GATEWAY_URL', 'https://your.tykgateway.com/tyk' ); // the url of your tyk gateway
+define( 'TYK_GATEWAY_SECRET', 'the gateway secret' ); // the gateway secret
 // optional
 define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap styles
 `
@@ -105,4 +109,6 @@ You may need to fix some styles as this plugin includes a subset of the [bootstr
 ### i18n
 
 This plugin is ready for translation and currently supports the following languages:
-* DE (German)
+* German
+* French
+* Italian

@@ -8,7 +8,7 @@
 /**
  * Class to handle interaction with Tyk API
  */
-class Tyk_API
+class Tyk_API extends Tyk_Interaction
 {
 	/**
 	 * Send a post request to Tyk API
@@ -69,6 +69,32 @@ class Tyk_API
 		}
 	}
 
+    /**
+     * Send a get request to Tyk gateway
+     * 
+     * @param string $path
+     * @param array $args  Query string args
+     *
+     * @throws Exception When API sends invalid response
+     * 
+     * @return array
+     */
+    public function gateway_get($path, array $args = null) {
+        $api_response = wp_remote_get($this->get_url_for_path($path, $args, 'GATEWAY'), array(
+            'headers' => array(
+                'x-tyk-authorization' => TYK_GATEWAY_SECRET
+            ),
+        ));
+
+        $response = $this->parse_response($api_response);
+        if (is_object($response)) {
+            return $response;
+        }
+        else {
+            throw new Exception('Received invalid response from Gateway');
+        }
+    }
+
 	/**
 	 * Send a put request to Tyk API
 	 * 
@@ -124,40 +150,17 @@ class Tyk_API
 	}
 
 	/**
-	 * Parse and analyse response
-	 * 
-	 * @param mixed $api_response
-	 *
-	 * @throws Exception When API sends a non-200 response code
-	 * 
-	 * @return mixed
-	 */
-	private function parse_response($api_response) {
-		$response = json_decode(wp_remote_retrieve_body($api_response));
-		$http_code = wp_remote_retrieve_response_code($api_response);
-		$message = wp_remote_retrieve_response_message($api_response);
-		if ($http_code != 200) {
-			// see if we have more information
-			if (is_object($response) && isset($response->Message)) {
-				$message .= sprintf(': %s', $response->Message);
-			}
-			throw new Exception($message);
-		}
-		return $response;
-	}
-
-	/**
 	 * Get absolute url to api endpoint for a path
 	 * 
-	 * @param string $path
+     * @param string $path
 	 * @return string
 	 */
-	private function get_url_for_path($path, array $args = null) {
+	protected function get_url_for_path($path, array $args = null) {
 		// build query string out of args if they're set
 		$qs = '';
 		if (is_array($args)) {
 			$qs = '?' . http_build_query($args);
-		}
+        }
 		return sprintf('%s/%s%s', 
 			rtrim(TYK_API_ENDPOINT, '/'), 
 			ltrim($path, '/'),
