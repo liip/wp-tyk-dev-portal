@@ -1,19 +1,26 @@
 # This file was generated from translations/tyk_de.xlsx
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-11-15 18:12+0100\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-11-16 11:40+0100\n"
+"PO-Revision-Date: 2016-11-16 11:40+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_CH\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: xls-to-po 1.0\n"
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Language: de_CH\n"
 "X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: assets\n"
 
+#: classes/dashboard_ajax_provider.php:45
+#, php-format
 msgid ""
 "Your token for this API is: %s. We will only show this once. Please save it "
 "somewhere now."
@@ -21,6 +28,8 @@ msgstr ""
 "Dein Schlüssel für diese API ist: %s. Dieser Schlüssel kann nur einmal "
 "angezeigt werden, leg ihn bitte jetzt an einem sicheren Ort ab."
 
+#: classes/dashboard_ajax_provider.php:52
+#, php-format
 msgid ""
 "Your key request is pending review. You will receive an Email when your "
 "request is processed. Your request id is %s. This is not your access token. "
@@ -30,93 +39,130 @@ msgstr ""
 "bearbeitet wurde. Ihre Anfrage ID ist: %s (dies ist kein Zugangs-Token für "
 "die API). Bitte geben Sie diese ID an falls Sie uns per Email kontaktieren."
 
+#: classes/dashboard_ajax_provider.php:68
+#: classes/dashboard_ajax_provider.php:131
+#: classes/dashboard_ajax_provider.php:150
+#: classes/dashboard_ajax_provider.php:175
 msgid "Invalid request"
 msgstr "Ungültiger request"
 
+#: classes/dashboard_ajax_provider.php:126
+#, php-format
 msgid ""
 "Your token \"%s\" was revoked permanently and is invalidated effective "
 "immediately."
 msgstr ""
-"Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort ungültig."
+"Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort "
+"ungültig."
 
+#: classes/dev_portal.php:117
 msgid "Used"
 msgstr "Gebraucht"
 
+#: classes/dev_portal.php:118
 msgid "Remaining"
 msgstr "Verbleibend"
 
+#: classes/dev_portal.php:119
 msgid "Success"
 msgstr "Erfolgreich"
 
+#: classes/dev_portal.php:120
 msgid "Errors"
 msgstr "Fehler"
 
+#: classes/dev_portal.php:121
 msgid "Invalid or insufficient data"
 msgstr "Ungültige oder ungenügende Daten"
 
+#: classes/dev_portal.php:214
 msgid "Developer"
 msgstr "Entwickler"
 
+#: classes/dev_portal.php:231
 msgid "Developer Dashboard"
 msgstr "Entwickler Dashboard"
 
-msgid "This page is only available when you are <a href=\"%1$s\">logged in</a>."
+#: template_tags.php:18
+#, php-format
+msgid ""
+"This page is only available when you are <a href=\"%1$s\">logged in</a>."
 msgstr ""
 "Diese Seite ist nur verfügbar wenn Sie <a href=\"%1$s\">eingeloggt sind</a>."
 
+#: templates/api_subscribe_form.php:10
 msgid "Tokens"
 msgstr "Schlüssel"
 
+#: templates/api_subscribe_form.php:13
 msgid "Usage"
 msgstr "Nutzung"
 
+#: templates/api_subscribe_form.php:16
 msgid "Quota"
 msgstr "Kontingent"
 
+#: templates/tab_quota.php:7
 msgid "Remaining quota"
 msgstr "Offenes Kontingent"
 
+#: templates/tab_quota.php:12
 msgid "Please enter your token here"
 msgstr "Bitte Schlüssel eingeben"
 
+#: templates/tab_quota.php:13 templates/tab_tokens.php:42
+#: templates/tab_tokens.php:90
 msgid "loading"
 msgstr "laden"
 
+#: templates/tab_tokens.php:4
 msgid "My tokens"
 msgstr "Meine Schlüssel"
 
+#: templates/tab_tokens.php:12 templates/tab_tokens.php:65
 msgid "An error occurred. Please try again."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
 
+#: templates/tab_tokens.php:20 templates/tab_tokens.php:70
 msgid "Name"
 msgstr "Name"
 
+#: templates/tab_tokens.php:21 templates/tab_tokens.php:77
 msgid "API"
 msgstr "API"
 
+#: templates/tab_tokens.php:30
 msgid "Show usage"
 msgstr "Nutzung anzeigen"
 
+#: templates/tab_tokens.php:33
 msgid "Revoke this token"
 msgstr "Schlüssel annullieren"
 
+#: templates/tab_tokens.php:45
 msgid "You don't have any tokens yet"
 msgstr "Du hast noch keine Schlüssel"
 
+#: templates/tab_tokens.php:56 templates/tab_tokens.php:93
 msgid "Request a token"
 msgstr "Schlüssel anfordern"
 
+#: templates/tab_tokens.php:72
 msgid "Give this token a name"
 msgstr "Gib diesem Schlüssel einen Namen"
 
+#: templates/tab_tokens.php:80 templates/tab_usage.php:9
 msgid "-- please choose"
 msgstr "-- bitte wählen "
 
+#: templates/tab_usage.php:7
 msgid "Token"
 msgstr "Schlüssel"
 
+#: templates/tab_usage.php:15
 msgid "From"
 msgstr "Von"
 
+#: templates/tab_usage.php:20
 msgid "To"
 msgstr "Bis"
