@@ -1,7 +1,7 @@
 <?php
 /**
  * PHPUnit bootstrap file
- *
+ * bash bin/install-wp-tests.sh wp_test root '' localhost latest
  * @package Tyk_Dev_Portal
  */
 
