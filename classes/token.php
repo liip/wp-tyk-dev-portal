@@ -295,10 +295,10 @@ class Tyk_Token
 
 		try {
 			/**
-			 * Hybrid and on-premise Tyk
+			 * Hybrid Tyk
 			 * Get usage quota from gateways, as this info isn't synced back to cloud
 			 */
-			if (Tyk_Dev_Portal::is_hybrid() || Tyk_Dev_Portal::is_on_premise()) {
+			if (Tyk_Dev_Portal::is_hybrid()) {
 				$response = $this->gateway->get(sprintf('/keys/%s', $this->key));
 				if (is_object($response) && isset($response->quota_remaining)) {
 				    return (object) array(
@@ -311,7 +311,7 @@ class Tyk_Token
 				}
 			}
 			/**
-			 * Cloud Tyk
+			 * Cloud and on-premise Tyk
 			 * Get usage quota from API
 			 */
 			else {
