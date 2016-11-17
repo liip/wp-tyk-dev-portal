@@ -72,6 +72,13 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 
 ## Changelog
 
+### Version 1.2
+
+* Usage & Quota tabs
+* Improved overview of tokens and their policy
+* Support for Tyk in hybrid configuration
+* FR and IT locales
+
 ### Version 1.1
 
 * fixed language loading
