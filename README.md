@@ -15,6 +15,8 @@ Integrates a developer portal of a Tyk API Gateway in your WordPress site
 If you are using the [Tyk API Gateway](http://www.tyk.io) and have a WordPress site you can use this plugin to integrate a developer portal into your site. This is handy when your API requires a complementary website with information e.g. about the service and you want the developer portal in the same place. It's main goal is to offer developer sign up and obtaining access tokens from your WordPress site.
 
 ![Screenshot 1](./screenshot-1.png)
+![Screenshot 2](./screenshot-2.png)
+![Screenshot 3](./screenshot-3.png)
 
 This plugin is a work in progress and currently offers the following features:
 
