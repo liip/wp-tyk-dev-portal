@@ -38,7 +38,7 @@ Please note that we, the plugin authors, cannot offer support for this plugin. T
 
 * Upload the plugin zip file or install the plugin through the WordPress plugins screen directly
 * Optional: choose and install a plugin that offers a better registration experience for WordPress users. This plugin was tested with [ProfilePress](https://wordpress.org/plugins/ppress/) and [Profile Builder](https://wordpress.org/plugins/profile-builder/), it should work with most or any registration/profile plugin though.
-* Activate the plugins through the 'Plugins' screen in WordPress. Activation of this plugin should have triggered the creation of the user role "Developer" an the page "Developer Dashboard".
+* Activate the plugins through the 'Plugins' screen in WordPress. Activation of this plugin should have triggered the creation of the user role "Developer" an the page "Developer Dashboard". Note that the "Developer Dashboard" page must have the slug "dev-dashboard" otherwise the scripts won't be included.
 * Setup your Tyk Gateway in the Tyk Dashboard (assuming you already configured an API and policy):
 	* Go to *System Management > Policies*
 	* Tag policies that developers may register for with `allow_registration`
@@ -64,7 +64,9 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 
 ## Screenshots
 
-1. Developer Dashboard with token overview in WordPress frontend
+1. Developer Dashboard with token request in WordPress frontend
+2. Usage graph per token and time period
+3. Token usage quota (used / remaining requests)
 
 ## Changelog
 

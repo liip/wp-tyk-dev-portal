@@ -6,7 +6,7 @@
 	<!-- area for messages -->
 	<div v-cloak>
 		<div id="tyk-subscribe-success" class="alert alert-info" v-if="message" role="alert">
-			{{message}}
+			{{ message }}
 		</div>
 		<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" role="alert">
 			<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>

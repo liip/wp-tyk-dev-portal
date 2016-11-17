@@ -69,32 +69,6 @@ class Tyk_API extends Tyk_Interaction
 		}
 	}
 
-    /**
-     * Send a get request to Tyk gateway
-     * 
-     * @param string $path
-     * @param array $args  Query string args
-     *
-     * @throws Exception When API sends invalid response
-     * 
-     * @return array
-     */
-    public function gateway_get($path, array $args = null) {
-        $api_response = wp_remote_get($this->get_url_for_path($path, $args, 'GATEWAY'), array(
-            'headers' => array(
-                'x-tyk-authorization' => TYK_GATEWAY_SECRET
-            ),
-        ));
-
-        $response = $this->parse_response($api_response);
-        if (is_object($response)) {
-            return $response;
-        }
-        else {
-            throw new Exception('Received invalid response from Gateway');
-        }
-    }
-
 	/**
 	 * Send a put request to Tyk API
 	 * 

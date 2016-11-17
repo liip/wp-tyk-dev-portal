@@ -19,5 +19,5 @@ class TykDevPortalPluginTest extends Tyk_Dev_Portal_Testcase {
 
 		$page = get_page_by_path($plugin::DASHBOARD_SLUG);
 		$this->assertInstanceOf('WP_Post', $page);
-		}
+	}
 }
