@@ -39,6 +39,32 @@ class Tyk_Gateway extends Tyk_Interaction
     }
 
 	/**
+	 * Send a delete request to Tyk gateway
+	 * 
+	 * @throws Exception when the gateway sends an invalid response
+	 * 
+	 * @param string $path
+	 * @return stdClass
+	 */
+	public function delete($path) {
+		$url = $this->get_url_for_path($path);
+
+		$api_response = wp_remote_request($url, array(
+			'method' => 'DELETE',
+			'headers' => array(
+                'x-tyk-authorization' => TYK_GATEWAY_SECRET
+			)));
+
+		$response = $this->parse_response($api_response);
+		if (is_object($response)) {
+			return $response;
+		}
+		else {
+			throw new Exception('Received invalid response from API');
+		}
+    }
+
+	/**
 	 * Get absolute url to api endpoint for a path
 	 * 
      * @param string $path

@@ -268,6 +268,15 @@ class Tyk_Token
 				$this->user->get_tyk_id()
 				));
 			if (is_object($response) && isset($response->Status) && $response->Status == 'OK') {
+                if (Tyk_Dev_Portal::is_hybrid()) {
+                    $response = $this->gateway->delete(sprintf('/keys/%s?hashed=1', $this->hash));
+                    if (is_object($response) && isset($response->status) && $response->status == 'ok') {
+                        return true;
+                    }
+                    else {
+                        throw new Exception('Received invalid response from Gateway');
+                    }
+                }
 				return true;
 			}
 			else {
