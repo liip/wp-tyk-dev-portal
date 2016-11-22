@@ -109,6 +109,7 @@ You may need to fix some styles as this plugin includes a subset of the [bootstr
 ### i18n
 
 This plugin is ready for translation and currently supports the following languages:
+
 * German
 * French
 * Italian
