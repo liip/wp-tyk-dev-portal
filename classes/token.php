@@ -268,6 +268,15 @@ class Tyk_Token
 				$this->user->get_tyk_id()
 				));
 			if (is_object($response) && isset($response->Status) && $response->Status == 'OK') {
+				if (Tyk_Dev_Portal::is_hybrid()) {
+					$response = $this->gateway->delete(sprintf('/keys/%s?hashed=1', $this->hash));
+					if (is_object($response) && isset($response->status) && $response->status == 'ok') {
+						return true;
+					}
+					else {
+						throw new Exception('Received invalid response from Gateway');
+					}
+				}
 				return true;
 			}
 			else {
@@ -288,8 +297,8 @@ class Tyk_Token
 	 * 
 	 * @return object Usage quota
 	 */
-    public function get_usage_quota() {
-        if (!is_string($this->key)) {
+	public function get_usage_quota() {
+		if (!is_string($this->key)) {
 			throw new InvalidArgumentException('Missing token key');
 		}
 
@@ -301,13 +310,13 @@ class Tyk_Token
 			if (Tyk_Dev_Portal::is_hybrid()) {
 				$response = $this->gateway->get(sprintf('/keys/%s', $this->key));
 				if (is_object($response) && isset($response->quota_remaining)) {
-				    return (object) array(
-				    	'quota_remaining' => $response->quota_remaining,
-				        'quota_max' => $response->quota_max
-				        );
+					return (object) array(
+						'quota_remaining' => $response->quota_remaining,
+						'quota_max' => $response->quota_max
+						);
 				}
 				else {
-				    throw new Exception('Received invalid response from Gateway');
+					throw new Exception('Received invalid response from Gateway');
 				}
 			}
 			/**
@@ -333,7 +342,7 @@ class Tyk_Token
 					throw new Exception('Received invalid response from API');
 				}
 			}
-        }
+		}
 		catch (Exception $e) {
 			throw new UnexpectedValueException($e->getMessage());
 		}
