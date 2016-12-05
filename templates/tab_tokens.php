@@ -19,6 +19,7 @@
 				<tr>
 					<th><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
 					<th><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
+					<th class="icon"><?php _e('State', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
 					<th class="icon"></th>
 				</tr>
 			</thead>
@@ -26,6 +27,7 @@
 				<tr v-for="token in tokens">
 					<td>{{ token.token_name }}</td>
 					<td>{{ getApiName(token.api_id) }}</td>
+					<td><span class="label" :class="{'label-danger': !token.is_valid, 'label-success': token.is_valid}">{{ getState(token) }}</span></td>
 					<td>
 						<a href="#" @click.prevent="showUsageTab(token)" class="btn text-info" title="<?php _e('Show usage', Tyk_Dev_Portal::TEXT_DOMAIN)?>">
 							<span class="glyphicon glyphicon-stats"></span>

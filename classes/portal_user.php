@@ -35,6 +35,12 @@ class Tyk_Portal_User
 	private $user;
 
 	/**
+	 * User's policy subscriptions according to Tyk
+	 * @var Array
+	 */
+	private $tyk_subscriptions;
+
+	/**
 	 * Setup portal user
 	 * 
 	 * @param integer $user_id Defaults to current user's id
@@ -131,7 +137,15 @@ class Tyk_Portal_User
 		if (!is_array($tokens)) {
 			return array();
 		}
-		return $tokens;
+
+		// lambda to add an 'is_valid' attribute to each token
+		$map_is_valid = function ($token) {
+			return array_merge($token, array(
+				'is_valid' => $this->has_token($token['hash']),
+				));
+		};
+
+		return array_map($map_is_valid, $tokens);
 	}
 
 	/**
@@ -200,6 +214,25 @@ class Tyk_Portal_User
 		catch (Exception $e) {
 			trigger_error(sprintf('Could not register user for API: %s', $e->getMessage()), E_USER_WARNING);
 		}
+	}
+
+	/**
+	 * Check if the user still has <token> according to tyk
+	 * 
+	 * @throws Exception If subscriptions info is missing in Tyk user data
+	 * 
+	 * @param string $hash
+	 * @return boolean
+	 */
+	private function has_token($hash) {
+		if (!isset($this->tyk_subscriptions) || !is_array($this->tyk_subscriptions)) {
+			$user_data = $this->fetch_from_tyk();
+			if (!isset($user_data->subscriptions)) {
+				throw new Exception('Missing policy subscriptions');
+			}
+			$this->tyk_subscriptions = array_flip((array) $user_data->subscriptions);
+		}
+		return isset($this->tyk_subscriptions[$hash]);
 	}
 
 	/**

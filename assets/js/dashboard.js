@@ -433,6 +433,17 @@
 			},
 
 			/**
+			 * Returns the state of a token
+			 * @param {object} token
+			 * @return {string}
+			 */
+			getState: function(token) {
+				return token.is_valid
+					? scriptParams.label_valid
+					: scriptParams.label_invalid;
+			},
+
+			/**
 			 * Fetch tokens from server
 			 * @return {object} jQuery Promise
 			 */
