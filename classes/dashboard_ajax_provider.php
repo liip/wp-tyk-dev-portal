@@ -115,7 +115,7 @@ class Tyk_Dashboard_Ajax_Provider
 			catch (Exception $e) {
 				// treat everything as an error except when tyk can't find the token
 				// in which case we'll assume it's gone on their side and delete it on our side as well
-				if (strtolower($e->getMessage()) != 'not found') {
+				if (strpos(strtolower($e->getMessage()), 'not found') === false) {
 					wp_send_json_error($e->getMessage());
 				}
 			}
