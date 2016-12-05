@@ -2,9 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-03 11:25+0100\n"
-"PO-Revision-Date: 2016-12-03 11:31+0100\n"
-"Last-Translator: Adrian Schlegel <adrian.schlegel@liip.ch>\n"
+"POT-Creation-Date: 2016-12-05 14:08+0100\n"
+"PO-Revision-Date: 2016-12-05 14:14+0100\n"
+"Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: assets\n"
 
-#: classes/dashboard_ajax_provider.php:45
+#: classes/dashboard_ajax_provider.php:46
 #, php-format
 msgid ""
 "Your token for this API is: %s. We will only show this once. Please save it "
@@ -28,7 +28,7 @@ msgstr ""
 "Votre jeton pour cet API est: %s. Nous n’afficherons cet élément qu’une "
 "seule fois. Veuillez le sauvegarder quelque part."
 
-#: classes/dashboard_ajax_provider.php:52
+#: classes/dashboard_ajax_provider.php:53
 #, php-format
 msgid ""
 "Your key request is pending review. You will receive an Email when your "
@@ -40,14 +40,14 @@ msgstr ""
 "s’agit pas de votre jeton d’authentification. Veuillez faire référence à "
 "l’ID de la demande si vous nous contactez par e-mail."
 
-#: classes/dashboard_ajax_provider.php:68
-#: classes/dashboard_ajax_provider.php:131
-#: classes/dashboard_ajax_provider.php:155
-#: classes/dashboard_ajax_provider.php:180
+#: classes/dashboard_ajax_provider.php:69
+#: classes/dashboard_ajax_provider.php:132
+#: classes/dashboard_ajax_provider.php:156
+#: classes/dashboard_ajax_provider.php:181
 msgid "Invalid request"
 msgstr "Demande invalide"
 
-#: classes/dashboard_ajax_provider.php:126
+#: classes/dashboard_ajax_provider.php:127
 #, php-format
 msgid ""
 "Your token \"%s\" was revoked permanently and is invalidated effective "
@@ -56,7 +56,7 @@ msgstr ""
 "Votre jeton \"%s\" a été annulé de manière permanente et invalidé avec effet "
 "immédiat."
 
-#: classes/dashboard_ajax_provider.php:151
+#: classes/dashboard_ajax_provider.php:152
 msgid ""
 "Token could not be found. Please not that you have to use the token at least "
 "once before you can request the remaining quota."
@@ -84,11 +84,19 @@ msgstr "Erreurs"
 msgid "Invalid or insufficient data"
 msgstr "Données invalides ou insuffisantes"
 
-#: classes/dev_portal.php:214
+#: classes/dev_portal.php:122
+msgid "valid"
+msgstr "valide"
+
+#: classes/dev_portal.php:123
+msgid "invalid"
+msgstr "invalide"
+
+#: classes/dev_portal.php:216
 msgid "Developer"
 msgstr "Développeur"
 
-#: classes/dev_portal.php:231
+#: classes/dev_portal.php:233
 msgid "Developer Dashboard"
 msgstr "Tableau de bord du développeur"
 
@@ -120,8 +128,8 @@ msgstr "Quota restant"
 msgid "Please enter your token here"
 msgstr "Veuillez saisir votre jeton ici."
 
-#: templates/tab_quota.php:13 templates/tab_tokens.php:42
-#: templates/tab_tokens.php:90
+#: templates/tab_quota.php:13 templates/tab_tokens.php:44
+#: templates/tab_tokens.php:92
 msgid "loading"
 msgstr "chargement"
 
@@ -129,39 +137,43 @@ msgstr "chargement"
 msgid "My tokens"
 msgstr "Mes jetons"
 
-#: templates/tab_tokens.php:12 templates/tab_tokens.php:65
+#: templates/tab_tokens.php:12 templates/tab_tokens.php:67
 msgid "An error occurred. Please try again."
 msgstr "Une erreur s’est produite. Veuillez réessayer."
 
-#: templates/tab_tokens.php:20 templates/tab_tokens.php:70
+#: templates/tab_tokens.php:20 templates/tab_tokens.php:72
 msgid "Name"
 msgstr "Nom"
 
-#: templates/tab_tokens.php:21 templates/tab_tokens.php:77
+#: templates/tab_tokens.php:21 templates/tab_tokens.php:79
 msgid "API"
 msgstr "API"
 
-#: templates/tab_tokens.php:30
+#: templates/tab_tokens.php:22
+msgid "State"
+msgstr "État"
+
+#: templates/tab_tokens.php:32
 msgid "Show usage"
 msgstr "Montrer utilisation"
 
-#: templates/tab_tokens.php:33
+#: templates/tab_tokens.php:35
 msgid "Revoke this token"
 msgstr "Annuler ce jeton"
 
-#: templates/tab_tokens.php:45
+#: templates/tab_tokens.php:47
 msgid "You don't have any tokens yet"
 msgstr "Vous n’avez pas encore de jetons."
 
-#: templates/tab_tokens.php:56 templates/tab_tokens.php:93
+#: templates/tab_tokens.php:58 templates/tab_tokens.php:95
 msgid "Request a token"
 msgstr "Demander un jeton"
 
-#: templates/tab_tokens.php:72
+#: templates/tab_tokens.php:74
 msgid "Give this token a name"
 msgstr "Donner un nom à ce jeton"
 
-#: templates/tab_tokens.php:80 templates/tab_usage.php:9
+#: templates/tab_tokens.php:82 templates/tab_usage.php:9
 msgid "-- please choose"
 msgstr "-- Veuillez sélectionner"
 

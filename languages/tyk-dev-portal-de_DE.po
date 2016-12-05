@@ -2,9 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-03 11:17+0100\n"
-"PO-Revision-Date: 2016-12-05 08:57+0100\n"
-"Last-Translator: Adrian Schlegel <adrian.schlegel@liip.ch>\n"
+"POT-Creation-Date: 2016-12-05 14:06+0100\n"
+"PO-Revision-Date: 2016-12-05 14:08+0100\n"
+"Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: \n"
 "Language: de_CH\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: assets\n"
 
-#: classes/dashboard_ajax_provider.php:45
+#: classes/dashboard_ajax_provider.php:46
 #, php-format
 msgid ""
 "Your token for this API is: %s. We will only show this once. Please save it "
@@ -28,7 +28,7 @@ msgstr ""
 "Dein Schlüssel für diese API ist: %s. Dieser Schlüssel kann nur einmal "
 "angezeigt werden, leg ihn bitte jetzt an einem sicheren Ort ab."
 
-#: classes/dashboard_ajax_provider.php:52
+#: classes/dashboard_ajax_provider.php:53
 #, php-format
 msgid ""
 "Your key request is pending review. You will receive an Email when your "
@@ -39,14 +39,14 @@ msgstr ""
 "bearbeitet wurde. Ihre Anfrage ID ist: %s (dies ist kein Zugangs-Token für "
 "die API). Bitte geben Sie diese ID an falls Sie uns per Email kontaktieren."
 
-#: classes/dashboard_ajax_provider.php:68
-#: classes/dashboard_ajax_provider.php:131
-#: classes/dashboard_ajax_provider.php:155
-#: classes/dashboard_ajax_provider.php:180
+#: classes/dashboard_ajax_provider.php:69
+#: classes/dashboard_ajax_provider.php:132
+#: classes/dashboard_ajax_provider.php:156
+#: classes/dashboard_ajax_provider.php:181
 msgid "Invalid request"
 msgstr "Ungültiger request"
 
-#: classes/dashboard_ajax_provider.php:126
+#: classes/dashboard_ajax_provider.php:127
 #, php-format
 msgid ""
 "Your token \"%s\" was revoked permanently and is invalidated effective "
@@ -55,7 +55,7 @@ msgstr ""
 "Dein Schlüssel “%s” wurde unwiderruflich annuliert und ist ab sofort "
 "ungültig."
 
-#: classes/dashboard_ajax_provider.php:151
+#: classes/dashboard_ajax_provider.php:152
 msgid ""
 "Token could not be found. Please not that you have to use the token at least "
 "once before you can request the remaining quota."
@@ -84,11 +84,19 @@ msgstr "Fehler"
 msgid "Invalid or insufficient data"
 msgstr "Ungültige oder ungenügende Daten"
 
-#: classes/dev_portal.php:214
+#: classes/dev_portal.php:122
+msgid "valid"
+msgstr "gültig"
+
+#: classes/dev_portal.php:123
+msgid "invalid"
+msgstr "ungültig"
+
+#: classes/dev_portal.php:216
 msgid "Developer"
 msgstr "Entwickler"
 
-#: classes/dev_portal.php:231
+#: classes/dev_portal.php:233
 msgid "Developer Dashboard"
 msgstr "Entwickler Dashboard"
 
@@ -119,8 +127,8 @@ msgstr "Offenes Kontingent"
 msgid "Please enter your token here"
 msgstr "Bitte Schlüssel eingeben"
 
-#: templates/tab_quota.php:13 templates/tab_tokens.php:42
-#: templates/tab_tokens.php:90
+#: templates/tab_quota.php:13 templates/tab_tokens.php:44
+#: templates/tab_tokens.php:92
 msgid "loading"
 msgstr "laden"
 
@@ -128,39 +136,43 @@ msgstr "laden"
 msgid "My tokens"
 msgstr "Meine Schlüssel"
 
-#: templates/tab_tokens.php:12 templates/tab_tokens.php:65
+#: templates/tab_tokens.php:12 templates/tab_tokens.php:67
 msgid "An error occurred. Please try again."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuche es nochmal."
 
-#: templates/tab_tokens.php:20 templates/tab_tokens.php:70
+#: templates/tab_tokens.php:20 templates/tab_tokens.php:72
 msgid "Name"
 msgstr "Name"
 
-#: templates/tab_tokens.php:21 templates/tab_tokens.php:77
+#: templates/tab_tokens.php:21 templates/tab_tokens.php:79
 msgid "API"
 msgstr "API"
 
-#: templates/tab_tokens.php:30
+#: templates/tab_tokens.php:22
+msgid "State"
+msgstr "Zustand"
+
+#: templates/tab_tokens.php:32
 msgid "Show usage"
 msgstr "Nutzung anzeigen"
 
-#: templates/tab_tokens.php:33
+#: templates/tab_tokens.php:35
 msgid "Revoke this token"
 msgstr "Schlüssel annullieren"
 
-#: templates/tab_tokens.php:45
+#: templates/tab_tokens.php:47
 msgid "You don't have any tokens yet"
 msgstr "Du hast noch keine Schlüssel"
 
-#: templates/tab_tokens.php:56 templates/tab_tokens.php:93
+#: templates/tab_tokens.php:58 templates/tab_tokens.php:95
 msgid "Request a token"
 msgstr "Schlüssel anfordern"
 
-#: templates/tab_tokens.php:72
+#: templates/tab_tokens.php:74
 msgid "Give this token a name"
 msgstr "Gib diesem Schlüssel einen Namen"
 
-#: templates/tab_tokens.php:80 templates/tab_usage.php:9
+#: templates/tab_tokens.php:82 templates/tab_usage.php:9
 msgid "-- please choose"
 msgstr "-- bitte wählen "
 
