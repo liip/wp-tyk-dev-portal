@@ -1,4 +1,5 @@
 <?php
+/* vim: set noexpandtab tabstop=4 shiftwidth=4 sts=0 foldmethod=marker: */
 
 /**
  * Provide ajax actions for dashboard GUI
@@ -144,7 +145,12 @@ class Tyk_Dashboard_Ajax_Provider
 				wp_send_json_success($token->get_usage_quota());
 			}
 			catch (Exception $e) {
-				wp_send_json_error($e->getMessage());
+				if (strtolower($e->getMessage()) != 'not found') {
+					wp_send_json_error($e->getMessage());
+				}
+				else {
+					wp_send_json_error(__('Token could not be found. Please not that you have to use the token at least once before you can request the remaining quota.'));
+				}
 			}
 		}
 		wp_send_json_error(__('Invalid request'));
