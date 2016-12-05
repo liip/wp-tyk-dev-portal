@@ -494,8 +494,8 @@
 				$.post(scriptParams.actionUrl, data)
 					.done(function(result) {
 						if (result && result.success) {
-							self.message = result.data.message;
 							self.$emit('deleted-token');
+							self.message = result.data.message;
 						}
 						else {
 							self.hasError = true;
