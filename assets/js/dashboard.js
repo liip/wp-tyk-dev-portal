@@ -281,7 +281,8 @@
 				// the selected token key
 				key: null,
 				busy: false,
-				error: null
+				error: null,
+				message: null
 			}
 		},
 
@@ -329,12 +330,25 @@
 			},
 
 			/**
+			 * Set a message in gui
+			 * @param {string} message
+			 */
+			setMessage: function(message) {
+				this.message = message;
+				this.busy = false;
+			},
+
+			/**
 			 * Show usage quota
 			 * @param {object} data
 			 */
 			showQuotas: function(data) {
 				// catch invalid data
-				if (!data.quota_max || data.quota_max < data.quota_remaining) {
+				if (data.quota_max === -1) {
+					this.setMessage(scriptParams.msg_unlimited_quota);
+					return;
+				}
+				else if (!data.quota_max || data.quota_max < data.quota_remaining) {
 					this.setError(scriptParams.error_invalid_data)
 					return;
 				}

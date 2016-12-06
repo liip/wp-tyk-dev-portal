@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-05 14:08+0100\n"
-"PO-Revision-Date: 2016-12-05 14:14+0100\n"
+"POT-Creation-Date: 2016-12-06 16:22+0100\n"
+"PO-Revision-Date: 2016-12-06 16:22+0100\n"
 "Last-Translator: Team Amboss <be-dev@liip.ch>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #: classes/dashboard_ajax_provider.php:152
 msgid ""
-"Token could not be found. Please not that you have to use the token at least "
+"Token could not be found. Please note that you must use the token at least "
 "once before you can request the remaining quota."
 msgstr ""
 "Votre jeton n'a pas été trouvé. Notez que le jeton doit être utilisé au "
@@ -92,11 +92,15 @@ msgstr "valide"
 msgid "invalid"
 msgstr "invalide"
 
-#: classes/dev_portal.php:216
+#: classes/dev_portal.php:124
+msgid "This token has unlimited quota"
+msgstr "Ce jeton a un quota illimité"
+
+#: classes/dev_portal.php:217
 msgid "Developer"
 msgstr "Développeur"
 
-#: classes/dev_portal.php:233
+#: classes/dev_portal.php:234
 msgid "Developer Dashboard"
 msgstr "Tableau de bord du développeur"
 
@@ -188,3 +192,10 @@ msgstr "De"
 #: templates/tab_usage.php:20
 msgid "To"
 msgstr "À"
+
+#~ msgid ""
+#~ "Token could not be found. Please not that you have to use the token at "
+#~ "least once before you can request the remaining quota."
+#~ msgstr ""
+#~ "Votre jeton n'a pas été trouvé. Notez que le jeton doit être utilisé au "
+#~ "minimum une fois avant que vous pouvez voir le quota restant."

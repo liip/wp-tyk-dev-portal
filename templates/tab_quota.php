@@ -14,6 +14,7 @@
 
 				<div style="margin-top: 1em;">
 					<div class="alert alert-danger" v-show="error">{{error}}</div>
+					<div class="alert alert-info" v-show="message">{{message}}</div>
 					<canvas v-el:chart></canvas>
 				</div>
 			</div>
