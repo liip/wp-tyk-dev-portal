@@ -149,7 +149,7 @@ class Tyk_Dashboard_Ajax_Provider
 					wp_send_json_error($e->getMessage());
 				}
 				else {
-					wp_send_json_error(__('Token could not be found. Please note that you must use the token at least once before you can request the remaining quota.'));
+					wp_send_json_error(__('Token could not be found. Please note that you must use the token at least once before you can request the remaining quota.', Tyk_Dev_Portal::TEXT_DOMAIN));
 				}
 			}
 		}
