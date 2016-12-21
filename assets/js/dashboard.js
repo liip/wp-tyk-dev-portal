@@ -250,7 +250,7 @@
 				_.chain(data)
 					// sort by timestamp first
 					.sortBy(function(item) {
-						return (new Date([item.id.year, item.id.month, item.id.day].join('-'))).getTime();
+						return new Date(item.id.year, item.id.month - 1, item.id.day).getTime();
 					})
 					// get number for each entry
 					.each(function(stat) {
