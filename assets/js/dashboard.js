@@ -282,7 +282,8 @@
 				key: null,
 				busy: false,
 				error: null,
-				message: null
+				message: null,
+				chart: null
 			}
 		},
 
@@ -354,16 +355,22 @@
 				}
 
 				this.$nextTick(function() {
-					new Chart(this.$els.chart, {
-						type: 'doughnut',
-						data: {
-							labels: [scriptParams.label_used, scriptParams.label_remaining],
-							datasets: [{
-								data: [(data.quota_max - data.quota_remaining), data.quota_remaining],
-								backgroundColor: ['#ffc115', '#05348B']
-							}]
-						}
-					});
+					var chartData = {
+						labels: [scriptParams.label_used, scriptParams.label_remaining],
+						datasets: [{
+							data: [(data.quota_max - data.quota_remaining), data.quota_remaining],
+							backgroundColor: ['#ffc115', '#05348B']
+						}]
+					};
+					if (!this.chart) {
+						this.chart = new Chart(this.$els.chart, {
+							type: 'doughnut',
+							data: chartData
+						});
+					} else {
+						this.chart.config.data = chartData;
+						this.chart.update();
+					}
 					this.busy = false;
 				});
 			}
