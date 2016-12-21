@@ -377,7 +377,10 @@ class Tyk_Token
 				$this->hash,
 				date('j/n/Y', $from),
 				date('j/n/Y', $to)
-			), array('res' => 'day'));
+			), array(
+				'res' => 'day',
+				'p' => -1
+			));
 
 			if (is_object($response) && property_exists($response, 'data')) {
 				return $response->data;
@@ -391,5 +394,3 @@ class Tyk_Token
 		}
 	}
 }
-
-
