@@ -13,8 +13,8 @@
 		</div>
 	</div>
 
-	<table class="table">
-		<template v-if="tokens.length">
+	<template v-if="tokens.length">
+		<table class="table">
 			<thead>
 				<tr>
 					<th><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
@@ -38,8 +38,10 @@
 					</td>
 				</tr>
 			</tbody>
-		</template>
-		<tbody v-else>
+		</table>
+	</template>
+	<table class="table" v-else>
+		<tbody>
 			<tr v-if="loading">
 				<td colspan="3"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?></td>
 			</tr>
