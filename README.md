@@ -26,6 +26,8 @@ This plugin is a work in progress and currently offers the following features:
 * automatic or manual approval of key requests
 * storage of token (references) by name and API policy
 * revoking of tokens by developer
+* display usage statistics per key
+* request quota usage per key
 
 What this plugin does not offer:
 
