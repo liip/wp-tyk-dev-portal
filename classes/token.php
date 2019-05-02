@@ -194,8 +194,10 @@ class Tyk_Token
 		$request_id = $this->api->post('/portal/requests', array(
 			'by_user' => $this->user->get_tyk_id(),
 			'for_plan' => $this->policy,
-			// it's possible to have key requests approved manually
-			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
+			// as of Tyk Dashboard v1.8 this always needs to be set to false
+			// otherwise the subsequent approval call fails because the request
+			// is already considered as approved.
+			'approved' => false,
 			// this is a bit absurd but tyk api doesn't set this by itself
 			'date_created' => date('c'),
 			'version' => 'v2',
