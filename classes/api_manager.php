@@ -25,7 +25,8 @@ class Tyk_API_Manager
 		$tyk = new Tyk_API;
 		// available apis are actually available policies/plans that allow access
 		// to certain apis under certain restrictions
-		$response = $tyk->get('/portal/policies');
+        // normally only the first 10 policies are returned, we disabled this limit using p=-1 as param
+		$response = $tyk->get('/portal/policies', ['p' => -1]);
 		// a generator would be nice here but alas, php 5.4 is still very common
 		$active_apis = array();
 		if (is_object($response) && isset($response->Data)) {
