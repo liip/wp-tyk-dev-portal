@@ -49,7 +49,7 @@
 			'new-token': function() {
 				this.token_name = '';
 				this.api = '';
-				this.tac_accepted =false;
+				this.tac_accepted = false;
 			}
 		},
 
