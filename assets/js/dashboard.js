@@ -35,6 +35,7 @@
 			return {
 				token_name: '',
 				api: '',
+				tac_accepted: false,
 				message: '',
 				hasError: false,
 				busy: false
@@ -48,6 +49,7 @@
 			'new-token': function() {
 				this.token_name = '';
 				this.api = '';
+				this.tac_accepted = false;
 			}
 		},
 
@@ -57,7 +59,19 @@
 			 * @return {boolean}
 			 */
 			formValid: function() {
-				return (this.token_name != '' && this.api != '');
+				return (
+					this.token_name != '' &&
+					this.api != ''
+					&& (!this.requiresTAC || this.tac_accepted)
+				);
+			},
+			requiresTAC: function() {
+				// hide the tac field by default
+				if (!this.api) {
+					return false;
+				}
+				let api = this.apis.find(o => o.id === this.api);
+				return api.requires_tac;
 			}
 		},
 

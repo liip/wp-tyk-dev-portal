@@ -181,6 +181,10 @@ msgstr "Donner un nom à ce jeton"
 msgid "-- please choose"
 msgstr "-- Veuillez sélectionner"
 
+#: templates/tab_tokens.php:82 templates/tab_tokens.php:94
+msgid "I accept the general terms and conditions"
+msgstr "J’accepte les conditions générales"
+
 #: templates/tab_usage.php:7
 msgid "Token"
 msgstr "Jeton"

@@ -46,6 +46,7 @@ Please note that we, the plugin authors, cannot offer support for this plugin. T
 * Setup your Tyk Gateway in the Tyk Dashboard (assuming you already configured an API and policy):
 	* Go to *System Management > Policies*
 	* Tag policies that developers may register for with `allow_registration`
+	* Tag policies where accepted terms and conditions are required with `requires_tac`
 	* Name your policies accordingly, these will be shown to user for access token registration
 	* Create a dedicated management user at *System Management > Users* (does not have to be an Admin), save, then generate an access
 	token for this user on the same page (*Tyk Dashboard API Access Credentials*)
@@ -73,6 +74,11 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 3. Token usage quota (used / remaining requests)
 
 ## Changelog
+
+### Version 1.3
+
+* Add terms and condition checkbox for policies with the tag `requires_tac`
+* Disable tyk policy paging, so instead of only 10, all policies can now be loaded in one request
 
 ### Version 1.2
 

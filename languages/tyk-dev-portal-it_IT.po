@@ -181,6 +181,10 @@ msgstr "Assegnare un nome al token"
 msgid "-- please choose"
 msgstr "-- scegliere"
 
+#: templates/tab_tokens.php:82 templates/tab_tokens.php:94
+msgid "I accept the general terms and conditions"
+msgstr "Accetto le condizioni generali di contratto "
+
 #: templates/tab_usage.php:7
 msgid "Token"
 msgstr "Token"
