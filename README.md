@@ -78,7 +78,7 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 ### Version 1.3
 
 * Add terms and condition checkbox for policies with the tag `requires_tac`
-* Removed tyk policy limit, so instead of only 10, all policies can now be loaded
+* Disable tyk policy paging, so instead of only 10, all policies can now be loaded in one request
 
 ### Version 1.2
 
