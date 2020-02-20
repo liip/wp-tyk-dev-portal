@@ -94,7 +94,7 @@
 				var data = { 
 					action: 'get_token',
 					api: this.api,
-					token_name: this.token_name,
+					token_name: this.token_name
 				};
 
 				// post to server
