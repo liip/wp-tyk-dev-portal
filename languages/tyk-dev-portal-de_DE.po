@@ -168,7 +168,11 @@ msgstr "Schlüssel annullieren"
 msgid "You don't have any tokens yet"
 msgstr "Du hast noch keine Schlüssel"
 
-#: templates/tab_tokens.php:58 templates/tab_tokens.php:95
+#: templates/tab_tokens.php:82 templates/tab_tokens.php:94
+msgid "I accept the general terms and conditions"
+msgstr "Ich akzeptiere die allgemeinen Geschäftsbedingungen"
+
+#: templates/tab_tokens.php:58 templates/tab_tokens.php:105
 msgid "Request a token"
 msgstr "Schlüssel anfordern"
 

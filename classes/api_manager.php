@@ -15,6 +15,7 @@ class Tyk_API_Manager
 	 * so users may register for it freely
 	 */
 	const POLICY_TAG = 'allow_registration';
+	const TAC_TAG = 'requires_tac';
 
 	/**
 	 * Get available policies defined on Tyk
@@ -37,6 +38,7 @@ class Tyk_API_Manager
 					$active_apis[] = array(
 						'id' => $policy->_id,
 						'name' => $policy->name,
+						'requires_tac' => in_array(self::TAC_TAG, $policy->tags),
 						);
 				}
 			}

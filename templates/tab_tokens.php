@@ -87,6 +87,14 @@
 						</div>
 					</div>
 
+                    <div class="form-group" v-if="requiresTAC">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-10">
+                            <input type="checkbox" id="tyk-api-tac" name="tyk-api-tac" v-model="tac_accepted">
+                            <label for="tyk-api-tac"><?php _e('I accept the general terms and conditions', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+                        </div>
+                    </div>
+
 					<div class="form-group">
 						<div class="col-xs-10 col-xs-offset-2">
 							<button @click.prevent="register" :disabled="busy || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">

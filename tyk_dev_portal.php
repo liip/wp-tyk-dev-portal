@@ -3,8 +3,8 @@
  * Plugin Name: Tyk Developer Portal
  * Description: Integrates a developer portal of a Tyk API Gateway in your WordPress site
  * Author: Liip <be-dev@liip.ch>
- * Version: 1.0.0
- * Date: 04.07.2016
+ * Version: 1.3.0
+ * Date: 20.02.2020
  * Text Domain: tyk-dev-portal
  */
 
