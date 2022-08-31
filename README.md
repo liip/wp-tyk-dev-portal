@@ -75,6 +75,10 @@ define( 'TYK_FORCE_DISABLE_BOOTSTRAP', false );  // do not include bootstrap sty
 
 ## Changelog
 
+### Version 1.4
+
+* Update chart.js to a stable version
+
 ### Version 1.3
 
 * Add terms and condition checkbox for policies with the tag `requires_tac`
