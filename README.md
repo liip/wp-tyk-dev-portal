@@ -132,3 +132,30 @@ This plugin is ready for translation and currently supports the following langua
 * German
 * French
 * Italian
+
+## Tyk API config
+
+There are two endpoints configured, one via the dashboard api (see TYK_API_ENDPOINT and tyk_api.php):
+
+`$this->api->get_url_for_path`
+
+For Authorization you need the Authorization header:
+
+`$api_response = wp_remote_post($this->get_url_for_path($path), array(
+	'headers' => array(
+		'Authorization' => TYK_API_KEY,
+	),
+));`
+
+and one for the gateway (see TYK_GATEWAY_URL and tyk_gateway.php):
+
+`$this->gateway->get_url_for_path`
+
+For Authorization you need the x-tyk-authorization header:
+
+`$api_response = wp_remote_get($this->get_url_for_path($path, $args), array(
+	'headers' => array(
+		'x-tyk-authorization' => TYK_GATEWAY_SECRET
+	),
+));`
+

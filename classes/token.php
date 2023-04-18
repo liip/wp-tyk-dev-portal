@@ -303,20 +303,25 @@ class Tyk_Token
 		if (!is_string($this->key)) {
 			throw new InvalidArgumentException('Missing token key');
 		}
-
 		try {
 			/**
 			 * Hybrid Tyk
 			 * Get usage quota from gateways, as this info isn't synced back to cloud
 			 */
 			if (Tyk_Dev_Portal::is_hybrid()) {
-				$response = $this->gateway->get(sprintf('/keys/%s', $this->key));
+				$response = $this->api->get(sprintf('/keys/%s', $this->key));
 				if (is_object($response) && isset($response->quota_remaining)) {
 					return (object) array(
 						'quota_remaining' => $response->quota_remaining,
 						'quota_max' => $response->quota_max
 						);
 				}
+                if (is_object($response) && (isset($response->data->access_rights_array[0]->limit))) {
+                    return (object) array(
+                        'quota_remaining' => $response->data->access_rights_array[0]->limit->quota_remaining,
+                        'quota_max' => $response->data->access_rights_array[0]->limit->quota_max
+                    );
+                }
 				else {
 					throw new Exception('Received invalid response from Gateway');
 				}
@@ -383,7 +388,6 @@ class Tyk_Token
 				'res' => 'day',
 				'p' => -1
 			));
-
 			if (is_object($response) && property_exists($response, 'data')) {
 				return $response->data;
 			}
