@@ -306,27 +306,25 @@ class Tyk_Token
 		try {
 			/**
 			 * Hybrid Tyk
-			 * Get usage quota from gateways, as this info isn't synced back to cloud
-			 */
-			if (Tyk_Dev_Portal::is_hybrid()) {
-				$response = $this->api->get(sprintf('/keys/%s', $this->key));
-				if (is_object($response) && isset($response->quota_remaining)) {
-					return (object) array(
-						'quota_remaining' => $response->quota_remaining,
-						'quota_max' => $response->quota_max
-						);
-				}
+             * Get usage quota from gateways, as this info isn't synced back to cloud
+             */
+            if (Tyk_Dev_Portal::is_hybrid()) {
+                $response = $this->api->get(sprintf('/keys/%s', $this->key));
+                if (is_object($response) && isset($response->quota_remaining)) {
+                    return (object)array(
+                        'quota_remaining' => $response->quota_remaining,
+                        'quota_max' => $response->quota_max
+                    );
+                }
                 if (is_object($response) && (isset($response->data->access_rights_array[0]->limit))) {
-                    return (object) array(
+                    return (object)array(
                         'quota_remaining' => $response->data->access_rights_array[0]->limit->quota_remaining,
                         'quota_max' => $response->data->access_rights_array[0]->limit->quota_max
                     );
+                } else {
+                    throw new Exception('Received invalid response from Gateway');
                 }
-				else {
-					throw new Exception('Received invalid response from Gateway');
-				}
-			}
-			/**
+            } /**
 			 * Cloud and on-premise Tyk
 			 * Get usage quota from API
 			 */
