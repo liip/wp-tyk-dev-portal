@@ -316,10 +316,10 @@ class Tyk_Token
                         'quota_max' => $response->quota_max
                     );
                 }
-                if (is_object($response) && (isset($response->data->access_rights_array[0]->limit))) {
+                if (is_object($response) && isset($response->data->quota_remaining) && isset($response->data->quota_max)) {
                     return (object)array(
-                        'quota_remaining' => $response->data->access_rights_array[0]->limit->quota_remaining,
-                        'quota_max' => $response->data->access_rights_array[0]->limit->quota_max
+                        'quota_remaining' => $response->data->quota_remaining,
+                        'quota_max' => $response->data->quota_max
                     );
                 } else {
                     throw new Exception('Received invalid response from Gateway');
