@@ -1,0 +1,32 @@
+{
+  "name": "wp-tyk-dev-portal",
+  "version": "1.2.0",
+  "description": "WordPress plugin that integrates a developer portal of a Tyk API Gateway in your WordPress site",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liip/wp-tyk-dev-portal.git"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "tyk"
+  ],
+  "author": "teamamboss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liip/wp-tyk-dev-portal/issues"
+  },
+  "homepage": "https://github.com/liip/wp-tyk-dev-portal#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "chart.js": "^2.3.0",
+    "underscore": "^1.8.3",
+    "vue": "^2.0.1"
+  }
+}

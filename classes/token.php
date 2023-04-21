@@ -35,10 +35,16 @@ class Tyk_Token
 	protected $policy;
 
 	/**
-	 * Tyk API handler
+	 * Tyk API interaction handler
 	 * @var Tyk_API
 	 */
 	protected $api;
+
+	/**
+	 * Tyk Gateway interaction handler
+	 * @var Tyk_Gateway
+	 */
+	protected $gateway;
 
 	/**
 	 * Tyk portal user
@@ -50,12 +56,15 @@ class Tyk_Token
 	 * Setup the class
 	 *
 	 * @param Portal_User $user
-	 * @param string $policy
+	 * @param string $policy optional, not required for all actions
 	 */
-	public function __construct(Tyk_Portal_User $user, $policy) {
-		$this->api = new Tyk_API();
+	public function __construct(Tyk_Portal_User $user, $policy = null) {
+		$this->api = new Tyk_API;
+		$this->gateway = new Tyk_Gateway;
 		$this->user = $user;
-		$this->policy = $policy;
+		if (!is_null($policy)) {
+			$this->policy = $policy;
+		}
 	}
 
 	/**
@@ -63,6 +72,7 @@ class Tyk_Token
 	 * 
 	 * @param array $token
 	 * @param Portal_User $user
+	 * @return Tyk_Token
 	 */
 	public static function init(array $token, Tyk_Portal_User $user) {
 		if (isset($token['api_id']) && isset($token['hash'])) {
@@ -74,6 +84,20 @@ class Tyk_Token
 		else {
 			throw new InvalidArgumentException('Invalid token specified');
 		}
+	}
+
+	/**
+	 * Setup token from the key
+	 * 
+	 * @param string $key
+	 * @param Tyk_Portal_User $user
+	 * @return Tyk_Token
+	 */
+	public static function init_from_key($key, Tyk_Portal_User $user) {
+		$token = new Tyk_Token($user);
+		$token->set_key($key);
+		return $token;
+
 	}
 
 	/**
@@ -102,6 +126,15 @@ class Tyk_Token
 	 */
 	public function get_key() {
 		return $this->key;
+	}
+
+	/**
+	 * Set the unhashed key
+	 * 
+	 * @param string $key
+	 */
+	public function set_key($key) {
+		$this->key = $key;
 	}
 
 	/**
@@ -161,8 +194,10 @@ class Tyk_Token
 		$request_id = $this->api->post('/portal/requests', array(
 			'by_user' => $this->user->get_tyk_id(),
 			'for_plan' => $this->policy,
-			// it's possible to have key requests approved manually
-			'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
+			// as of Tyk Dashboard v1.8 this always needs to be set to false
+			// otherwise the subsequent approval call fails because the request
+			// is already considered as approved.
+			'approved' => false,
 			// this is a bit absurd but tyk api doesn't set this by itself
 			'date_created' => date('c'),
 			'version' => 'v2',
@@ -235,7 +270,124 @@ class Tyk_Token
 				$this->user->get_tyk_id()
 				));
 			if (is_object($response) && isset($response->Status) && $response->Status == 'OK') {
+				if (Tyk_Dev_Portal::is_hybrid()) {
+					$response = $this->gateway->delete(sprintf('/keys/%s?hashed=1', $this->hash));
+					if (is_object($response) && isset($response->status) && $response->status == 'ok') {
+						return true;
+					}
+					else {
+						throw new Exception('Received invalid response from Gateway');
+					}
+				}
 				return true;
+			}
+			else {
+				throw new Exception('Received invalid response from API');
+			}
+		}
+		catch (Exception $e) {
+			throw new UnexpectedValueException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Get usage quota of this token
+	 * Requires the unhashed key of the token, unfortunately.
+	 *
+	 * @throws InvalidArgumentException When the key isn't set
+	 * @throws UnexpectedValueException When API does not respond as expected
+	 * 
+	 * @return object Usage quota
+	 */
+	public function get_usage_quota() {
+		if (!is_string($this->key)) {
+			throw new InvalidArgumentException('Missing token key');
+		}
+		try {
+			/**
+			 * Hybrid Tyk
+             * Get usage quota from gateways, as this info isn't synced back to cloud
+             */
+            if (Tyk_Dev_Portal::is_hybrid()) {
+                $response = $this->api->get(sprintf('/keys/%s', $this->key));
+                if (is_object($response) && isset($response->quota_remaining)) {
+                    return (object)array(
+                        'quota_remaining' => $response->quota_remaining,
+                        'quota_max' => $response->quota_max
+                    );
+                }
+                if (is_object($response) && (isset($response->data->access_rights_array[0]->limit))) {
+                    return (object)array(
+                        'quota_remaining' => $response->data->access_rights_array[0]->limit->quota_remaining,
+                        'quota_max' => $response->data->access_rights_array[0]->limit->quota_max
+                    );
+                } else {
+                    throw new Exception('Received invalid response from Gateway');
+                }
+            } /**
+			 * Cloud and on-premise Tyk
+			 * Get usage quota from API
+			 */
+			else {
+				// first: we need an api id on which to request the tokens
+				// sounds weird I know, here's the explanation: https://community.tyk.io/t/several-questions/1041/3
+				$apiManager = new Tyk_API_Manager;
+				$apis = $apiManager->available_apis();
+				if (is_array($apis)) {
+					$firstApi = array_shift($apis);
+					$response = $this->api->get(sprintf('/apis/%s/keys/%s',
+						$firstApi->api_definition->api_id,
+						$this->key
+					));
+				}
+				if (is_object($response) && isset($response->data)) {
+					return $response->data;
+				}
+				else {
+					throw new Exception('Received invalid response from API');
+				}
+			}
+		}
+		catch (Exception $e) {
+			throw new UnexpectedValueException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Get usage stats for this token
+	 *
+	 * @throws InvalidArgumentException When the hash isn't set
+	 * @throws UnexpectedValueException When API does not respond as expected
+	 *
+	 * @param string $from_date From this date forward
+	 * @param string $to_date To this date
+	 * @return object Usage data
+	 */
+	public function get_usage($from_date = null, $to_date = null) {
+		if (!is_string($this->hash)) {
+			throw new InvalidArgumentException('Missing token hash');
+		}
+
+		// use from_date or today-1 month
+		$from = is_null($from_date)
+			? strtotime('-1 week')
+			: strtotime($from_date);
+		// use to_date or <now>
+		$to = is_null($to_date)
+			? time()
+			: strtotime($to_date);
+
+		try {
+			$response = $this->api->get(sprintf('/activity/keys/%s/%s/%s',
+				$this->hash,
+				date('j/n/Y', $from),
+				date('j/n/Y', $to)
+			), array(
+				'res' => 'day',
+				'p' => -1
+			));
+			if (is_object($response) && property_exists($response, 'data')) {
+				return $response->data;
 			}
 			else {
 				throw new Exception('Received invalid response from API');

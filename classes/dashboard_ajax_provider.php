@@ -1,4 +1,5 @@
 <?php
+/* vim: set noexpandtab tabstop=4 shiftwidth=4 sts=0 foldmethod=marker: */
 
 /**
  * Provide ajax actions for dashboard GUI
@@ -14,8 +15,10 @@ class Tyk_Dashboard_Ajax_Provider
 		// Process ajax actions
 		add_action('wp_ajax_get_token', array($this, 'register_for_api'));
 		add_action('wp_ajax_get_tokens', array($this, 'get_user_tokens'));
-		add_action('wp_ajax_get_available_apis', array($this, 'get_available_apis'));
+		add_action('wp_ajax_get_available_apis', array($this, 'get_available_policies'));
 		add_action('wp_ajax_revoke_token', array($this, 'revoke_token'));
+		add_action('wp_ajax_get_token_usage', array($this, 'get_token_usage'));
+		add_action('wp_ajax_get_token_quota', array($this, 'get_token_quota'));
 	}
 
 	/**
@@ -69,26 +72,37 @@ class Tyk_Dashboard_Ajax_Provider
 	/**
 	 * Get user tokens
 	 * 
-	 * @return array
+	 * @return void
 	 */
 	public function get_user_tokens() {
-		$user = new Tyk_Portal_User();
-		wp_send_json_success($user->get_access_tokens());
+		try {
+			$user = new Tyk_Portal_User();
+			wp_send_json_success($user->get_access_tokens());
+		}
+		catch (Exception $e) {
+			wp_send_json_error(sprintf('An error occured: %s', $e->getMessage()));
+		}
 	}
 
 	/**
-	 * Get available APIs
+	 * Get available policies
+	 * These are communicated as APIs to the user because that's what they're interested in
 	 * 
-	 * @return array
+	 * @return void
 	 */
-	public function get_available_apis() {
-		wp_send_json_success(Tyk_API_Manager::available_apis());
+	public function get_available_policies() {
+		try {
+			wp_send_json_success(Tyk_API_Manager::available_policies());
+		}
+		catch (Exception $e) {
+			wp_send_json_error(sprintf('An error occured: %s', $e->getMessage()));
+		}
 	}
 
 	/**
 	 * Revoke a user token
 	 * 
-	 * @return array Array of remaining tokens
+	 * @return void
 	 */
 	public function revoke_token() {
 		if (isset($_POST['token'])) {
@@ -102,7 +116,7 @@ class Tyk_Dashboard_Ajax_Provider
 			catch (Exception $e) {
 				// treat everything as an error except when tyk can't find the token
 				// in which case we'll assume it's gone on their side and delete it on our side as well
-				if (strtolower($e->getMessage()) != 'not found') {
+				if (strpos(strtolower($e->getMessage()), 'not found') === false) {
 					wp_send_json_error($e->getMessage());
 				}
 			}
@@ -114,6 +128,55 @@ class Tyk_Dashboard_Ajax_Provider
 			wp_send_json_success(array(
 				'message' => $message,
 				));
+		}
+		wp_send_json_error(__('Invalid request'));
+	}
+
+	/**
+	 * Get usage quota
+	 * 
+	 * @return void
+	 */
+	public function get_token_quota() {
+		if (isset($_POST['token'])) {
+			try {
+				$user = new Tyk_Portal_User();
+				$token = Tyk_Token::init_from_key(sanitize_text_field($_POST['token']), $user);
+				wp_send_json_success($token->get_usage_quota());
+			}
+			catch (Exception $e) {
+				if (strtolower($e->getMessage()) != 'not found') {
+					wp_send_json_error($e->getMessage());
+				}
+				else {
+					wp_send_json_error(__('Token could not be found. Please note that you must use the token at least once before you can request the remaining quota.', Tyk_Dev_Portal::TEXT_DOMAIN));
+				}
+			}
+		}
+		wp_send_json_error(__('Invalid request'));
+	}
+
+	/**
+	 * Get token usage
+	 * 
+	 * @return void
+	 */
+	public function get_token_usage() {
+		if (isset($_GET['token'])) {
+			try {
+				$from_date = isset($_GET['from'])
+					? $_GET['from']
+					: null;
+				$to_date = isset($_GET['to'])
+					? $_GET['to']
+					: null;
+				$user = new Tyk_Portal_User();
+				$token = $user->get_access_token($_GET['token']);
+				wp_send_json_success($token->get_usage($from_date, $to_date));
+			}
+			catch (Exception $e) {
+				wp_send_json_error($e->getMessage());
+			}
 		}
 		wp_send_json_error(__('Invalid request'));
 	}

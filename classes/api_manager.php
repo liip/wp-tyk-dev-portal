@@ -15,17 +15,19 @@ class Tyk_API_Manager
 	 * so users may register for it freely
 	 */
 	const POLICY_TAG = 'allow_registration';
+	const TAC_TAG = 'requires_tac';
 
 	/**
-	 * Get available APIs defined on Tyk
+	 * Get available policies defined on Tyk
 	 * 
 	 * @return array
 	 */
-	public static function available_apis() {
-		$tyk = new Tyk_API();
+	public static function available_policies() {
+		$tyk = new Tyk_API;
 		// available apis are actually available policies/plans that allow access
 		// to certain apis under certain restrictions
-		$response = $tyk->get('/portal/policies');
+        // normally only the first 10 policies are returned, we disabled this limit using p=-1 as param
+		$response = $tyk->get('/portal/policies', ['p' => -1]);
 		// a generator would be nice here but alas, php 5.4 is still very common
 		$active_apis = array();
 		if (is_object($response) && isset($response->Data)) {
@@ -36,11 +38,33 @@ class Tyk_API_Manager
 					$active_apis[] = array(
 						'id' => $policy->_id,
 						'name' => $policy->name,
+						'requires_tac' => in_array(self::TAC_TAG, $policy->tags),
 						);
 				}
 			}
 		}
 
 		return $active_apis;
+	}
+
+	/**
+	 * Get APIs defined on Tyk
+	 *
+	 * @throws Exception When no apis are found in response
+	 * @return array
+	 */
+	public static function available_apis() {
+		$tyk = new Tyk_API;
+		$response = $tyk->get('/apis');
+		// a generator would be nice here but alas, php 5.4 is still very common
+		$apis = array();
+		if (is_object($response) && isset($response->apis)) {
+			return $response->apis;
+		}
+		else {
+			throw new Exception('No apis defined');
+		}
+
+		return $apis;
 	}
 }

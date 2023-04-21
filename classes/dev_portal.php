@@ -20,7 +20,7 @@ class Tyk_Dev_Portal
 	/**
 	 * Version of this plugin
 	 */
-	const PLUGIN_VERSION = '1';
+	const PLUGIN_VERSION = '1.2';
 
 	/**
 	 * Slug of the dashboard page
@@ -36,6 +36,14 @@ class Tyk_Dev_Portal
 	 * Name of the role for developers this plugin will create
 	 */
 	const DEVELOPER_ROLE_NAME = 'developer';
+
+	/**
+	 * Tyk configuration types
+	 * we use these for consistency when checking TYK_CONFIGURATION throughout the code
+	 */
+	const CONFIGURATION_ON_PREMISE = 'on-premise';
+	const CONFIGURATION_HYBRID = 'hybrid';
+	const CONFIGURATION_CLOUD = 'cloud';
 
 	/**
 	 * Register any hooks
@@ -99,18 +107,31 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function enqueue_assets() {
+		$user = new Tyk_Portal_User;
 		// if this is our dashboard page, enqueue our assets
-		if (is_page(self::DASHBOARD_SLUG)) {
+		if ($user->is_logged_in() && is_page(self::DASHBOARD_SLUG)) {
 			// enqueue and localize our dashboard script
 			wp_enqueue_script('tyk-dev-portal-dashboard');
 			$params = array(
-				'actionUrl' => esc_url(admin_url('admin-ajax.php')),
+				'actionUrl'           => esc_url(admin_url('admin-ajax.php')),
+				'label_used'          => __('Used', self::TEXT_DOMAIN),
+				'label_remaining'     => __('Remaining', self::TEXT_DOMAIN),
+				'label_success'       => __('Success', self::TEXT_DOMAIN),
+				'label_errors'        => __('Errors', self::TEXT_DOMAIN),
+				'error_invalid_data'  => __('Invalid or insufficient data', self::TEXT_DOMAIN),
+				'label_valid'         => __('valid', Tyk_Dev_Portal::TEXT_DOMAIN),
+				'label_invalid'       => __('invalid', Tyk_Dev_Portal::TEXT_DOMAIN),
+				'msg_unlimited_quota' => __('This token has unlimited quota', Tyk_Dev_Portal::TEXT_DOMAIN),
 				);
 			wp_localize_script('tyk-dev-portal-dashboard', 'scriptParams', $params);
 
+			wp_enqueue_script('chart.js');
+
 			// only enqueue our bootstrap styles if the current theme isn't using bootstrap
 			if (!wp_style_is('bootstrap', 'enqueued')) {
-				wp_enqueue_style('tyk-dev-portal-bootstrap');
+				if (!defined('TYK_FORCE_DISABLE_BOOTSTRAP') || TYK_FORCE_DISABLE_BOOTSTRAP !== true) {
+					wp_enqueue_style('tyk-dev-portal-bootstrap');
+				}
 			}
 		}
 	}
@@ -125,16 +146,19 @@ class Tyk_Dev_Portal
 		$vue_file = (WP_DEBUG === true)
 			? 'vue.js'
 			: 'vue.min.js';
-		$vue_ver = (WP_DEBUG === true)
+		$vendor_version = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vue_ver, true);
+		wp_register_script('vue', tyk_dev_portal_plugin_url('assets/js/vendor/' . $vue_file), array(), $vendor_version, true);
+		wp_register_script('underscore', tyk_dev_portal_plugin_url('assets/js/vendor/underscore.min.js'), array(), $vendor_version, true);
+
+		wp_register_script('chart.js', tyk_dev_portal_plugin_url('assets/js/vendor/chart.min.js'), array(), $vendor_version, false);
 		
 		// enqueue dashboard.js
 		$dashboard_ver = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_script('tyk-dev-portal-dashboard', tyk_dev_portal_plugin_url('assets/js/dashboard.js'), array('jquery', 'vue'), $dashboard_ver, true);
+		wp_register_script('tyk-dev-portal-dashboard', tyk_dev_portal_plugin_url('assets/js/dashboard.js'), array('jquery', 'vue', 'underscore'), $dashboard_ver, true);
 	}
 
 	/**
@@ -146,10 +170,10 @@ class Tyk_Dev_Portal
 	 * @return void
 	 */
 	public function register_styles() {
-		$bootstrap_ver = (WP_DEBUG === true)
+		$style_ver = (WP_DEBUG === true)
 			? time()
 			: self::PLUGIN_VERSION;
-		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $bootstrap_ver);
+		wp_register_style('tyk-dev-portal-bootstrap', tyk_dev_portal_plugin_url('assets/css/bootstrap.min.css'), null, $style_ver);
 	}
 
 	/**
@@ -216,5 +240,32 @@ class Tyk_Dev_Portal
 		);
 		$post_id = wp_insert_post($page);
 		// @todo we should probably save the slug of the created page here
+	}
+
+	/**
+	 * Are we using Tyk Cloud?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_cloud() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_CLOUD;
+	}
+
+	/**
+	 * Are we using Tyk Hybrid?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_hybrid() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_HYBRID;	
+	}
+
+	/**
+	 * Are we using Tyk On-Premise?
+	 * 
+	 * @return boolean
+	 */
+	public static function is_on_premise() {
+		return strtolower(TYK_CONFIGURATION) == self::CONFIGURATION_ON_PREMISE;
 	}
 }
