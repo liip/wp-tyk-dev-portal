@@ -309,17 +309,11 @@ class Tyk_Token
              * Get usage quota from gateways, as this info isn't synced back to cloud
              */
             if (Tyk_Dev_Portal::is_hybrid()) {
-                $response = $this->api->get(sprintf('/keys/%s', $this->key));
+                $response = $this->gateway->get(sprintf('/keys/%s', $this->key));
                 if (is_object($response) && isset($response->quota_remaining)) {
                     return (object)array(
                         'quota_remaining' => $response->quota_remaining,
                         'quota_max' => $response->quota_max
-                    );
-                }
-                if (is_object($response) && isset($response->data->quota_remaining) && isset($response->data->quota_max)) {
-                    return (object)array(
-                        'quota_remaining' => $response->data->quota_remaining,
-                        'quota_max' => $response->data->quota_max
                     );
                 } else {
                     throw new Exception('Received invalid response from Gateway');

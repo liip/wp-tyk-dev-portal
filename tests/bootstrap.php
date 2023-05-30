@@ -26,7 +26,7 @@ require $_tests_dir . '/includes/bootstrap.php';
 
 
 
-define( 'TYK_API_ENDPOINT', 'http://admin.cloud.tyk.io/api/' );
+define( 'TYK_API_ENDPOINT', '' );
 define( 'TYK_API_KEY', '' );  // add a key for a management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );
 define( 'TYK_TEST_API_POLICY', '' );  // add the id of a test api policy tagged with 'allow_regsitration'

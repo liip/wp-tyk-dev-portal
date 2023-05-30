@@ -57,7 +57,7 @@ Please note that we, the plugin authors, cannot offer support for this plugin. T
 
 `
 define( 'TYK_CONFIGURATION', 'cloud' );  // the tyk setup you're using ('cloud', 'on-premise' or 'hybrid')
-define( 'TYK_API_ENDPOINT', 'https://admin.cloud.tyk.io/api/' );  // or the url to your Tyk installation
+define( 'TYK_API_ENDPOINT', 'https://your.dashboardurl.tyk.io/api/' );  // or the url to your Tyk installation
 define( 'TYK_API_KEY', 'the access token' );  // access token you created for the management user
 define( 'TYK_AUTO_APPROVE_KEY_REQUESTS', true );  // read more below
 // these are only needed when TYK_CONFIGURATION is 'on-premise' or 'hybrid'
