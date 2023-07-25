@@ -303,6 +303,10 @@ class Tyk_Token
 		if (!is_string($this->key)) {
 			throw new InvalidArgumentException('Missing token key');
 		}
+		if (strlen($this->key) === 56) {
+			$this->key = TYK_ORG_ID.$this->key;
+			
+		}
 		try {
 			/**
 			 * Hybrid Tyk
