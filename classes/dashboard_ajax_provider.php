@@ -42,8 +42,11 @@ class Tyk_Dashboard_Ajax_Provider
 					// save the access token information
 					$user->save_access_token($_POST['api'], $_POST['token_name'], $token->get_hash());
 
+					// we removed the dot for User Experience,
+					// since the User copies the dot with the key and therefore the key is corupted.
 					$message = sprintf(
-						__('Your token for this API is: %s. We will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN), 
+						__('Your token for this API is: %s and we will only show this once. Please save it somewhere now.', Tyk_Dev_Portal::TEXT_DOMAIN), 
+				
 						$token->get_key()
 						);
 				}
