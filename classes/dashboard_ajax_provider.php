@@ -61,7 +61,7 @@ class Tyk_Dashboard_Ajax_Provider
 
 				wp_send_json_success(array(
 					'message' => $message,
-					'key' => $key,
+					'key' => $token->get_key(),
 					'approved' => TYK_AUTO_APPROVE_KEY_REQUESTS,
 					));
 			}

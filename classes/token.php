@@ -255,35 +255,17 @@ class Tyk_Token
 	 *
 	 * @throws InvalidArgumentException When this class doesn't have all the data it needs
 	 * @throws UnexpectedValueException When API does not respond as expected
-	 * 
-	 * @return boolean True when successful
+	 *
 	 */
 	public function revoke() {
-		if (!is_string($this->policy) || !is_string($this->hash) || !is_a($this->user, 'Tyk_Portal_User')) {
+		if (!is_string($this->hash) || !is_a($this->user, 'Tyk_Portal_User')) {
 			throw new InvalidArgumentException('Missing token information');
 		}
-
-		try {
-			$response = $this->api->delete(sprintf('/portal/developers/key/%s/%s/%s',
-				$this->policy,
-				$this->hash,
-				$this->user->get_tyk_id()
-				));
-			if (is_object($response) && isset($response->Status) && $response->Status == 'OK') {
-				if (Tyk_Dev_Portal::is_hybrid()) {
-					$response = $this->gateway->delete(sprintf('/keys/%s?hashed=1', $this->hash));
-					if (is_object($response) && isset($response->status) && $response->status == 'ok') {
-						return true;
-					}
-					else {
-						throw new Exception('Received invalid response from Gateway');
-					}
-				}
-				return true;
-			}
-			else {
-				throw new Exception('Received invalid response from API');
-			}
+        try {
+            $this->api->delete(sprintf('/api/apis/%s/keys/%s',
+                null,
+                $this->hash
+            ));
 		}
 		catch (Exception $e) {
 			throw new UnexpectedValueException($e->getMessage());
