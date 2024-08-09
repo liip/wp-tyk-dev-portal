@@ -1,4 +1,4 @@
-# Tyk Dev Portal
+# Tyk Dev Portal 2.0
 
 Contributors: teamamboss, chlab		
 Tags: api, api-management, tyk, liip		
