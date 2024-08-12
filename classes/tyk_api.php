@@ -106,22 +106,22 @@ class Tyk_API extends Tyk_Interaction
 	 * @return stdClass
 	 */
 	public function delete($path) {
-		$url = $this->get_url_for_path($path);
+        $url = $this->get_url_for_path($path);
+        $api_response = wp_remote_request($url, array(
+            'method' => 'DELETE',
+            'headers' => array(
+                'Authorization' => TYK_API_KEY,
+            )
+        ));
 
-		$api_response = wp_remote_request($url, array(
-			'method' => 'DELETE',
-			'headers' => array(
-				'Authorization' => TYK_API_KEY,
-			)));
-
-		$response = $this->parse_response($api_response);
-		if (is_object($response)) {
-			return $response;
-		}
-		else {
-			throw new Exception('Received invalid response from API');
-		}	
-	}
+        $response = $this->parse_response($api_response);
+        if (is_object($response)) {
+            return $response;
+        }
+        else {
+            throw new Exception('Received invalid response from API');
+        }
+    }
 
 	/**
 	 * Get absolute url to api endpoint for a path
