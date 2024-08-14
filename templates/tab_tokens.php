@@ -1,7 +1,7 @@
 <div class="tab-pane active" id="tokens-tab">
 
 	<!-- list of user tokens -->
-	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+	<h3><?php _e('My tokens', Tyk_Dev_Portal::TEXT_DOMAIN); ?></h3>
 
 	<!-- area for messages -->
 	<div v-cloak>
@@ -9,7 +9,7 @@
 			{{ message }}
 		</div>
 		<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" role="alert">
-			<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+			<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN); ?>
 		</div>
 	</div>
 
@@ -17,9 +17,9 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
-					<th><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
-					<th class="icon"><?php _e('State', Tyk_Dev_Portal::TEXT_DOMAIN)?></th>
+					<th><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN); ?></th>
+					<th><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN); ?></th>
+					<th class="icon"><?php _e('State', Tyk_Dev_Portal::TEXT_DOMAIN); ?></th>
 					<th class="icon"></th>
 				</tr>
 			</thead>
@@ -29,10 +29,10 @@
 					<td>{{ getApiName(token.api_id) }}</td>
 					<td><span class="label" :class="{'label-danger': !token.is_valid, 'label-success': token.is_valid}">{{ getState(token) }}</span></td>
 					<td>
-						<a href="#" @click.prevent="showUsageTab(token)" class="btn text-info" title="<?php _e('Show usage', Tyk_Dev_Portal::TEXT_DOMAIN)?>">
+						<a href="#" @click.prevent="showUsageTab(token)" class="btn text-info" title="<?php _e('Show usage', Tyk_Dev_Portal::TEXT_DOMAIN); ?>">
 							<span class="glyphicon glyphicon-stats"></span>
 						</a>
-						<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN)?>">
+						<a href="#revoke" @click.prevent="revokeToken(token)" class="btn text-danger" title="<?php _e('Revoke this token', Tyk_Dev_Portal::TEXT_DOMAIN); ?>">
 							<span class="glyphicon glyphicon-trash"></span>
 						</a>
 					</td>
@@ -43,10 +43,10 @@
 	<table class="table" v-else>
 		<tbody>
 			<tr v-if="loading">
-				<td colspan="3"><?php _e("loading", Tyk_Dev_Portal::TEXT_DOMAIN)?></td>
+				<td colspan="3"><?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN); ?></td>
 			</tr>
 			<tr v-else>
-				<td colspan="3"><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN)?></td>
+				<td colspan="3"><?php _e("You don't have any tokens yet", Tyk_Dev_Portal::TEXT_DOMAIN); ?></td>
 			</tr>
 		</tbody>
 	</table>
@@ -56,8 +56,8 @@
 
 			<!-- request an access token for an api -->
 			<request-token-form inline-template :apis="availableApis" :subscribed-apis.sync="subscribedApis">
-				<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="form-horizontal" method="post">
-					<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?></h3>
+				<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="form-horizontal" method="post">
+					<h3><?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN); ?></h3>
 
 					<!-- area for messages -->
 					<div v-cloak>
@@ -66,22 +66,22 @@
 							{{message}}
 						</div>
 						<div id="tyk-subscribe-error" class="alert alert-danger" v-if="hasError" role="alert">
-							<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+							<?php _e('An error occurred. Please try again.', Tyk_Dev_Portal::TEXT_DOMAIN); ?>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="tyk-token-name" class="col-xs-2"><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+						<label for="tyk-token-name" class="col-xs-2"><?php _e('Name', Tyk_Dev_Portal::TEXT_DOMAIN); ?></label>
 						<div class="col-xs-10">
-							<input type="text" v-model="token_name" name="token_name" class="form-control" id="tyk-token-name" placeholder="<?php _e('Give this token a name', Tyk_Dev_Portal::TEXT_DOMAIN)?>" />
+							<input type="text" v-model="token_name" name="token_name" class="form-control" id="tyk-token-name" placeholder="<?php _e('Give this token a name', Tyk_Dev_Portal::TEXT_DOMAIN); ?>" />
 						</div>
 					</div>	
 
 					<div class="form-group">
-						<label for="tyk-api-select" class="col-xs-2"><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+						<label for="tyk-api-select" class="col-xs-2"><?php _e('API', Tyk_Dev_Portal::TEXT_DOMAIN); ?></label>
 						<div class="col-xs-10">
 							<select name="api" id="tyk-api-select" class="form-control" v-model="api">
-								<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN)?></option>
+								<option value=""><?php _e('-- please choose', Tyk_Dev_Portal::TEXT_DOMAIN); ?></option>
 								<option v-for="api in apis" value="{{ api.id }}" :disabled="hasTokenForAPI(api.id)">{{ api.name }}</option>
 							</select>
 						</div>
@@ -91,7 +91,7 @@
                         <div class="col-xs-2"></div>
                         <div class="col-xs-10">
                             <input type="checkbox" id="tyk-api-tac" name="tyk-api-tac" v-model="tac_accepted">
-                            <label for="tyk-api-tac"><?php _e('I accept the general terms and conditions', Tyk_Dev_Portal::TEXT_DOMAIN)?></label>
+                            <label for="tyk-api-tac"><?php _e('I accept the general terms and conditions', Tyk_Dev_Portal::TEXT_DOMAIN); ?></label>
                         </div>
                     </div>
 
@@ -99,10 +99,10 @@
 						<div class="col-xs-10 col-xs-offset-2">
 							<button @click.prevent="register" :disabled="busy || !formValid" id="btn-tyk-api-subscribe" class="btn btn-primary">
 								<template v-if="busy">
-									<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+									<?php _e('loading', Tyk_Dev_Portal::TEXT_DOMAIN); ?>
 								</template>
 								<template v-else>
-									<?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN)?>
+									<?php _e('Request a token', Tyk_Dev_Portal::TEXT_DOMAIN); ?>
 								</template>
 							</button>
 						</div>

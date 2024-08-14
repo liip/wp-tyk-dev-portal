@@ -7,13 +7,13 @@
 
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active">
-			<a href="#tokens-tab" aria-controls="tokens-tab" role="tab" data-toggle="tab"><?php _e('Tokens', Tyk_Dev_Portal::TEXT_DOMAIN)?></a>
+			<a href="#tokens-tab" aria-controls="tokens-tab" role="tab" data-toggle="tab"><?php _e('Tokens', Tyk_Dev_Portal::TEXT_DOMAIN); ?></a>
 		</li>
 		<li role="presentation">
-			<a href="#usage-tab" v-el:usage-tab aria-controls="usage-tab" role="tab" data-toggle="tab"><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN)?></a>
+			<a href="#usage-tab" v-el:usage-tab aria-controls="usage-tab" role="tab" data-toggle="tab"><?php _e('Usage', Tyk_Dev_Portal::TEXT_DOMAIN); ?></a>
 		</li>
 		<li role="presentation">
-			<a href="#quota-tab" v-el:quoata-tab aria-controls="quoata-tab" role="tab" data-toggle="tab"><?php _e('Quota', Tyk_Dev_Portal::TEXT_DOMAIN)?></a>
+			<a href="#quota-tab" v-el:quoata-tab aria-controls="quoata-tab" role="tab" data-toggle="tab"><?php _e('Quota', Tyk_Dev_Portal::TEXT_DOMAIN); ?></a>
 		</li>
 	</ul>
 
