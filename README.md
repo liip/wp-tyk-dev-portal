@@ -8,6 +8,10 @@ Stable tag: 4.6.1
 License: MIT										
 License URI: https://opensource.org/licenses/MIT
 
+## ⚠️ Deprecated – Not Maintained ⚠️
+
+This project is no longer maintained and will not receive any further updates. It is being archived for reference purposes.
+
 Integrates a developer portal of a Tyk API Gateway in your WordPress site
 
 ## Description
